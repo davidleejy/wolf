@@ -18,6 +18,8 @@
 		FBCF236516B64CB700217BDA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF236416B64CB700217BDA /* Default-568h@2x.png */; };
 		FBCF236816B64CB700217BDA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBCF236616B64CB700217BDA /* MainStoryboard.storyboard */; };
 		FBCF236B16B64CB700217BDA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCF236A16B64CB700217BDA /* ViewController.m */; };
+		FBCF237316B6545200217BDA /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237116B6545200217BDA /* background.png */; };
+		FBCF237416B6545200217BDA /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237216B6545200217BDA /* ground.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		FBCF236716B64CB700217BDA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		FBCF236916B64CB700217BDA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		FBCF236A16B64CB700217BDA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		FBCF237116B6545200217BDA /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		FBCF237216B6545200217BDA /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,8 @@
 		FBCF235416B64CB700217BDA /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				FBCF237116B6545200217BDA /* background.png */,
+				FBCF237216B6545200217BDA /* ground.png */,
 				FBCF235D16B64CB700217BDA /* AppDelegate.h */,
 				FBCF235E16B64CB700217BDA /* AppDelegate.m */,
 				FBCF236616B64CB700217BDA /* MainStoryboard.storyboard */,
@@ -163,6 +169,8 @@
 				FBCF236316B64CB700217BDA /* Default@2x.png in Resources */,
 				FBCF236516B64CB700217BDA /* Default-568h@2x.png in Resources */,
 				FBCF236816B64CB700217BDA /* MainStoryboard.storyboard in Resources */,
+				FBCF237316B6545200217BDA /* background.png in Resources */,
+				FBCF237416B6545200217BDA /* ground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
