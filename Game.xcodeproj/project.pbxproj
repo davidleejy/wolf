@@ -20,6 +20,12 @@
 		FBCF236B16B64CB700217BDA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCF236A16B64CB700217BDA /* ViewController.m */; };
 		FBCF237316B6545200217BDA /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237116B6545200217BDA /* background.png */; };
 		FBCF237416B6545200217BDA /* ground.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237216B6545200217BDA /* ground.png */; };
+		FBCF237B16B66DFC00217BDA /* iron.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237516B66DFC00217BDA /* iron.png */; };
+		FBCF237C16B66DFC00217BDA /* pig.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237616B66DFC00217BDA /* pig.png */; };
+		FBCF237D16B66DFC00217BDA /* stone.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237716B66DFC00217BDA /* stone.png */; };
+		FBCF237E16B66DFC00217BDA /* straw.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237816B66DFC00217BDA /* straw.png */; };
+		FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237916B66DFC00217BDA /* wolfs.png */; };
+		FBCF238016B66DFC00217BDA /* wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237A16B66DFC00217BDA /* wood.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +47,14 @@
 		FBCF236A16B64CB700217BDA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		FBCF237116B6545200217BDA /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		FBCF237216B6545200217BDA /* ground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ground.png; sourceTree = "<group>"; };
+		FBCF237516B66DFC00217BDA /* iron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iron.png; sourceTree = "<group>"; };
+		FBCF237616B66DFC00217BDA /* pig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pig.png; sourceTree = "<group>"; };
+		FBCF237716B66DFC00217BDA /* stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stone.png; sourceTree = "<group>"; };
+		FBCF237816B66DFC00217BDA /* straw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = straw.png; sourceTree = "<group>"; };
+		FBCF237916B66DFC00217BDA /* wolfs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wolfs.png; sourceTree = "<group>"; };
+		FBCF237A16B66DFC00217BDA /* wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood.png; sourceTree = "<group>"; };
+		FBCF238116B6971800217BDA /* GameObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
+		FBCF238216B6971800217BDA /* GameViewControllerExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewControllerExtension.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +101,14 @@
 		FBCF235416B64CB700217BDA /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				FBCF238116B6971800217BDA /* GameObject.h */,
+				FBCF238216B6971800217BDA /* GameViewControllerExtension.h */,
+				FBCF237516B66DFC00217BDA /* iron.png */,
+				FBCF237616B66DFC00217BDA /* pig.png */,
+				FBCF237716B66DFC00217BDA /* stone.png */,
+				FBCF237816B66DFC00217BDA /* straw.png */,
+				FBCF237916B66DFC00217BDA /* wolfs.png */,
+				FBCF237A16B66DFC00217BDA /* wood.png */,
 				FBCF237116B6545200217BDA /* background.png */,
 				FBCF237216B6545200217BDA /* ground.png */,
 				FBCF235D16B64CB700217BDA /* AppDelegate.h */,
@@ -171,6 +193,12 @@
 				FBCF236816B64CB700217BDA /* MainStoryboard.storyboard in Resources */,
 				FBCF237316B6545200217BDA /* background.png in Resources */,
 				FBCF237416B6545200217BDA /* ground.png in Resources */,
+				FBCF237B16B66DFC00217BDA /* iron.png in Resources */,
+				FBCF237C16B66DFC00217BDA /* pig.png in Resources */,
+				FBCF237D16B66DFC00217BDA /* stone.png in Resources */,
+				FBCF237E16B66DFC00217BDA /* straw.png in Resources */,
+				FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */,
+				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

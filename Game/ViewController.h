@@ -13,5 +13,6 @@
 - (IBAction)buttonPressed:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *gamearea;
+@property (weak, nonatomic) IBOutlet UIScrollView *palette;
 
 @end
