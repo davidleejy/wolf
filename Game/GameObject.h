@@ -14,7 +14,10 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 }
 
+
+
 @property (nonatomic, readonly) GameObjectType objectType;
+
 
 - (void)translate:(UIGestureRecognizer *)gesture;
   // MODIFIES: object model (coordinates)
@@ -33,5 +36,8 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
   // EFFECTS: the object is scaled up/down with a pinch gesture
 
 // You will need to define more methods to complete the specification. 
+
+
+
 
 @end
