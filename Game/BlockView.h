@@ -7,7 +7,10 @@
 //
 
 #import "GameObjectView.h"
+#import "DeveloperSettingsForViewClasses.h"
 
 @interface BlockView : GameObjectView
+
+@property(readwrite) NSArray* blocksArray;
 
 @end

@@ -158,6 +158,15 @@
 //    NSLog(@"debug: frame: %d framex %lf framey %lf",i,frameX,frameY);
 //    }
     
+    PigView* aPig = [[PigView alloc] initDefaultWithController:self];
+    [aPig translateAnAdditional:CGPointMake(500, 40)];
+    
+    WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
+    [aWolf translateAnAdditional:CGPointMake(600, 40)];
+    
+    [_gamearea addSubview:aPig];
+    [_gamearea addSubview:aWolf];
+    [aWolf showActionFrame:14];
 }
 
 

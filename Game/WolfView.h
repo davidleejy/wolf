@@ -23,10 +23,10 @@
 - (id) initDefaultWithController:(GameObject *)myController;
 // EFFECTS: Constructor that initialises this object with default size. Picks frame 1 out of 15.
 
-- (id) initWithController:(GameObject*)myController AndFrame:(NSUInteger)desiredFrame;
+- (id) initWithController:(GameObject*)myController AndActionFrame:(NSUInteger)desiredFrame;
 // EFFECTS: Constructor that initialises this object with default size. You pick frame.
 
-- (void) changeActionTo:(NSUInteger)desiredFrame;
+- (void) showActionFrame:(NSUInteger)desiredFrame;
 // MODIFIES: image in UIImageView superclass.
 // EFFECTS: Changes wolf's action to that which corresponds to desired frame.
 //          Maintains default size.

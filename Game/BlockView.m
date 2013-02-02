@@ -10,14 +10,11 @@
 
 @implementation BlockView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
+// ***** Synthesis ******
+@synthesize blocksArray = _blocksArray;
+
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

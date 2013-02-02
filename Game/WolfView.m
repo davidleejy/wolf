@@ -57,7 +57,7 @@
 }
 
 
-- (id) initWithController:(GameObject*)myController AndFrame:(NSUInteger)desiredFrame {
+- (id) initWithController:(GameObject*)myController AndActionFrame:(NSUInteger)desiredFrame {
     // EFFECTS: Constructor that initialises this object with default size. You pick frame.
     
     _wolfsImage = [UIImage imageNamed:WOLFS_IMAGE_PATH]; // MUST LINK THIS PROPERTY TO AN IMAGE WITH A BUNCH OF WOLFS!!!
@@ -83,7 +83,7 @@
 }
 
 
-- (void) changeActionTo:(NSUInteger)desiredFrame {
+- (void) showActionFrame:(NSUInteger)desiredFrame {
     // MODIFIES: image in UIImageView superclass.
     // EFFECTS: Changes wolf's action to that which corresponds to desired frame.
     //          Maintains default size.

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "GameObjectView.h"
+#import "PigView.h"
+#import "WolfView.h"
+#import "BlockView.h"
 
 @interface ViewController : UIViewController
 
