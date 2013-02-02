@@ -125,12 +125,27 @@
     [_palette addSubview:wolfNormal];
     [_palette addSubview:pig];
     [_palette addSubview:straw];
-
+    
+    
     //BULLSHIT BELOW TODO
 //   pig.frame = CGRectMake(0, 200, pigScaledHeight,pigScaledWidth);
 // pig.transform = CGAffineTransformMakeTranslation(0, 200);
-//   [_gamearea addSubview:pig];
+//  [_gamearea addSubview:pig];
 //    NSLog(@"pig:  %lf %lf",pig.frame.origin.x,pig.frame.origin.y);
+
+    
+    
+    GameObjectView* kcsim = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"kcsim.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"kcsim.jpg"].size.width Height:[UIImage imageNamed:@"kcsim.jpg"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:kcsim];
+   [kcsim rotateAnAdditional:50];
+    [kcsim rotateAnAdditional:50];
+    [kcsim rotateAnAdditional:50];
+    [kcsim scaleAnAdditional:0.25];
+    for (int i= 0; i < 5; i++) {
+   [kcsim translateAnAdditional:CGPointMake(0,10)];
+    }
+   
     
 }
 

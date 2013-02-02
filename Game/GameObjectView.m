@@ -10,10 +10,15 @@
 
 @implementation GameObjectView
 
+// ******* Properties *******
+
 @synthesize myController = _myController;
 
 
-- (id) initWithController:(GameObject*)yourController :(UIImage*)img :(CGPoint)origin :(CGFloat)width :(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {
+
+// ******* Constructors *******
+
+- (id) initWithController:(GameObject*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {
     // EFFECTS: Designated constructor. Origin, width and height refer to frame property in UIView.
 
     // Init super class. Super class is UIImageView
@@ -31,15 +36,18 @@
     
     
     return self;
-    
 }
 
+
+
+// ******* Setters *******
 
 - (void) translateAnAdditional:(CGPoint)arbXYOffset {
     // MODIFIES: frame property in UIImageView superclass.
     // EFFECTS: translates this object w.r.t. superview by an additional coordinates.
     
-    self.transform = CGAffineTransformMakeTranslation( arbXYOffset.x, arbXYOffset.y);
+//    self.transform = CGAffineTransformMakeTranslation( arbXYOffset.x, arbXYOffset.y);
+    self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeTranslation(arbXYOffset.x, arbXYOffset.y));
 }
 
 
@@ -47,7 +55,8 @@
     // MODIFIES: frame property in UIImageView superclass.
     // EFFECTS: rotates this object w.r.t. superview by an additional degrees.
     
-    self.transform = CGAffineTransformRotate(self.transform, degrees);
+    //self.transform = CGAffineTransformRotate(self.transform, degrees);
+    self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeRotation(degrees));
 }
 
 
@@ -57,7 +66,8 @@
     // EFFECTS: scales this object's width and height by scaling factor.
     //          scaling is w.r.t. superview.
     
-    self.transform = CGAffineTransformScale(self.transform, scalingFactor, scalingFactor);
+    //self.transform = CGAffineTransformScale(self.transform, scalingFactor, scalingFactor);
+    self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeScale(scalingFactor, scalingFactor));
 }
 
 

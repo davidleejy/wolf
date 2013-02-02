@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845516BD35B80091BB47 /* GameObjectView.m */; };
+		FBBB845A16BD62340091BB47 /* PigView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845916BD62340091BB47 /* PigView.m */; };
+		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
+		FBBB846016BD62D40091BB47 /* BlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845F16BD62D40091BB47 /* BlockView.m */; };
+		FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846116BD63840091BB47 /* kcsim.jpg */; };
 		FBCF234F16B64CB700217BDA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF234E16B64CB700217BDA /* UIKit.framework */; };
 		FBCF235116B64CB700217BDA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235016B64CB700217BDA /* Foundation.framework */; };
 		FBCF235316B64CB700217BDA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235216B64CB700217BDA /* CoreGraphics.framework */; };
@@ -38,6 +42,13 @@
 /* Begin PBXFileReference section */
 		FBBB845416BD35B80091BB47 /* GameObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectView.h; sourceTree = "<group>"; };
 		FBBB845516BD35B80091BB47 /* GameObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectView.m; sourceTree = "<group>"; };
+		FBBB845816BD62340091BB47 /* PigView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigView.h; sourceTree = "<group>"; };
+		FBBB845916BD62340091BB47 /* PigView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PigView.m; sourceTree = "<group>"; };
+		FBBB845B16BD62C90091BB47 /* WolfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WolfView.h; sourceTree = "<group>"; };
+		FBBB845C16BD62C90091BB47 /* WolfView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WolfView.m; sourceTree = "<group>"; };
+		FBBB845E16BD62D40091BB47 /* BlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockView.h; sourceTree = "<group>"; };
+		FBBB845F16BD62D40091BB47 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
+		FBBB846116BD63840091BB47 /* kcsim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kcsim.jpg; sourceTree = "<group>"; };
 		FBCF234A16B64CB700217BDA /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBCF234E16B64CB700217BDA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FBCF235016B64CB700217BDA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -150,6 +161,7 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBBB846116BD63840091BB47 /* kcsim.jpg */,
 				FBCF237716B66DFC00217BDA /* stone.png */,
 				FBCF237816B66DFC00217BDA /* straw.png */,
 				FBCF237916B66DFC00217BDA /* wolfs.png */,
@@ -193,6 +205,12 @@
 			children = (
 				FBBB845416BD35B80091BB47 /* GameObjectView.h */,
 				FBBB845516BD35B80091BB47 /* GameObjectView.m */,
+				FBBB845816BD62340091BB47 /* PigView.h */,
+				FBBB845916BD62340091BB47 /* PigView.m */,
+				FBBB845B16BD62C90091BB47 /* WolfView.h */,
+				FBBB845C16BD62C90091BB47 /* WolfView.m */,
+				FBBB845E16BD62D40091BB47 /* BlockView.h */,
+				FBBB845F16BD62D40091BB47 /* BlockView.m */,
 			);
 			name = View_in_MVC;
 			sourceTree = "<group>";
@@ -282,6 +300,7 @@
 				FBCF237E16B66DFC00217BDA /* straw.png in Resources */,
 				FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */,
 				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
+				FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +321,9 @@
 				FBEB2BEB16BC03150095B0FB /* PigModel.m in Sources */,
 				FBEB2BEE16BC03270095B0FB /* BlockModel.m in Sources */,
 				FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */,
+				FBBB845A16BD62340091BB47 /* PigView.m in Sources */,
+				FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */,
+				FBBB846016BD62D40091BB47 /* BlockView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
