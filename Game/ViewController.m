@@ -151,7 +151,16 @@
     
     [_gamearea addSubview:peashooter];
     
+//    for (int i = 1; i<16; i++) {
+//    
+//    CGFloat frameX = i % 5;
+//    CGFloat frameY = ((int)((i-1)/5 ));
+//    NSLog(@"debug: frame: %d framex %lf framey %lf",i,frameX,frameY);
+//    }
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -8,31 +8,16 @@
 
 #import "PigView.h"
 
-@interface PigView (private)
-    
-FOUNDATION_EXPORT NSString* imagePath;
-FOUNDATION_EXPORT CGFloat defaultHeight;
-FOUNDATION_EXPORT CGFloat defaultWidth;
-
-@end
-
 
 @implementation PigView
-
-
-// ***** Constants ******
-
-NSString* imagePath = @"pig.png";
-CGFloat defaultHeight = 88;
-CGFloat defaultWidth = 88;
 
 
 // ***** Constructors ******
 
 - (id) initWithController:(GameObject*) myController {
-    // EFFECTS: Constructor
+    // EFFECTS: Designated Constructor
     
-    UIImage* pigImage = [UIImage imageNamed:imagePath];
+    UIImage* pigImage = [UIImage imageNamed:PIG_IMAGE_PATH];
     
     self = [super initWithController:myController
                     UIImage:pigImage
@@ -56,7 +41,7 @@ CGFloat defaultWidth = 88;
     
     if (!self) return nil; // Error handling
     
-    [self setWidth:defaultWidth andHeight:defaultHeight]; // Set default size.
+    [self setWidth:PIG_DEFAULT_WIDTH andHeight:PIG_DEFAULT_HEIGHT]; // Set default size.
     
     return self;
 }

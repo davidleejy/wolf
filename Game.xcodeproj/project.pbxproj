@@ -13,6 +13,7 @@
 		FBBB846016BD62D40091BB47 /* BlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845F16BD62D40091BB47 /* BlockView.m */; };
 		FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846116BD63840091BB47 /* kcsim.jpg */; };
 		FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846916BD710F0091BB47 /* peashooter.png */; };
+		FBBB846D16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */; };
 		FBCF234F16B64CB700217BDA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF234E16B64CB700217BDA /* UIKit.framework */; };
 		FBCF235116B64CB700217BDA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235016B64CB700217BDA /* Foundation.framework */; };
 		FBCF235316B64CB700217BDA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235216B64CB700217BDA /* CoreGraphics.framework */; };
@@ -51,6 +52,8 @@
 		FBBB845F16BD62D40091BB47 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
 		FBBB846116BD63840091BB47 /* kcsim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kcsim.jpg; sourceTree = "<group>"; };
 		FBBB846916BD710F0091BB47 /* peashooter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = peashooter.png; sourceTree = "<group>"; };
+		FBBB846B16BD7EF90091BB47 /* DeveloperSettingsForViewClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperSettingsForViewClasses.h; sourceTree = "<group>"; };
+		FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperSettingsForViewClasses.m; sourceTree = "<group>"; };
 		FBCF234A16B64CB700217BDA /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBCF234E16B64CB700217BDA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FBCF235016B64CB700217BDA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -214,6 +217,8 @@
 				FBBB845C16BD62C90091BB47 /* WolfView.m */,
 				FBBB845E16BD62D40091BB47 /* BlockView.h */,
 				FBBB845F16BD62D40091BB47 /* BlockView.m */,
+				FBBB846B16BD7EF90091BB47 /* DeveloperSettingsForViewClasses.h */,
+				FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */,
 			);
 			name = View_in_MVC;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 				FBBB845A16BD62340091BB47 /* PigView.m in Sources */,
 				FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */,
 				FBBB846016BD62D40091BB47 /* BlockView.m in Sources */,
+				FBBB846D16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

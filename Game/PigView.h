@@ -7,6 +7,7 @@
 //
 
 #import "GameObjectView.h"
+#import "DeveloperSettingsForViewClasses.h"
 
 @interface PigView : GameObjectView
 
