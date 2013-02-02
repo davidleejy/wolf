@@ -12,6 +12,7 @@
 		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
 		FBBB846016BD62D40091BB47 /* BlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845F16BD62D40091BB47 /* BlockView.m */; };
 		FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846116BD63840091BB47 /* kcsim.jpg */; };
+		FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846916BD710F0091BB47 /* peashooter.png */; };
 		FBCF234F16B64CB700217BDA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF234E16B64CB700217BDA /* UIKit.framework */; };
 		FBCF235116B64CB700217BDA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235016B64CB700217BDA /* Foundation.framework */; };
 		FBCF235316B64CB700217BDA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235216B64CB700217BDA /* CoreGraphics.framework */; };
@@ -49,6 +50,7 @@
 		FBBB845E16BD62D40091BB47 /* BlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockView.h; sourceTree = "<group>"; };
 		FBBB845F16BD62D40091BB47 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
 		FBBB846116BD63840091BB47 /* kcsim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kcsim.jpg; sourceTree = "<group>"; };
+		FBBB846916BD710F0091BB47 /* peashooter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = peashooter.png; sourceTree = "<group>"; };
 		FBCF234A16B64CB700217BDA /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBCF234E16B64CB700217BDA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FBCF235016B64CB700217BDA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -161,6 +163,7 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBBB846916BD710F0091BB47 /* peashooter.png */,
 				FBBB846116BD63840091BB47 /* kcsim.jpg */,
 				FBCF237716B66DFC00217BDA /* stone.png */,
 				FBCF237816B66DFC00217BDA /* straw.png */,
@@ -301,6 +304,7 @@
 				FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */,
 				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
 				FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */,
+				FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

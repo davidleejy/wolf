@@ -10,4 +10,14 @@
 
 @interface PigView : GameObjectView
 
+
+// ***** Constructors ******
+
+- (id) initWithController:(GameObject*) myController;
+    // EFFECTS: Designated Constructor
+
+
+- (id) initDefaultWithController:(GameObject *)myController;
+    // EFFECTS: Constructor that initialises this object with default size.
+
 @end

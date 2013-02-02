@@ -8,16 +8,60 @@
 
 #import "PigView.h"
 
+@interface PigView (private)
+    
+FOUNDATION_EXPORT NSString* imagePath;
+FOUNDATION_EXPORT CGFloat defaultHeight;
+FOUNDATION_EXPORT CGFloat defaultWidth;
+
+@end
+
+
 @implementation PigView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
+
+// ***** Constants ******
+
+NSString* imagePath = @"pig.png";
+CGFloat defaultHeight = 88;
+CGFloat defaultWidth = 88;
+
+
+// ***** Constructors ******
+
+- (id) initWithController:(GameObject*) myController {
+    // EFFECTS: Constructor
+    
+    UIImage* pigImage = [UIImage imageNamed:imagePath];
+    
+    self = [super initWithController:myController
+                    UIImage:pigImage
+                    Origin:CGPointZero
+                    Width:pigImage.size.width
+                    Height:pigImage.size.height
+                    EnableUserInteraction:YES];
+    
+    if (self)
+        return self;
+    else
+        return nil;
+}
+
+
+
+- (id) initDefaultWithController:(GameObject *)myController {
+// EFFECTS: Constructor that initialises this object with default size.
+
+    self = [self initWithController:myController]; // Use designated constructor
+    
+    if (!self) return nil; // Error handling
+    
+    [self setWidth:defaultWidth andHeight:defaultHeight]; // Set default size.
+    
     return self;
 }
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

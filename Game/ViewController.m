@@ -135,17 +135,21 @@
 
     
     
-    GameObjectView* kcsim = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"kcsim.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"kcsim.jpg"].size.width Height:[UIImage imageNamed:@"kcsim.jpg"].size.height EnableUserInteraction:NO];
+//    GameObjectView* kcsim = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"kcsim.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"kcsim.jpg"].size.width Height:[UIImage imageNamed:@"kcsim.jpg"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:kcsim];
+//   [kcsim rotateAnAdditional:50];
+//    [kcsim rotateAnAdditional:50];
+//    [kcsim rotateAnAdditional:50];
+//    [kcsim scaleAnAdditional:0.25];
+//    for (int i= 0; i < 5; i++) {
+//   [kcsim translateAnAdditional:CGPointMake(0,10)];
+//    }
     
-    [_gamearea addSubview:kcsim];
-   [kcsim rotateAnAdditional:50];
-    [kcsim rotateAnAdditional:50];
-    [kcsim rotateAnAdditional:50];
-    [kcsim scaleAnAdditional:0.25];
-    for (int i= 0; i < 5; i++) {
-   [kcsim translateAnAdditional:CGPointMake(0,10)];
-    }
    
+    GameObjectView* peashooter= [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"Peashooter.png"]  Origin:CGPointZero Width:[UIImage imageNamed:@"Peashooter.png"].size.width Height:[UIImage imageNamed:@"Peashooter.png"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:peashooter];
     
 }
 
