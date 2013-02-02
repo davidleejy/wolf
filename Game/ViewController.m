@@ -125,7 +125,12 @@
     [_palette addSubview:wolfNormal];
     [_palette addSubview:pig];
     [_palette addSubview:straw];
-    
+
+    //BULLSHIT BELOW TODO
+//   pig.frame = CGRectMake(0, 200, pigScaledHeight,pigScaledWidth);
+// pig.transform = CGAffineTransformMakeTranslation(0, 200);
+//   [_gamearea addSubview:pig];
+//    NSLog(@"pig:  %lf %lf",pig.frame.origin.x,pig.frame.origin.y);
     
 }
 

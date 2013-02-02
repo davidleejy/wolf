@@ -10,6 +10,4 @@
 
 @interface BlockModel : GameObjectModel
 
-@property (readwrite) NSMutableArray* set;
-
 @end

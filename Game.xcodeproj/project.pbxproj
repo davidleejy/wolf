@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845516BD35B80091BB47 /* GameObjectView.m */; };
 		FBCF234F16B64CB700217BDA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF234E16B64CB700217BDA /* UIKit.framework */; };
 		FBCF235116B64CB700217BDA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235016B64CB700217BDA /* Foundation.framework */; };
 		FBCF235316B64CB700217BDA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF235216B64CB700217BDA /* CoreGraphics.framework */; };
@@ -35,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FBBB845416BD35B80091BB47 /* GameObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectView.h; sourceTree = "<group>"; };
+		FBBB845516BD35B80091BB47 /* GameObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectView.m; sourceTree = "<group>"; };
 		FBCF234A16B64CB700217BDA /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBCF234E16B64CB700217BDA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FBCF235016B64CB700217BDA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -188,6 +191,8 @@
 		FBEB2BD816BBE8BE0095B0FB /* View_in_MVC */ = {
 			isa = PBXGroup;
 			children = (
+				FBBB845416BD35B80091BB47 /* GameObjectView.h */,
+				FBBB845516BD35B80091BB47 /* GameObjectView.m */,
 			);
 			name = View_in_MVC;
 			sourceTree = "<group>";
@@ -296,6 +301,7 @@
 				FBEB2BE816BC03020095B0FB /* WolfModel.m in Sources */,
 				FBEB2BEB16BC03150095B0FB /* PigModel.m in Sources */,
 				FBEB2BEE16BC03270095B0FB /* BlockModel.m in Sources */,
+				FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
