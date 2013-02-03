@@ -33,6 +33,7 @@
 		FBCF237E16B66DFC00217BDA /* straw.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237816B66DFC00217BDA /* straw.png */; };
 		FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237916B66DFC00217BDA /* wolfs.png */; };
 		FBCF238016B66DFC00217BDA /* wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237A16B66DFC00217BDA /* wood.png */; };
+		FBE3727516BE281600940FB3 /* circle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBE3727416BE281600940FB3 /* circle.jpg */; };
 		FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */; };
 		FBEB2BE116BBFE7C0095B0FB /* Parent.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE016BBFE7C0095B0FB /* Parent.m */; };
 		FBEB2BE416BBFF5E0095B0FB /* Cat.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE316BBFF5E0095B0FB /* Cat.m */; };
@@ -80,6 +81,7 @@
 		FBCF237A16B66DFC00217BDA /* wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood.png; sourceTree = "<group>"; };
 		FBCF238116B6971800217BDA /* GameObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		FBCF238216B6971800217BDA /* GameViewControllerExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewControllerExtension.h; sourceTree = "<group>"; };
+		FBE3727416BE281600940FB3 /* circle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = circle.jpg; sourceTree = "<group>"; };
 		FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectModel.h; sourceTree = "<group>"; };
 		FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectModel.m; sourceTree = "<group>"; };
 		FBEB2BDF16BBFE7C0095B0FB /* Parent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parent.h; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBE3727416BE281600940FB3 /* circle.jpg */,
 				FBBB846916BD710F0091BB47 /* peashooter.png */,
 				FBBB846116BD63840091BB47 /* kcsim.jpg */,
 				FBCF237716B66DFC00217BDA /* stone.png */,
@@ -310,6 +313,7 @@
 				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
 				FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */,
 				FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */,
+				FBE3727516BE281600940FB3 /* circle.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

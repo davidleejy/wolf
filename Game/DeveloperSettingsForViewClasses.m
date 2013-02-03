@@ -31,10 +31,10 @@ CGFloat PIG_DEFAULT_HEIGHT = 88;
 
 // BlockView class
 
-NSString *WOOD_IMAGE_PATH = @"wood.png";
-NSString *IRON_IMAGE_PATH = @"iron.png";
-NSString *STRAW_IMAGE_PATH = @"straw.png";
-NSString *STONE_IMAGE_PATH = @"stone.png";
+NSString *BLOCK_WOOD_IMAGE_PATH = @"wood.png";
+NSString *BLOCK_IRON_IMAGE_PATH = @"iron.png";
+NSString *BLOCK_STRAW_IMAGE_PATH = @"straw.png";
+NSString *BLOCK_STONE_IMAGE_PATH = @"stone.png";
 
 CGFloat BLOCK_DEFAULT_ASPECT_WIDTH = 15;
 CGFloat BLOCK_DEFAULT_ASPECT_HEIGHT = 65;

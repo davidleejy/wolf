@@ -41,7 +41,7 @@
     
     if (!self) return nil; // Error handling
     
-    [self setWidth:PIG_DEFAULT_WIDTH andHeight:PIG_DEFAULT_HEIGHT]; // Set default size.
+    [self setFrameWidth:PIG_DEFAULT_WIDTH andFrameHeight:PIG_DEFAULT_HEIGHT]; // Set default size.
     
     return self;
 }

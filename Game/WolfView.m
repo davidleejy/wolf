@@ -9,6 +9,13 @@
 #import "WolfView.h"
 
 
+@interface WolfView ()
+
+@property (readwrite) UIImage* wolfsImage; // Many wolfs in this image
+
+@end
+
+
 @interface WolfView (helper)
 
 - (CGRect) getCroppingRectForWolfs:(NSUInteger) desiredFrame;
@@ -51,7 +58,7 @@
     if (!self) return nil; // error handling.
     
     // Set default size.
-    [self setWidth:WOLF_DEFAULT_WIDTH andHeight:WOLF_DEFAULT_HEIGHT];
+    [self setFrameWidth:WOLF_DEFAULT_WIDTH andFrameHeight:WOLF_DEFAULT_HEIGHT];
     
     return self;
 }
@@ -77,7 +84,7 @@
     if (!self) return nil; // error handling.
     
     // Set default size.
-    [self setWidth:WOLF_DEFAULT_WIDTH andHeight:WOLF_DEFAULT_HEIGHT];
+    [self setFrameWidth:WOLF_DEFAULT_WIDTH andFrameHeight:WOLF_DEFAULT_HEIGHT];
     
     return self;
 }

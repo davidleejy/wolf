@@ -159,14 +159,64 @@
 //    }
     
     PigView* aPig = [[PigView alloc] initDefaultWithController:self];
-    [aPig translateAnAdditional:CGPointMake(500, 40)];
+    //[aPig translateAnAdditional:CGPointMake(500, 40)];
     
     WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
-    [aWolf translateAnAdditional:CGPointMake(600, 40)];
+    [aWolf translateAnAdditional:CGPointMake(100, 40)];
     
     [_gamearea addSubview:aPig];
     [_gamearea addSubview:aWolf];
     [aWolf showActionFrame:14];
+    
+    BlockView* aBlock = [[BlockView alloc] initDefaultWithController:self];
+    
+    [_gamearea addSubview:aBlock];
+    [aBlock translateAnAdditional:CGPointMake(500, 40)];
+    [aBlock showMaterial:0];
+// [aBlock rotateAnAdditionalDeg:90];
+//    [aBlock rotateAnAdditionalDeg:45];
+//    [aBlock rotateAnAdditionalDeg:45];
+//    [aBlock rotateAnAdditionalDeg:45];
+    [aPig rotateAnAdditionalDeg:90+34];
+    [aPig rotateAnAdditionalDeg:0];
+//    [aPig setRotationAngle:95];
+//    [aPig scaleAnAdditional:2];
+//    [aPig scaleAnAdditional:0.5];
+//   [aPig scaleAnAdditional:0.25];
+//  [aPig scaleAnAdditional:4];
+//    [aPig scaleAnAdditional:6.57];
+//    [aPig scaleAnAdditional:1.0/6.57];
+//    CGFloat pigX1 = aPig.frame.origin.x;
+//     CGFloat pigY1 = aPig.frame.origin.y;
+//    CGPoint pignxtorig = CGPointMake(pigX1, pigY1);
+    [aPig setFrameOrigin:CGPointMake(600, 40)];
+//    [aPig setOrigin:pignxtorig];
+    
+    GameObjectView* circ1 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:circ1];
+    [circ1 setFrameOrigin:CGPointMake(200, 40)];
+
+    
+    GameObjectView* circ2 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:circ2];
+    [circ2 setFrameOrigin:CGPointMake(600, 40)];
+    [circ2 rotateAnAdditionalDeg:183];
+    
+    GameObjectView* circ3 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:circ3];
+    [circ3 rotateAnAdditionalDeg:114];
+    [circ3 setFrameOrigin:CGPointMake(900, 40)];
+    
+    GameObjectView* circ4 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+    
+    [_gamearea addSubview:circ4];
+    [circ4 setFrameOrigin:CGPointMake(900+250, 40)];
+    [circ4 rotateAnAdditionalDeg:114];
+    [circ4 scaleAnAdditional:0.5];
+    
 }
 
 

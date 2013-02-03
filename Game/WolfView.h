@@ -14,7 +14,7 @@
 
 //***** Properties ******
 
-@property UIImage* wolfsImage; // Many wolfs in this image
+@property (readonly) UIImage* wolfsImage; // Many wolfs in this image
 
 
 
