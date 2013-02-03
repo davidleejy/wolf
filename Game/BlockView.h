@@ -28,7 +28,7 @@
 
 //***** Constructors *****
 
-- (id) initDefaultWithController:(GameObject *)myController;
+- (id) initDefaultWithController:(UIViewController*)myController;
 // EFFECTS: Constructor that initialises this object with default size. Default block is straw.
 
 

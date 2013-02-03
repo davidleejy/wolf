@@ -14,6 +14,86 @@
 
 @implementation ViewController
 
+@synthesize temp = _temp;
+
+//todo
+- (void)translate:(UIPanGestureRecognizer *)recognizer {
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+    }
+    
+    CGPoint translation = [recognizer translationInView:recognizer.view];
+    
+    //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+    
+    recognizer.view.transform = CGAffineTransformTranslate(_temp, translation.x, translation.y);
+    
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view]; //reset recognizer
+    }
+}
+//todo
+- (void) rotate:(UIRotationGestureRecognizer *)recognizer {
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+    }
+    
+//    CGFloat iniRotationRads = [(GameObjectView*)recognizer.view rotationInRads];
+    CGFloat rotationRads = [recognizer rotation];
+    
+//    NSLog(@"ini rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
+//    NSLog(@"rotation detected of %lf degs",rotationRads * 180.0 /M_PI);
+    
+    //recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, iniRotationRads+rotationRads);
+    
+    //recognizer.view.transform = CGAffineTransformConcat(recognizer.view.transform, CGAffineTransformMakeRotation(iniRotationRads+rotationRads));
+    
+    recognizer.view.transform = CGAffineTransformRotate(_temp, rotationRads);
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+      //[(GameObjectView*)recognizer.view rotateAnAdditionalRads:rotationRads];
+       // NSLog(@"fin rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
+        [recognizer setRotation:0]; //reset recognizer
+    }
+}
+
+- (void) zoom:(UIPinchGestureRecognizer *)recognizer {
+    NSLog(@"zoom detected");
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+    }
+    
+    CGFloat scalingFactor = [recognizer scale];
+    
+    recognizer.view.transform = CGAffineTransformScale(_temp, scalingFactor, scalingFactor);
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        [recognizer setScale:1.0];
+    }
+    
+//    CGFloat iniScaleFactor = [(GameObjectView*)recognizer.view scalingFactor];
+//    
+//    CGFloat additionalScalingFactor = [recognizer scale];
+//    
+//    NSLog(@"ini scalingfactor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
+//    NSLog(@"additional scaling factor of %lf",additionalScalingFactor);
+//    
+//    recognizer.view.transform = CGAffineTransformMakeScale(iniScaleFactor*additionalScalingFactor, iniScaleFactor*additionalScalingFactor);
+//    
+//    if (recognizer.state == UIGestureRecognizerStateEnded) {
+//        [(GameObjectView*)recognizer.view scaleAnAdditional:additionalScalingFactor];
+//        NSLog(@"fin scaling Factor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
+//    }
+}
+
+- (void) destroy:(UITapGestureRecognizer *)recognizer {
+    NSLog(@"destroy detected");
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -151,6 +231,15 @@
     [_gamearea addSubview:aBlock];
     [aBlock translateAnAdditional:CGPointMake(500, 40)];
     [aBlock showMaterial:0];
+    [aBlock rotateAnAdditionalDeg:45];
+//
+//    NSLog(@"inibounds ablock %lf %lf",[aBlock boundsWidth],[aBlock boundsHeight]);
+//    
+//    CGFloat scalefactortest = 2;
+//    
+//    aBlock.transform = CGAffineTransformScale(aBlock.transform, scalefactortest, scalefactortest);
+//    
+//    NSLog(@"finbounds ablock %lf %lf",[aBlock boundsWidth],[aBlock boundsHeight]);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Pig Testing
 
@@ -168,8 +257,10 @@
     [aPig2 rotateAnAdditionalDeg:0];
     [aPig2 setFrameCenter:CGPointMake(550, 40)];
     
-    [aPig3 setRotationAngleDeg:-220.32463456];
+    
     [aPig3 setFrameCenter:CGPointMake(600, 40)];
+    
+    
     
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Circle Testing
     

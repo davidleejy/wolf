@@ -8,27 +8,17 @@
 
 #import "GameObjectView.h"
 
-@interface GameObjectView ()
-
-@property (readwrite) CGFloat rotationInRads;
-@property (readwrite) CGFloat scalingFactor;
-
-@end
-
-
 
 @implementation GameObjectView
 
 // ******* Properties *******
 
 @synthesize myController = _myController;
-@synthesize rotationInRads = _rotationInRads;
-@synthesize scalingFactor = _scalingFactor;
 
 
 // ******* Constructor *******
 
-- (id) initWithController:(GameObject*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {
+- (id) initWithController:(UIViewController*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {
     // EFFECTS: Designated constructor. Origin, width and height refer to frame property in UIView.
 
     // Init super class. Super class is UIImageView
@@ -40,8 +30,6 @@
     
     // Initialising this class' properties
     _myController = yourController;
-    _rotationInRads = 0;
-    _scalingFactor = 1;
     
     // Switching on/off user interaction
     if (userInteractionIsDesired)
@@ -76,21 +64,24 @@
     // MODIFIES: frame property in UIImageView superclass.
     // EFFECTS: rotates this object w.r.t. superview by an additional degrees.
     
-    CGFloat radians = degrees * M_PI / 180.0;
+    CGFloat rads = degrees * M_PI / 180.0;
     
-    [self rotateAnAdditionalRads:radians];
+    [self rotateAnAdditionalRads:rads];
 }
 
 - (void) rotateAnAdditionalRads:(CGFloat)radians {
 // MODIFIES: frame property in UIImageView superclass.
 // EFFECTS: rotates this object w.r.t. superview by an additional radians.
+
     
-    // Remember to record this
-    _rotationInRads += radians;
+    //self.contentMode = UIViewContentModeCenter;
     
-    self.contentMode = UIViewContentModeCenter;
+    self.transform = CGAffineTransformRotate(self.transform, radians);
     
-    self.transform = CGAffineTransformMakeRotation(_rotationInRads);
+    //self.contentMode = UIViewContentModeScaleToFill;
+    
+    // previous attempts
+    //self.transform = CGAffineTransformMakeRotation(_rotationInRads);
     
     //self.transform = CGAffineTransformRotate(self.transform, rads);
     
@@ -102,25 +93,29 @@
     // EFFECTS: scales this object's width and height by scaling factor.
     //          scaling is w.r.t. superview.
     
-    self.contentMode = UIViewContentModeScaleToFill;
+    self.transform = CGAffineTransformScale(self.transform, scalingFactor, scalingFactor);
     
-    CGFloat newBoundsWidth = self.bounds.size.width * scalingFactor;
-    CGFloat newBoundsHeight = self.bounds.size.height * scalingFactor;
-    
-    NSLog(@"origFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
-    NSLog(@"orig: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
-    NSLog(@"news: %lf %lf",newBoundsWidth, newBoundsHeight); //todo
-    
-    // Remember to record this
-    _scalingFactor *= scalingFactor;
-    
-    self.bounds = CGRectMake(self.bounds.origin.x,
-                             self.bounds.origin.y,
-                             newBoundsWidth,
-                             newBoundsHeight);
-    
-    NSLog(@"adj: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
-    NSLog(@"adjFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
+//    //Attempt 3
+//    
+//    self.contentMode = UIViewContentModeScaleToFill;
+//    
+//    CGFloat newBoundsWidth = self.bounds.size.width * scalingFactor;
+//    CGFloat newBoundsHeight = self.bounds.size.height * scalingFactor;
+//    
+//    NSLog(@"origFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
+//    NSLog(@"orig: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
+//    NSLog(@"news: %lf %lf",newBoundsWidth, newBoundsHeight); //todo
+//    
+//    // Remember to record this
+//    _scalingFactor *= scalingFactor;
+//    
+//    self.bounds = CGRectMake(self.bounds.origin.x,
+//                             self.bounds.origin.y,
+//                             newBoundsWidth,
+//                             newBoundsHeight);
+//    
+//    NSLog(@"adj: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
+//    NSLog(@"adjFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
     
 // **** attempt 2
 //    CGFloat newWidth = self.frame.size.width * scalingFactor;
@@ -178,35 +173,6 @@
 // EFFECTS: sets bound's width and height of this object w.r.t. superview.
     
     self.bounds = CGRectMake([self boundsX], [self boundsY], myWidth, myHeight);
-}
-
-- (void) setRotationAngleDeg:(CGFloat)degrees {
-    // MODIFIES: frame property in UIImageView superclass.
-    // EFFECTS: sets angle of rotation of this object w.r.t. superview.
-    
-    
-    // Reset rotation to 0 radians.
-    [self rotateAnAdditionalRads: -_rotationInRads ]; //note the negative sign
-    
-    CGFloat radians = degrees * M_PI / 180.0;
-    
-    [self rotateAnAdditionalRads:radians];
-    
-    
-    //self.transform = CGAffineTransformIdentity;
-    //[self rotateAnAdditionalDeg:degrees];
-}
-
-
-- (void) setRotationAngleRads:(CGFloat)radians {
-// MODIFIES: frame property in UIImageView superclass.
-// EFFECTS: sets angle of rotation of this object w.r.t. superview.
-    
-    // Reset rotation to 0 radians.
-    [self rotateAnAdditionalRads: -_rotationInRads ]; //note the negative sign
-    
-    [self rotateAnAdditionalRads:radians];
-    
 }
 
 - (void) enableCustomUserInteraction {

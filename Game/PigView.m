@@ -14,7 +14,7 @@
 
 // ***** Constructors ******
 
-- (id) initWithController:(GameObject*) myController {
+- (id) initWithController:(UIViewController*) myController {
     // EFFECTS: Designated Constructor
     
     UIImage* pigImage = [UIImage imageNamed:PIG_IMAGE_PATH];
@@ -34,7 +34,7 @@
 
 
 
-- (id) initDefaultWithController:(GameObject *)myController {
+- (id) initDefaultWithController:(UIViewController*)myController {
 // EFFECTS: Constructor that initialises this object with default size.
 
     self = [self initWithController:myController]; // Use designated constructor

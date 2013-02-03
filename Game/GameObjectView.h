@@ -15,14 +15,12 @@
 
 // ******* Properties *******
 
-@property (readwrite) GameObject* myController;
-@property (readonly) CGFloat rotationInRads;
-@property (readonly) CGFloat scalingFactor;
+@property (readwrite) UIViewController* myController;
 
 
 // ******* Constructor *******
 
-- (id) initWithController:(GameObject*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired;
+- (id) initWithController:(UIViewController*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired;
 // EFFECTS: Designated constructor. Origin, width and height refer to frame property in UIView.
 
 
@@ -60,14 +58,6 @@
 - (void) setBoundsWidth:(CGFloat)myWidth andBoundsHeight:(CGFloat)myHeight;
 // MODIFIES: bounds property in UIImageView superclass.
 // EFFECTS: sets bound's width and height of this object w.r.t. superview.
-
-- (void) setRotationAngleDeg:(CGFloat)degrees;
-// MODIFIES: frame property in UIImageView superclass.
-// EFFECTS: sets angle of rotation of this object w.r.t. superview.
-
-- (void) setRotationAngleRads:(CGFloat)radians;
-// MODIFIES: frame property in UIImageView superclass.
-// EFFECTS: sets angle of rotation of this object w.r.t. superview.
 
 - (void) enableCustomUserInteraction;
 // EFFECTS: Switch on custom user interaction.

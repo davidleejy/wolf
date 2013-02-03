@@ -20,10 +20,10 @@
 
 //***** Constructors ******
 
-- (id) initDefaultWithController:(GameObject *)myController;
+- (id) initDefaultWithController:(UIViewController*)myController;
 // EFFECTS: Constructor that initialises this object with default size. Picks frame 1 out of 15.
 
-- (id) initWithController:(GameObject*)myController AndActionFrame:(NSUInteger)desiredFrame;
+- (id) initWithController:(UIViewController*)myController AndActionFrame:(NSUInteger)desiredFrame;
 // EFFECTS: Constructor that initialises this object with default size. You pick frame.
 
 - (void) showActionFrame:(NSUInteger)desiredFrame;

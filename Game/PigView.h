@@ -14,11 +14,11 @@
 
 // ***** Constructors ******
 
-- (id) initWithController:(GameObject*) myController;
+- (id) initWithController:(UIViewController*) myController;
     // EFFECTS: Designated Constructor
 
 
-- (id) initDefaultWithController:(GameObject *)myController;
+- (id) initDefaultWithController:(UIViewController*)myController;
     // EFFECTS: Constructor that initialises this object with default size.
 
 @end

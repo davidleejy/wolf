@@ -19,5 +19,6 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *gamearea;
 @property (weak, nonatomic) IBOutlet UIScrollView *palette;
+@property (readwrite) CGAffineTransform temp;
 
 @end

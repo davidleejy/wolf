@@ -49,7 +49,7 @@
 
 //***** Constructors *****
 
-- (id) initDefaultWithController:(GameObject *)myController {
+- (id) initDefaultWithController:(UIViewController*)myController {
     // EFFECTS: Constructor that initialises this object with default size. Default block is straw.
     
     // Initialise properties
@@ -128,7 +128,9 @@
 // MODIFIES: frame property in UIImageView superclass.
 // EFFECTS: constructs a new UIImage object that conforms to the default size and aspect of blocks.
     
+    self.contentMode = UIViewContentModeScaleToFill;
     [self setFrameWidth:BLOCK_DEFAULT_WIDTH andFrameHeight:BLOCK_DEFAULT_HEIGHT];
+    [self setBoundsWidth:BLOCK_DEFAULT_WIDTH andBoundsHeight:BLOCK_DEFAULT_HEIGHT];
 }
 
 

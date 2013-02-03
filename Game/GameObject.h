@@ -5,18 +5,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GameObjectView.h"
+#import "GameObjectModel.h"
 
 // Constants for the three game objects to be implemented
-typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
+//typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 @interface GameObject : UIViewController {
   // You might need to add state here.
 
 }
 
+@property (readonly) GameObjectModel *model;
 
 
-@property (nonatomic, readonly) GameObjectType objectType;
+//@property (nonatomic, readonly) GameObjectType objectType;
 
 
 - (void)translate:(UIGestureRecognizer *)gesture;
