@@ -12,6 +12,7 @@
 @interface WolfView ()
 
 @property (readwrite) UIImage* wolfsImage; // Many wolfs in this image
+@property (readwrite) NSUInteger actionFrame; // What this wolf's action is.
 
 @end
 
@@ -33,6 +34,7 @@
 
 // ***** Synthesis ******
 @synthesize wolfsImage = _wolfsImage;
+@synthesize actionFrame = _actionFrame;
 
 
 // ***** Constructors ******
@@ -57,6 +59,9 @@
     
     if (!self) return nil; // error handling.
     
+    // Remember action frame.
+    _actionFrame = 1;
+    
     // Set default size.
     [self setFrameWidth:WOLF_DEFAULT_WIDTH andFrameHeight:WOLF_DEFAULT_HEIGHT];
     
@@ -65,6 +70,7 @@
 
 
 - (id) initWithController:(GameObject*)myController AndActionFrame:(NSUInteger)desiredFrame {
+    // REQUIRES: Valid action frame.
     // EFFECTS: Constructor that initialises this object with default size. You pick frame.
     
     _wolfsImage = [UIImage imageNamed:WOLFS_IMAGE_PATH]; // MUST LINK THIS PROPERTY TO AN IMAGE WITH A BUNCH OF WOLFS!!!
@@ -82,6 +88,9 @@
     
     
     if (!self) return nil; // error handling.
+    
+    // Remember action frame.
+    _actionFrame = desiredFrame;
     
     // Set default size.
     [self setFrameWidth:WOLF_DEFAULT_WIDTH andFrameHeight:WOLF_DEFAULT_HEIGHT];
@@ -136,7 +145,7 @@
 
 
 - (UIImage*) wolfInFrame:(NSUInteger) desiredFrame {
-    // REQUIRES: Valid frame.
+    // REQUIRES: Valid action frame.
     //           _wolfsImage be loaded with a bunch of wolfs.
     // EFFECTS: Returns a wolf belonging to the desired frame.
     

@@ -129,14 +129,14 @@
     
 ////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO TESTINGS
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Peashooter Testing    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Peashooter Testing
    
     GameObjectView* peashooter= [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"Peashooter.png"]  Origin:CGPointZero Width:[UIImage imageNamed:@"Peashooter.png"].size.width Height:[UIImage imageNamed:@"Peashooter.png"].size.height EnableUserInteraction:NO];
     
     [_gamearea addSubview:peashooter];
     
     
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Wolf Testing    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Wolf Testing
     
     WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
     [aWolf translateAnAdditional:CGPointMake(100, 40)];
@@ -144,7 +144,7 @@
     [_gamearea addSubview:aWolf];
     [aWolf showActionFrame:14];
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Block Testing    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Block Testing
     
     BlockView* aBlock = [[BlockView alloc] initDefaultWithController:self];
     

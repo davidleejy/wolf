@@ -33,6 +33,10 @@
 		FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237916B66DFC00217BDA /* wolfs.png */; };
 		FBCF238016B66DFC00217BDA /* wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCF237A16B66DFC00217BDA /* wood.png */; };
 		FBE3727516BE281600940FB3 /* circle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBE3727416BE281600940FB3 /* circle.jpg */; };
+		FBE3727816BE575200940FB3 /* GameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3727716BE575200940FB3 /* GameObject.m */; };
+		FBE3727B16BE577D00940FB3 /* GamePig.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3727A16BE577D00940FB3 /* GamePig.m */; };
+		FBE3727E16BE578A00940FB3 /* GameWolf.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3727D16BE578A00940FB3 /* GameWolf.m */; };
+		FBE3728116BE579B00940FB3 /* GameBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3728016BE579B00940FB3 /* GameBlock.m */; };
 		FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */; };
 		FBEB2BE116BBFE7C0095B0FB /* Parent.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE016BBFE7C0095B0FB /* Parent.m */; };
 		FBEB2BE416BBFF5E0095B0FB /* Cat.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE316BBFF5E0095B0FB /* Cat.m */; };
@@ -80,6 +84,13 @@
 		FBCF238116B6971800217BDA /* GameObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		FBCF238216B6971800217BDA /* GameViewControllerExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewControllerExtension.h; sourceTree = "<group>"; };
 		FBE3727416BE281600940FB3 /* circle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = circle.jpg; sourceTree = "<group>"; };
+		FBE3727716BE575200940FB3 /* GameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObject.m; sourceTree = "<group>"; };
+		FBE3727916BE577D00940FB3 /* GamePig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePig.h; sourceTree = "<group>"; };
+		FBE3727A16BE577D00940FB3 /* GamePig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePig.m; sourceTree = "<group>"; };
+		FBE3727C16BE578A00940FB3 /* GameWolf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWolf.h; sourceTree = "<group>"; };
+		FBE3727D16BE578A00940FB3 /* GameWolf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameWolf.m; sourceTree = "<group>"; };
+		FBE3727F16BE579A00940FB3 /* GameBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameBlock.h; sourceTree = "<group>"; };
+		FBE3728016BE579B00940FB3 /* GameBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameBlock.m; sourceTree = "<group>"; };
 		FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectModel.h; sourceTree = "<group>"; };
 		FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectModel.m; sourceTree = "<group>"; };
 		FBEB2BDF16BBFE7C0095B0FB /* Parent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parent.h; sourceTree = "<group>"; };
@@ -229,6 +240,13 @@
 				FBCF236916B64CB700217BDA /* ViewController.h */,
 				FBCF236A16B64CB700217BDA /* ViewController.m */,
 				FBCF238116B6971800217BDA /* GameObject.h */,
+				FBE3727716BE575200940FB3 /* GameObject.m */,
+				FBE3727916BE577D00940FB3 /* GamePig.h */,
+				FBE3727A16BE577D00940FB3 /* GamePig.m */,
+				FBE3727C16BE578A00940FB3 /* GameWolf.h */,
+				FBE3727D16BE578A00940FB3 /* GameWolf.m */,
+				FBE3727F16BE579A00940FB3 /* GameBlock.h */,
+				FBE3728016BE579B00940FB3 /* GameBlock.m */,
 			);
 			name = Controller_in_MVC;
 			sourceTree = "<group>";
@@ -334,6 +352,10 @@
 				FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */,
 				FBBB846016BD62D40091BB47 /* BlockView.m in Sources */,
 				FBBB846D16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m in Sources */,
+				FBE3727816BE575200940FB3 /* GameObject.m in Sources */,
+				FBE3727B16BE577D00940FB3 /* GamePig.m in Sources */,
+				FBE3727E16BE578A00940FB3 /* GameWolf.m in Sources */,
+				FBE3728116BE579B00940FB3 /* GameBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

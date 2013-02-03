@@ -17,14 +17,6 @@
 int main(int argc, char *argv[])
 {
     
-    //TODO
-//    NSLog(@"START 123412341234\n\n\n");
-//    
-//    Cat* cat1 = [[Cat alloc]init];
-//    [cat1 fervour:5];
-//    [cat1 print];
-//    [cat1 shout];
-    
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }

@@ -15,7 +15,7 @@
 //***** Properties ******
 
 @property (readonly) UIImage* wolfsImage; // Many wolfs in this image
-
+@property (readonly) NSUInteger actionFrame; // What this wolf's action is.
 
 
 //***** Constructors ******

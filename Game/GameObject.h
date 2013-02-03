@@ -27,7 +27,7 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 - (void)rotate:(UIGestureRecognizer *)gesture;
   // MODIFIES: object model (rotation)
-  // REQUIRES: game in designer mode, object in game area
+  // REQUIRES: game in designer mode,  object in game area
   // EFFECTS: the object is rotated with a two-finger rotation gesture
 
 - (void)zoom:(UIGestureRecognizer *)gesture;
