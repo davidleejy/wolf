@@ -127,95 +127,79 @@
     [_palette addSubview:straw];
     
     
-    //BULLSHIT BELOW TODO
-//   pig.frame = CGRectMake(0, 200, pigScaledHeight,pigScaledWidth);
-// pig.transform = CGAffineTransformMakeTranslation(0, 200);
-//  [_gamearea addSubview:pig];
-//    NSLog(@"pig:  %lf %lf",pig.frame.origin.x,pig.frame.origin.y);
+////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO TESTINGS
 
-    
-    
-//    GameObjectView* kcsim = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"kcsim.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"kcsim.jpg"].size.width Height:[UIImage imageNamed:@"kcsim.jpg"].size.height EnableUserInteraction:NO];
-//    
-//    [_gamearea addSubview:kcsim];
-//   [kcsim rotateAnAdditional:50];
-//    [kcsim rotateAnAdditional:50];
-//    [kcsim rotateAnAdditional:50];
-//    [kcsim scaleAnAdditional:0.25];
-//    for (int i= 0; i < 5; i++) {
-//   [kcsim translateAnAdditional:CGPointMake(0,10)];
-//    }
-    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Peashooter Testing    
    
     GameObjectView* peashooter= [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"Peashooter.png"]  Origin:CGPointZero Width:[UIImage imageNamed:@"Peashooter.png"].size.width Height:[UIImage imageNamed:@"Peashooter.png"].size.height EnableUserInteraction:NO];
     
     [_gamearea addSubview:peashooter];
     
-//    for (int i = 1; i<16; i++) {
-//    
-//    CGFloat frameX = i % 5;
-//    CGFloat frameY = ((int)((i-1)/5 ));
-//    NSLog(@"debug: frame: %d framex %lf framey %lf",i,frameX,frameY);
-//    }
     
-    PigView* aPig = [[PigView alloc] initDefaultWithController:self];
-    //[aPig translateAnAdditional:CGPointMake(500, 40)];
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Wolf Testing    
     
     WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
     [aWolf translateAnAdditional:CGPointMake(100, 40)];
     
-    [_gamearea addSubview:aPig];
     [_gamearea addSubview:aWolf];
     [aWolf showActionFrame:14];
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Block Testing    
     
     BlockView* aBlock = [[BlockView alloc] initDefaultWithController:self];
     
     [_gamearea addSubview:aBlock];
     [aBlock translateAnAdditional:CGPointMake(500, 40)];
     [aBlock showMaterial:0];
-// [aBlock rotateAnAdditionalDeg:90];
-//    [aBlock rotateAnAdditionalDeg:45];
-//    [aBlock rotateAnAdditionalDeg:45];
-//    [aBlock rotateAnAdditionalDeg:45];
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Pig Testing
+
+    PigView* aPig = [[PigView alloc] initDefaultWithController:self];
+    [_gamearea addSubview:aPig];
+    PigView* aPig2 = [[PigView alloc] initDefaultWithController:self];
+    [_gamearea addSubview:aPig2];
+    PigView* aPig3 = [[PigView alloc] initDefaultWithController:self];
+    [_gamearea addSubview:aPig3];
+    
     [aPig rotateAnAdditionalDeg:90+34];
     [aPig rotateAnAdditionalDeg:0];
-//    [aPig setRotationAngle:95];
-//    [aPig scaleAnAdditional:2];
-//    [aPig scaleAnAdditional:0.5];
-//   [aPig scaleAnAdditional:0.25];
-//  [aPig scaleAnAdditional:4];
-//    [aPig scaleAnAdditional:6.57];
-//    [aPig scaleAnAdditional:1.0/6.57];
-//    CGFloat pigX1 = aPig.frame.origin.x;
-//     CGFloat pigY1 = aPig.frame.origin.y;
-//    CGPoint pignxtorig = CGPointMake(pigX1, pigY1);
-    [aPig setFrameOrigin:CGPointMake(600, 40)];
-//    [aPig setOrigin:pignxtorig];
+    [aPig setFrameCenter:CGPointMake(500, 40)];
     
-    GameObjectView* circ1 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+    [aPig2 rotateAnAdditionalDeg:0];
+    [aPig2 setFrameCenter:CGPointMake(550, 40)];
     
-    [_gamearea addSubview:circ1];
-    [circ1 setFrameOrigin:CGPointMake(200, 40)];
-
+    [aPig3 setRotationAngleDeg:-220.32463456];
+    [aPig3 setFrameCenter:CGPointMake(600, 40)];
     
-    GameObjectView* circ2 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Circle Testing
     
-    [_gamearea addSubview:circ2];
-    [circ2 setFrameOrigin:CGPointMake(600, 40)];
-    [circ2 rotateAnAdditionalDeg:183];
-    
-    GameObjectView* circ3 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
-    
-    [_gamearea addSubview:circ3];
-    [circ3 rotateAnAdditionalDeg:114];
-    [circ3 setFrameOrigin:CGPointMake(900, 40)];
-    
-    GameObjectView* circ4 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
-    
-    [_gamearea addSubview:circ4];
-    [circ4 setFrameOrigin:CGPointMake(900+250, 40)];
-    [circ4 rotateAnAdditionalDeg:114];
-    [circ4 scaleAnAdditional:0.5];
+//    GameObjectView* circ1 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:circ1];
+//    [circ1 setFrameOrigin:CGPointMake(200, 40)];
+//
+//    
+//    GameObjectView* circ2 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:circ2];
+//    [circ2 setFrameOrigin:CGPointMake(600, 40)];
+//    [circ2 rotateAnAdditionalDeg:183];
+//    
+//    GameObjectView* circ3 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:circ3];
+//    [circ3 rotateAnAdditionalDeg:114];
+//    [circ3 setFrameOrigin:CGPointMake(900, 40)];
+//    [circ3 setFrameCenter:CGPointMake(900, 100)];
+//    
+//    GameObjectView* circ4 = [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"circle.jpg"]  Origin:CGPointZero Width:[UIImage imageNamed:@"circle.jpg"].size.width Height:[UIImage imageNamed:@"circle.jpg"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:circ4];
+//    [circ4 setFrameOrigin:CGPointMake(900+250, 40)];
+//    [circ4 rotateAnAdditionalDeg:114];
+//    [circ4 scaleAnAdditional:0.5];
+//    [circ4 setFrameCenter:CGPointMake(900, 100)];
+//    [circ4 setAlpha:0.7];
     
 }
 

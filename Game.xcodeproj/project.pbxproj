@@ -11,7 +11,6 @@
 		FBBB845A16BD62340091BB47 /* PigView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845916BD62340091BB47 /* PigView.m */; };
 		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
 		FBBB846016BD62D40091BB47 /* BlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845F16BD62D40091BB47 /* BlockView.m */; };
-		FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846116BD63840091BB47 /* kcsim.jpg */; };
 		FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */ = {isa = PBXBuildFile; fileRef = FBBB846916BD710F0091BB47 /* peashooter.png */; };
 		FBBB846D16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */; };
 		FBCF234F16B64CB700217BDA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCF234E16B64CB700217BDA /* UIKit.framework */; };
@@ -51,7 +50,6 @@
 		FBBB845C16BD62C90091BB47 /* WolfView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WolfView.m; sourceTree = "<group>"; };
 		FBBB845E16BD62D40091BB47 /* BlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockView.h; sourceTree = "<group>"; };
 		FBBB845F16BD62D40091BB47 /* BlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockView.m; sourceTree = "<group>"; };
-		FBBB846116BD63840091BB47 /* kcsim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = kcsim.jpg; sourceTree = "<group>"; };
 		FBBB846916BD710F0091BB47 /* peashooter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = peashooter.png; sourceTree = "<group>"; };
 		FBBB846B16BD7EF90091BB47 /* DeveloperSettingsForViewClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperSettingsForViewClasses.h; sourceTree = "<group>"; };
 		FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperSettingsForViewClasses.m; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 			children = (
 				FBE3727416BE281600940FB3 /* circle.jpg */,
 				FBBB846916BD710F0091BB47 /* peashooter.png */,
-				FBBB846116BD63840091BB47 /* kcsim.jpg */,
 				FBCF237716B66DFC00217BDA /* stone.png */,
 				FBCF237816B66DFC00217BDA /* straw.png */,
 				FBCF237916B66DFC00217BDA /* wolfs.png */,
@@ -311,7 +308,6 @@
 				FBCF237E16B66DFC00217BDA /* straw.png in Resources */,
 				FBCF237F16B66DFC00217BDA /* wolfs.png in Resources */,
 				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
-				FBBB846216BD63840091BB47 /* kcsim.jpg in Resources */,
 				FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */,
 				FBE3727516BE281600940FB3 /* circle.jpg in Resources */,
 			);

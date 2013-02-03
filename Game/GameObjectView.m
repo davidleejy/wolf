@@ -26,7 +26,7 @@
 @synthesize scalingFactor = _scalingFactor;
 
 
-// ******* Constructors *******
+// ******* Constructor *******
 
 - (id) initWithController:(GameObject*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {
     // EFFECTS: Designated constructor. Origin, width and height refer to frame property in UIView.
