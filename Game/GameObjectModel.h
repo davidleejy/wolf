@@ -14,47 +14,31 @@
 // To note where an object is.
 typedef enum {inPalette, inGameArea, unknown} Location;
 
-@interface GameObjectModel : NSObject
+@interface GameObjectModel : NSObject <NSCoding>
 // OVERVIEW: This class implements a game object model
-//           There are subclasses under this class to represent the various game objects.
+//           There are no subclasses under this class to represent the various game objects.
 
-//todo maybe no need
-@property (readwrite) UIScrollView* palette;
-@property (readwrite) UIScrollView* gamearea;
 
 @property (readwrite) WolfView* wolfV;
 @property (readwrite) Location wolfLocation;
 @property (readwrite) PigView* pigV;
 @property (readwrite) Location pigLocation;
 @property (readwrite) NSMutableArray* blocksVArray;
-@property (readwrite) NSMutableArray* blocksLocationArray;
 
 
+- (id) init;
+// EFFECTS: Constructor.
+
+- (void) makeCleanAllData;
+// MODIFIES: Location and NSMutableArray* properties of this class.
+// EFFECTS: Clears all properties of this class.
+
+- (void) makeCleanBlocksData;
+// MODIFIES: Location and NSMutableArray* properties related to blocks in this class.
+// EFFECTS: Clears block-related properties.
+
+-(void) encodeWithCoder: (NSCoder*)coder;
+-(id)initWithCoder:(NSCoder*)coder;
 
 
 @end
-
-
-
-// must ensure protocol: <NSCoding>
-
-//@property (readwrite) NSString* name;
-//
-//@property (readwrite) CGPoint origin;
-//
-//@property (readwrite) CGFloat width;
-//
-//@property (readwrite) CGFloat height;
-//
-//@property (readwrite) CGFloat rotation; // Units: degrees.
-//
-//
-//// NSCoding methods
-//
-//- (void) encodeWithCoder:(NSCoder *)coder;
-//// EFFECTS: Tells the archiver how to encode this object.
-//
-//- (id) initWithCoder:(NSCoder *)decoder;
-//// EFFECTS: Tells unarchiver how to decode the object.
-//
-//@end

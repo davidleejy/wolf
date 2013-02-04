@@ -9,6 +9,7 @@
 #import "UIView+ExploreViewHierarchy.h"
 #import "BlockView.h"
 #import "GameBlock.h"
+#import "GameObjectModel.h"
 
 @interface GameBlock ()
     @property (readwrite) BOOL thisBlockBeganInPalette; // Is a temp variable to decrease the time taken to execute handler of transforms.
@@ -25,11 +26,8 @@
 //Ctor
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV {
     if (self = [super initWith:kGameObjectBlock UnderControlOf:self AndPalette:paletteSV AndGameArea:gameAreaSV]) {
-        self.origin = CGPointMake(110, 0);
         self.paletteLocation = CGPointMake(110,0);
         self.angle = 0;
-        self.width = 55;
-        self.height = 55;
         
         [self createBlockIconInPalette];
         _gameAreaContainment = [[NSMutableArray alloc]init];
@@ -44,9 +42,11 @@
     
     // Remember where this block started from. Game area or palette?
     if (panRecognizer.state == UIGestureRecognizerStateBegan) {
-        if ([panRecognizer.view isDescendantOfView:self.palette]) {
+        if ([panRecognizer.view isDescendantOfView: self.palette]) {
             _thisBlockBeganInPalette = YES;
         }
+        else
+            _thisBlockBeganInPalette = NO;
     }
     
     
@@ -76,6 +76,8 @@
             // nothing to do.
         }
     }
+    
+    //NSLog(@"gameareacontainment after reset %@", _gameAreaContainment);
 
 }
 
@@ -117,12 +119,51 @@
 }
 
 
-//override reset
-//- (void)reset{
-//    
-//    
-//    
-//}
+
+- (void)reset{
+    // Clear up the game area
+    BlockView* eachElement;
+    for (eachElement in _gameAreaContainment) {
+        [eachElement removeFromSuperview];
+    }
+    [_gameAreaContainment removeAllObjects];
+}
+
+
+- (void) saveTo:(GameObjectModel*)database {
+    
+    [database makeCleanBlocksData];
+    
+    database.blocksVArray = [[NSMutableArray alloc] initWithArray:_gameAreaContainment];
+    
+}
+
+
+- (void) loadFrom:(GameObjectModel*)database {
+    
+    [self reset]; // Remove all blocks from gameAreaContainment property.
+    
+    // Traverse database storage and refill gameAreaContainment property with
+    //  the necessary pieces of info from database storage.
+    for (int i = 0; i < database.blocksVArray.count; i++) {
+        
+        BlockView* savedView = [database.blocksVArray objectAtIndex:i];
+        BlockView* newView = [[BlockView alloc] initDefaultWithController:self];
+        
+        // configure the newView to have the same settings like savedView
+        newView.transform = savedView.transform;
+        newView.frame = savedView.frame;
+        newView.bounds = savedView.bounds;
+        [newView showMaterial:savedView.currentMaterial];
+        
+        // add to game area
+        [self.gameArea addSubview:newView];
+        
+        // add to game area containment array
+        [_gameAreaContainment addObject:newView];
+    }
+
+}
 
 
 

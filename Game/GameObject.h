@@ -20,17 +20,6 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 @interface GameObject : UIViewController {
   // You might need to add state here.
-    
-//    @protected
-//    UIScrollView* _palette;
-//    UIScrollView* _gameArea;
-    
-//    @protected
-//    CGFloat _angle;
-//    CGPoint _origin;
-//    CGPoint _paletteLocation;
-//    CGFloat _width;
-//    CGFloat _height;
 
 }
 
@@ -39,20 +28,16 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 @property (nonatomic, readonly) GameObjectType objectType;
 @property (readwrite) CGFloat angle;
-@property (readwrite) CGPoint origin;
 @property (readwrite) CGPoint paletteLocation;
-@property (readwrite) CGFloat width;
-@property (readwrite) CGFloat height;
 
 @property (readonly) UIScrollView *palette;
 @property (readonly) UIScrollView *gameArea;
-@property (nonatomic, readonly) BOOL isFromPaletteToGameArea;
+
 @property (readwrite) GameObject* childMostController;
 
 
 - (id) initWith:(GameObjectType)objType
         UnderControlOf:(GameObject*)childMostController
-        //LinkToDatabase:(GameObjectModel*) database
         AndPalette:(UIScrollView*)paletteSV
         AndGameArea:(UIScrollView*)gameAreaSV;
 

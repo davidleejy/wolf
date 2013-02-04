@@ -8,7 +8,7 @@
 
 #import "GameObject.h"
 @class BlockView;
-
+@class GameObjectModel; // the database
 
 @interface GameBlock : GameObject
 
@@ -19,6 +19,10 @@
 // Holds a SINGLE blockView object that belongs to the palette.
 @property (readwrite) BlockView* blockViewInPalette;
 
+// Just to clarify, this class's view property is UNUSED.
+// This class's view property is UNUSED NOW AND WILL BE UNUSED FOREVER.
+// NEVER EVER "play around" with this class's view property.
+// Playing around with this class's view property can result runtime crashes.
 
 
 //Ctor
@@ -33,7 +37,9 @@
 
 - (void)createBlockIconInPalette;
 
-//override reset
-//- (void)reset;
+- (void)reset;
+- (void) saveTo:(GameObjectModel*)database;
+- (void) loadFrom:(GameObjectModel*)database;
+
 
 @end

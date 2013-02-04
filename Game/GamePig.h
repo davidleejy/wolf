@@ -7,6 +7,8 @@
 //
 
 #import "GameObject.h"
+@class GameObjectModel; // the database
+
 
 @interface GamePig : GameObject
 
@@ -15,5 +17,9 @@
 //Override transforms. Pig different from other game objects
 - (void)translate:(UIPanGestureRecognizer *)panRecognizer;
 - (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer;
+
+- (void) reset;
+- (void) saveTo:(GameObjectModel*)database;
+- (void) loadFrom:(GameObjectModel*)database;
 
 @end

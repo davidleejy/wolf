@@ -7,17 +7,15 @@
 //
 
 #import "GameWolf.h"
-
+#import "GameObjectModel.h"
+#import "WolfView.h"
 
 @implementation GameWolf
 
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV {
     if (self = [super initWith:kGameObjectWolf UnderControlOf:self AndPalette:paletteSV AndGameArea:gameAreaSV]) {
-        self.origin = CGPointMake(0, 0);
         self.paletteLocation = CGPointMake(0,0);
         self.angle = 0;
-        self.width = 55;
-        self.height = 55;
         return self;
     }
     return nil;
@@ -49,6 +47,47 @@
         
     }
     
+}
+
+
+- (void) reset {
+    if ([self.view isDescendantOfView:self.gameArea]) {
+        self.view.transform = CGAffineTransformIdentity;
+        self.view.frame = CGRectMake(0, 0, 55, 55);
+        [self.palette addSubview:self.view];
+    }
+}
+
+
+- (void) saveTo:(GameObjectModel*)database {
+    database.WolfV = (WolfView*)self.view;
+    
+    if ([self.view isDescendantOfView:self.palette]) {
+        database.wolfLocation = inPalette;
+    }
+    else if ([self.view isDescendantOfView:self.gameArea]) {
+        database.wolfLocation = inGameArea;
+    }
+    else {
+        database.wolfLocation = unknown;
+        [NSException raise:@"GameWolf class's saveTo: method" format:@"Wolf location cannot be unknown."];
+    }
+    
+}
+
+- (void) loadFrom:(GameObjectModel*)database {
+    if (database.wolfLocation == inPalette) {
+        self.view.transform = CGAffineTransformIdentity;
+        self.view.frame = CGRectMake(0, 0, 55, 55);
+        [self.palette addSubview:self.view];
+    }
+    else if (database.wolfLocation == inGameArea){
+        self.view.transform = database.wolfV.transform;
+        self.view.frame = database.wolfV.frame;
+        self.view.bounds = database.wolfV.bounds;
+        [self.gameArea addSubview:self.view];
+    }
+
 }
 
 

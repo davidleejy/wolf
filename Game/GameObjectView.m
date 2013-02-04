@@ -48,10 +48,6 @@
     // MODIFIES: frame property in UIImageView superclass.
     // EFFECTS: translates this object w.r.t. superview by an additional coordinates.
     
-    //self.transform = CGAffineTransformTranslate(self.transform, arbXYOffset.x, arbXYOffset.y);
-    
-    //self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeTranslation(arbXYOffset.x, arbXYOffset.y));
-    
     self.frame = CGRectMake((self.frame.origin.x + arbXYOffset.x),
                             (self.frame.origin.y + arbXYOffset.y),
                             self.frame.size.width,
@@ -72,19 +68,7 @@
 // MODIFIES: frame property in UIImageView superclass.
 // EFFECTS: rotates this object w.r.t. superview by an additional radians.
 
-    
-    //self.contentMode = UIViewContentModeCenter;
-    
     self.transform = CGAffineTransformRotate(self.transform, radians);
-    
-    //self.contentMode = UIViewContentModeScaleToFill;
-    
-    // previous attempts
-    //self.transform = CGAffineTransformMakeRotation(_rotationInRads);
-    
-    //self.transform = CGAffineTransformRotate(self.transform, rads);
-    
-    //self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeRotation(rads));
 }
 
 - (void) scaleAnAdditional:(CGFloat)scalingFactor {
@@ -94,53 +78,13 @@
     
     self.transform = CGAffineTransformScale(self.transform, scalingFactor, scalingFactor);
     
-//    //Attempt 3
-//    
-//    self.contentMode = UIViewContentModeScaleToFill;
-//    
-//    CGFloat newBoundsWidth = self.bounds.size.width * scalingFactor;
-//    CGFloat newBoundsHeight = self.bounds.size.height * scalingFactor;
-//    
-//    NSLog(@"origFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
-//    NSLog(@"orig: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
-//    NSLog(@"news: %lf %lf",newBoundsWidth, newBoundsHeight); //todo
-//    
-//    // Remember to record this
-//    _scalingFactor *= scalingFactor;
-//    
-//    self.bounds = CGRectMake(self.bounds.origin.x,
-//                             self.bounds.origin.y,
-//                             newBoundsWidth,
-//                             newBoundsHeight);
-//    
-//    NSLog(@"adj: %lf %lf",self.bounds.size.width, self.bounds.size.height); //todo
-//    NSLog(@"adjFrame: %lf %lf",self.frame.size.width, self.frame.size.height); //todo
-    
-// **** attempt 2
-//    CGFloat newWidth = self.frame.size.width * scalingFactor;
-//    CGFloat newHeight = self.frame.size.height * scalingFactor;
-//    
-//    // Remember to record this
-//    _scalingFactor *= scalingFactor;
-//    
-//    self.frame = CGRectMake(self.frame.origin.x,
-//                            self.frame.origin.y,
-//                            newWidth,
-//                            newHeight);
-    
-    // **attempt 1**
-    //self.transform = CGAffineTransformScale(self.transform, scalingFactor, scalingFactor);
-    
-    //self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeScale(scalingFactor, scalingFactor));
+
 }
 
 
 - (void) setFrameOrigin:(CGPoint)coords {
     // MODIFIES: frame property in UIImageView superclass.
     // EFFECTS: sets origin of this object w.r.t. superview.
-    
-    //self.transform = CGAffineTransformConcat(self.transform, CGAffineTransformMakeTranslation(-(self.frame.origin.x), -(self.frame.origin.y)));
-    //self.transform = CGAffineTransformTranslate(self.transform, coordinates.x, coordinates.y);
     
     self.frame = CGRectMake(coords.x,
                             coords.y,

@@ -7,6 +7,7 @@
 //
 
 #import "GameObject.h"
+@class GameObjectModel; // the database
 
 @interface GameWolf : GameObject
 
@@ -16,5 +17,8 @@
 - (void)translate:(UIPanGestureRecognizer *)panRecognizer;
 - (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer;
 
+- (void) reset;
+- (void) saveTo:(GameObjectModel*)database;
+- (void) loadFrom:(GameObjectModel*)database;
 
 @end

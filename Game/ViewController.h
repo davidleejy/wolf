@@ -20,6 +20,9 @@
 @class GamePig;
 @class GameBlock;
 
+// Model classes
+@class GameObjectModel;
+
 @interface ViewController : UIViewController
 
 
@@ -41,6 +44,10 @@
 @property (nonatomic,readonly) GameWolf* wolfController;
 @property (nonatomic,readonly) GamePig* pigController;
 @property (nonatomic,readonly) GameBlock* blockController;
+
+
+// ****** Model being managed ******
+@property (readonly) GameObjectModel* database;
 
 // Don't Care
 @property (readwrite) CGAffineTransform temp;

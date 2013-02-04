@@ -21,16 +21,45 @@
 #import "GamePig.h"
 #import "GameBlock.h"
 
+// Model classes
+#import "GameObjectModel.h"
+
 // Debugging
 #import "UIView+ExploreViewHierarchy.h"
 
+
 #import "ViewController.h"
+
+@interface ViewController (Extension)
+
+- (void)save;
+// REQUIRES: game in designer mode
+// EFFECTS: game objects are saved
+
+- (void)load;
+// MODIFIES: self (game objects)
+// REQUIRES: game in designer mode
+// EFFECTS: game objects are loaded
+
+- (void)reset;
+// MODIFIES: self (game objects)
+// REQUIRES: game in designer mode
+// EFFECTS: current game objects are deleted and palette contains all objects
+
+
+@end
+
+
 
 @interface ViewController ()
     // ****** Controllers being managed ******
     @property (nonatomic,readwrite) GameWolf* wolfController;
     @property (nonatomic,readwrite) GamePig* pigController;
     @property (nonatomic,readwrite) GameBlock* blockController;
+
+    // ****** Model being managed ******
+    @property (readwrite) GameObjectModel* database;
+
 @end
 
 
@@ -42,84 +71,8 @@
 @synthesize wolfController = _wolfController;
 @synthesize pigController = _pigController;
 @synthesize blockController = _blockController;
+@synthesize database = _database;
 
-////todo
-//- (void)translate:(UIPanGestureRecognizer *)recognizer {
-//    
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-//    }
-//    
-//    CGPoint translation = [recognizer translationInView:recognizer.view];
-//    
-//    //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
-//    
-//    recognizer.view.transform = CGAffineTransformTranslate(_temp, translation.x, translation.y);
-//    
-//    
-//    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view]; //reset recognizer
-//    }
-//}
-////todo
-//- (void) rotate:(UIRotationGestureRecognizer *)recognizer {
-//    
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-//    }
-//    
-////    CGFloat iniRotationRads = [(GameObjectView*)recognizer.view rotationInRads];
-//    CGFloat rotationRads = [recognizer rotation];
-//    
-////    NSLog(@"ini rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
-////    NSLog(@"rotation detected of %lf degs",rotationRads * 180.0 /M_PI);
-//    
-//    //recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, iniRotationRads+rotationRads);
-//    
-//    //recognizer.view.transform = CGAffineTransformConcat(recognizer.view.transform, CGAffineTransformMakeRotation(iniRotationRads+rotationRads));
-//    
-//    recognizer.view.transform = CGAffineTransformRotate(_temp, rotationRads);
-//    
-//    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//      //[(GameObjectView*)recognizer.view rotateAnAdditionalRads:rotationRads];
-//       // NSLog(@"fin rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
-//        [recognizer setRotation:0]; //reset recognizer
-//    }
-//}
-//
-//- (void) zoom:(UIPinchGestureRecognizer *)recognizer {
-//    NSLog(@"zoom detected");
-//    
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-//    }
-//    
-//    CGFloat scalingFactor = [recognizer scale];
-//    
-//    recognizer.view.transform = CGAffineTransformScale(_temp, scalingFactor, scalingFactor);
-//    
-//    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        [recognizer setScale:1.0];
-//    }
-//    
-////    CGFloat iniScaleFactor = [(GameObjectView*)recognizer.view scalingFactor];
-////    
-////    CGFloat additionalScalingFactor = [recognizer scale];
-////    
-////    NSLog(@"ini scalingfactor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
-////    NSLog(@"additional scaling factor of %lf",additionalScalingFactor);
-////    
-////    recognizer.view.transform = CGAffineTransformMakeScale(iniScaleFactor*additionalScalingFactor, iniScaleFactor*additionalScalingFactor);
-////    
-////    if (recognizer.state == UIGestureRecognizerStateEnded) {
-////        [(GameObjectView*)recognizer.view scaleAnAdditional:additionalScalingFactor];
-////        NSLog(@"fin scaling Factor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
-////    }
-//}
-//
-//- (void) destroy:(UITapGestureRecognizer *)recognizer {
-//    NSLog(@"destroy detected");
-//}
 
 - (void)viewDidLoad
 {
@@ -173,7 +126,15 @@
     [_palette addSubview:_pigController.view];
 
     _blockController = [[GameBlock alloc] initWithPalette:_palette AndGameArea:_gamearea];
-    //[_palette addSubview:_blockController.view];
+    // blockView objects are properties in _blockController.
+    // Never ever:
+    //      [_palette addSubview:_blockController.view];
+    // because _blockController.view is NEVER EVER USED.
+    
+    
+    
+    //Initialize model being managed.
+    _database = [[GameObjectModel alloc]init];
     
     
     
@@ -269,13 +230,87 @@
 }
 
 - (IBAction)saveButton:(id)sender {
+    [self save];
 }
 
 - (IBAction)loadButton:(id)sender {
+    [self load];
 }
 
 - (IBAction)resetButton:(id)sender {
-    //[self reset];
+    [self reset];
+}
+
+
+
+- (void)save {
+// REQUIRES: game in designer mode
+// EFFECTS: game objects are saved
+    
+    [_database makeCleanAllData];
+    [_wolfController saveTo:_database];
+    [_pigController saveTo:_database];
+    [_blockController saveTo:_database];
+    
+//    NSLog(@"database blocks %@", _database.blocksVArray);
+//    NSLog(@"%@ %d", _database.wolfV, _database.wolfLocation);
+//    NSLog(@"%@ %d", _database.pigV, _database.pigLocation);
+    
+    // Create path name
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
+    NSMutableString* DocumentsDirectory = [[NSMutableString alloc] initWithString:(NSMutableString*)[paths objectAtIndex:0]];
+    
+    // Create a nsdata
+    NSMutableData* data = [[NSMutableData alloc]init];
+    //Initialize archiver
+    NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    
+    [archiver encodeObject:_database forKey:@"database"];
+    
+    [archiver finishEncoding];
+    
+    BOOL success=[data writeToFile: DocumentsDirectory atomically:YES];
+    if (success)
+        NSLog(@"Saving is successful.");
+    else
+        NSLog(@"Saving is FAILED.");
+
+}
+
+- (void)load {
+// MODIFIES: self (game objects)
+// REQUIRES: game in designer mode
+// EFFECTS: game objects are loaded
+    
+    [self reset];
+    
+    //create path name
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
+    NSMutableString* DocumentsDirectory = [[NSMutableString alloc] initWithString:(NSMutableString*)[paths objectAtIndex:0]];
+    
+    NSMutableData *data = [[NSMutableData alloc] initWithContentsOfFile:DocumentsDirectory];
+    NSKeyedUnarchiver * unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+    
+    _database = [unarchiver decodeObjectForKey:@"database"];
+    
+//    NSLog(@"database blocks %@", _database.blocksVArray);
+//    NSLog(@"%@ %d", _database.wolfV, _database.wolfLocation);
+//    NSLog(@"%@ %d", _database.pigV, _database.pigLocation);
+    
+    [_wolfController loadFrom:_database];
+    [_pigController loadFrom:_database];
+    [_blockController loadFrom:_database];
+    
+}
+
+- (void)reset {
+// MODIFIES: self (game objects)
+// REQUIRES: game in designer mode
+// EFFECTS: current game objects are deleted and palette contains all objects
+    
+    [_blockController reset];
+    [_pigController reset];
+    [_wolfController reset];
 }
 
 

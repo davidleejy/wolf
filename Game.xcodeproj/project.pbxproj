@@ -79,7 +79,6 @@
 		FBCF237916B66DFC00217BDA /* wolfs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wolfs.png; sourceTree = "<group>"; };
 		FBCF237A16B66DFC00217BDA /* wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood.png; sourceTree = "<group>"; };
 		FBCF238116B6971800217BDA /* GameObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		FBCF238216B6971800217BDA /* GameViewControllerExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewControllerExtension.h; sourceTree = "<group>"; };
 		FBE3727416BE281600940FB3 /* circle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = circle.jpg; sourceTree = "<group>"; };
 		FBE3727716BE575200940FB3 /* GameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObject.m; sourceTree = "<group>"; };
 		FBE3727916BE577D00940FB3 /* GamePig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePig.h; sourceTree = "<group>"; };
@@ -142,7 +141,6 @@
 			children = (
 				FBEB2BD116BBE81C0095B0FB /* res */,
 				FBEB2BD516BBE8A30095B0FB /* src */,
-				FBCF238216B6971800217BDA /* GameViewControllerExtension.h */,
 				FBE38AA116BF834C008E18A0 /* UIView+ExploreViewHierarchy.h */,
 				FBE38AA216BF834C008E18A0 /* UIView+ExploreViewHierarchy.m */,
 				FBCF235D16B64CB700217BDA /* AppDelegate.h */,
@@ -184,26 +182,26 @@
 			name = res;
 			sourceTree = "<group>";
 		};
-		FBEB2BD416BBE8890095B0FB /* Model_in_MVC */ = {
+		FBEB2BD416BBE8890095B0FB /* Models_in_MVC */ = {
 			isa = PBXGroup;
 			children = (
 				FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */,
 				FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */,
 			);
-			name = Model_in_MVC;
+			name = Models_in_MVC;
 			sourceTree = "<group>";
 		};
 		FBEB2BD516BBE8A30095B0FB /* src */ = {
 			isa = PBXGroup;
 			children = (
-				FBEB2BDA16BBE8CC0095B0FB /* Controller_in_MVC */,
-				FBEB2BD816BBE8BE0095B0FB /* View_in_MVC */,
-				FBEB2BD416BBE8890095B0FB /* Model_in_MVC */,
+				FBEB2BDA16BBE8CC0095B0FB /* Controllers_in_MVC */,
+				FBEB2BD816BBE8BE0095B0FB /* Views_in_MVC */,
+				FBEB2BD416BBE8890095B0FB /* Models_in_MVC */,
 			);
 			name = src;
 			sourceTree = "<group>";
 		};
-		FBEB2BD816BBE8BE0095B0FB /* View_in_MVC */ = {
+		FBEB2BD816BBE8BE0095B0FB /* Views_in_MVC */ = {
 			isa = PBXGroup;
 			children = (
 				FBBB845416BD35B80091BB47 /* GameObjectView.h */,
@@ -217,10 +215,10 @@
 				FBBB846B16BD7EF90091BB47 /* DeveloperSettingsForViewClasses.h */,
 				FBBB846C16BD7EFA0091BB47 /* DeveloperSettingsForViewClasses.m */,
 			);
-			name = View_in_MVC;
+			name = Views_in_MVC;
 			sourceTree = "<group>";
 		};
-		FBEB2BDA16BBE8CC0095B0FB /* Controller_in_MVC */ = {
+		FBEB2BDA16BBE8CC0095B0FB /* Controllers_in_MVC */ = {
 			isa = PBXGroup;
 			children = (
 				FBCF236916B64CB700217BDA /* ViewController.h */,
@@ -236,7 +234,7 @@
 				FBE3728216BE7B0100940FB3 /* DeveloperSettingsForControllerClasses.h */,
 				FBE3728316BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m */,
 			);
-			name = Controller_in_MVC;
+			name = Controllers_in_MVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
