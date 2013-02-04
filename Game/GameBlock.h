@@ -13,6 +13,14 @@
 @interface GameBlock : GameObject
 
 
+// Holds blockView objects that belong to game area
+@property (readwrite) NSMutableArray* gameAreaContainment;
+
+// Holds a SINGLE blockView object that belongs to the palette.
+@property (readwrite) BlockView* blockViewInPalette;
+
+
+
 //Ctor
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
 
@@ -22,6 +30,8 @@
 
 
 - (void)changeMaterial:(UITapGestureRecognizer *)singleTapRecognizer;
+
+- (void)createBlockIconInPalette;
 
 //override reset
 //- (void)reset;

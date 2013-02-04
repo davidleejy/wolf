@@ -12,4 +12,8 @@
 
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
 
+//Override transforms. Pig different from other game objects
+- (void)translate:(UIPanGestureRecognizer *)panRecognizer;
+- (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer;
+
 @end

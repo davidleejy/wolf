@@ -10,9 +10,16 @@
 #import "BlockView.h"
 #import "GameBlock.h"
 
+@interface GameBlock ()
+    @property (readwrite) BOOL thisBlockBeganInPalette; // Is a temp variable to decrease the time taken to execute handler of transforms.
+@end
 
 
 @implementation GameBlock
+
+@synthesize gameAreaContainment = _gameAreaContainment;
+@synthesize blockViewInPalette = _blockViewInPalette;
+@synthesize thisBlockBeganInPalette = _thisBlockBeganInPalette;
 
 
 //Ctor
@@ -23,30 +30,71 @@
         self.angle = 0;
         self.width = 55;
         self.height = 55;
+        
+        [self createBlockIconInPalette];
+        _gameAreaContainment = [[NSMutableArray alloc]init];
         return self;
     }
     return nil;
 }
 
-//Override Transforms
 
 
 - (void)translate:(UIPanGestureRecognizer *)panRecognizer{
     
-    [super translate:panRecognizer];
-    
-    if ([panRecognizer.view isDescendantOfView:self.gameArea]) {
-        ;//create a new view in the palette.
-        //insert a new view in the model.
+    // Remember where this block started from. Game area or palette?
+    if (panRecognizer.state == UIGestureRecognizerStateBegan) {
+        if ([panRecognizer.view isDescendantOfView:self.palette]) {
+            _thisBlockBeganInPalette = YES;
+        }
     }
+    
+    
+    
+     //        NOTE !
+    [super translate:panRecognizer];
+     //        NOTE !
+    
+    
+    
+    if (panRecognizer.state == UIGestureRecognizerStateEnded) {
+        
+        if (_thisBlockBeganInPalette && [panRecognizer.view isDescendantOfView:self.gameArea]) {
+            
+            //adjust this block to specified height and width
+            panRecognizer.view.frame = CGRectMake(panRecognizer.view.frame.origin.x,
+                                                  panRecognizer.view.frame.origin.y,
+                                                  30,130);
+            
+            //insert this view in the NSMutableArray property, blockViewsInGameAreaContainment.
+            [_gameAreaContainment addObject:_blockViewInPalette];
+            
+            //create a new view in the palette.
+            [self createBlockIconInPalette];
+        }
+        else if (!_thisBlockBeganInPalette) {
+            // nothing to do.
+        }
+    }
+
 }
 
 
 - (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer {
     
-    if ([doubleTapRecognizer.view isDescendantOfView:self.gameArea]) {
-        ;// Remove view from gameArea.
-        // Remove view in model.
+    if (doubleTapRecognizer.state == UIGestureRecognizerStateEnded) {
+            
+        if ([doubleTapRecognizer.view isDescendantOfView:self.gameArea]) {
+            
+            // Target this blockView object. This blockView object is inside the gameAreaContainment array.
+            NSUInteger idx = [_gameAreaContainment indexOfObjectIdenticalTo:doubleTapRecognizer.view];
+            
+            // Remove it from gameArea.
+            [(BlockView*)[_gameAreaContainment objectAtIndex:idx] removeFromSuperview];
+            
+            // Remove this view object from game area containment array.
+            [ _gameAreaContainment removeObjectAtIndex:idx];
+        }
     }
 }
 
@@ -54,11 +102,19 @@
 
 - (void)changeMaterial:(UITapGestureRecognizer *)singleTapRecognizer{
     
-    // Only allow material changing in gamearea.
-    if ( [singleTapRecognizer.view isDescendantOfView:self.gameArea])
-        [(BlockView*)singleTapRecognizer.view nextMaterial];
+    if (singleTapRecognizer.state == UIGestureRecognizerStateEnded) {
+        // Only allow material changing in gamearea.
+        if ( [singleTapRecognizer.view isDescendantOfView:self.gameArea])
+            [(BlockView*)singleTapRecognizer.view nextMaterial];
+    }
 }
 
+
+- (void)createBlockIconInPalette {
+    _blockViewInPalette = [[BlockView alloc] initDefaultWithController:self];
+    _blockViewInPalette.frame = CGRectMake(110, 0, 55, 55);
+    [self.palette addSubview:_blockViewInPalette];
+}
 
 
 //override reset

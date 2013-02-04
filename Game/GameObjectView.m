@@ -15,7 +15,6 @@
 
 @synthesize myController = _myController;
 
-
 // ******* Constructor *******
 
 - (id) initWithController:(UIViewController*)yourController UIImage:(UIImage*)img Origin:(CGPoint)origin Width:(CGFloat)width Height:(CGFloat)height EnableUserInteraction:(BOOL)userInteractionIsDesired {

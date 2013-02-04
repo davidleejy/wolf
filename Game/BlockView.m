@@ -134,7 +134,7 @@
 // EFFECTS: constructs a new UIImage object that conforms to the default size and aspect of blocks.
     
     self.contentMode = UIViewContentModeScaleToFill;
-    [self setFrameWidth:BLOCK_DEFAULT_WIDTH andFrameHeight:BLOCK_DEFAULT_HEIGHT];
+    //[self setFrameWidth:BLOCK_DEFAULT_WIDTH andFrameHeight:BLOCK_DEFAULT_HEIGHT];
     [self setBoundsWidth:BLOCK_DEFAULT_WIDTH andBoundsHeight:BLOCK_DEFAULT_HEIGHT];
 }
 

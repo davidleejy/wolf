@@ -11,19 +11,23 @@
 @class PigView;
 @class BlockView;
 
+// To note where an object is.
+typedef enum {inPalette, inGameArea, unknown} Location;
 
 @interface GameObjectModel : NSObject
 // OVERVIEW: This class implements a game object model
 //           There are subclasses under this class to represent the various game objects.
 
-
+//todo maybe no need
 @property (readwrite) UIScrollView* palette;
 @property (readwrite) UIScrollView* gamearea;
 
-@property (readwrite) WolfView* wolfData;
-@property (readwrite) PigView* pigData;
-@property (readwrite) NSMutableArray* blocksData;
-
+@property (readwrite) WolfView* wolfV;
+@property (readwrite) Location wolfLocation;
+@property (readwrite) PigView* pigV;
+@property (readwrite) Location pigLocation;
+@property (readwrite) NSMutableArray* blocksVArray;
+@property (readwrite) NSMutableArray* blocksLocationArray;
 
 
 

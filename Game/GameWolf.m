@@ -24,6 +24,34 @@
 }
 
 
+
+- (void)translate:(UIPanGestureRecognizer *)panRecognizer {
+    [super translate:panRecognizer];
+    
+    if (panRecognizer.state == UIGestureRecognizerStateEnded) {
+        if ([panRecognizer.view isDescendantOfView: self.gameArea]) {
+            panRecognizer.view.frame = CGRectMake(panRecognizer.view.frame.origin.x,
+                                                  panRecognizer.view.frame.origin.y,
+                                                  225,150);
+        }
+    }
+}
+
+- (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer {
+    
+    if (doubleTapRecognizer.state == UIGestureRecognizerStateEnded) {
+        
+        if ([doubleTapRecognizer.view isDescendantOfView:self.gameArea]) {
+            doubleTapRecognizer.view.transform = CGAffineTransformIdentity;
+            doubleTapRecognizer.view.frame = CGRectMake(0, 0, 55, 55);
+            [self.palette addSubview:doubleTapRecognizer.view];
+        }
+        
+    }
+    
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

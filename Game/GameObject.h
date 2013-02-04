@@ -34,7 +34,7 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 }
 
-@property (readonly) GameObjectModel *model;
+@property (readonly) GameObjectModel *database;
 
 
 @property (nonatomic, readonly) GameObjectType objectType;
@@ -51,22 +51,23 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 
 - (id) initWith:(GameObjectType)objType
- UnderControlOf:(GameObject*)childMostController
-     AndPalette:(UIScrollView*)paletteSV
-    AndGameArea:(UIScrollView*)gameAreaSV;
+        UnderControlOf:(GameObject*)childMostController
+        //LinkToDatabase:(GameObjectModel*) database
+        AndPalette:(UIScrollView*)paletteSV
+        AndGameArea:(UIScrollView*)gameAreaSV;
 
-- (void)translate:(UIGestureRecognizer *)gesture;
+- (void)translate:(UIPanGestureRecognizer *)panRecognizer;
   // MODIFIES: object model (coordinates)
   // REQUIRES: game in designer mode
   // EFFECTS: the user drags around the object with one finger
   //          if the object is in the palette, it will be moved in the game area
 
-- (void)rotate:(UIGestureRecognizer *)gesture;
+- (void)rotate:(UIRotationGestureRecognizer *)rotationRecognizer;
   // MODIFIES: object model (rotation)
   // REQUIRES: game in designer mode,  object in game area
   // EFFECTS: the object is rotated with a two-finger rotation gesture
 
-- (void)zoom:(UIGestureRecognizer *)gesture;
+- (void)zoom:(UIPinchGestureRecognizer *)pinchRecognizer;
   // MODIFIES: object model (size)
   // REQUIRES: game in designer mode, object in game area
   // EFFECTS: the object is scaled up/down with a pinch gesture

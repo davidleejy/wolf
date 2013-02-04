@@ -135,6 +135,7 @@
     UIImageView *ground = [[ UIImageView alloc] initWithImage:groundImage];
     
     //Assign ImageView tags
+    // Check if I can remove them already.
     background.tag = 3;
     ground.tag = 4;
     
@@ -167,14 +168,12 @@
     //Initialize controllers being managed.
     _wolfController = [[GameWolf alloc] initWithPalette:_palette AndGameArea:_gamearea];
     [_palette addSubview:_wolfController.view];
-    
-    NSLog(@"##### %@",_gamearea);
 
     _pigController = [[GamePig alloc] initWithPalette:_palette AndGameArea:_gamearea];
     [_palette addSubview:_pigController.view];
 
     _blockController = [[GameBlock alloc] initWithPalette:_palette AndGameArea:_gamearea];
-    [_palette addSubview:_blockController.view];
+    //[_palette addSubview:_blockController.view];
     
     
     
