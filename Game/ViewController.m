@@ -6,93 +6,120 @@
 //  Copyright (c) 2013 nus.cs3217. All rights reserved.
 //
 
+
+#import "math.h"
+
+// View classes
+#import "GameObjectView.h"
+#import "PigView.h"
+#import "WolfView.h"
+#import "BlockView.h"
+
+// Controller classes
+#import "GameObject.h"
+#import "GameWolf.h"
+#import "GamePig.h"
+#import "GameBlock.h"
+
+// Debugging
+#import "UIView+ExploreViewHierarchy.h"
+
 #import "ViewController.h"
 
 @interface ViewController ()
-
+    // ****** Controllers being managed ******
+    @property (nonatomic,readwrite) GameWolf* wolfController;
+    @property (nonatomic,readwrite) GamePig* pigController;
+    @property (nonatomic,readwrite) GameBlock* blockController;
 @end
+
+
+
 
 @implementation ViewController
 
 @synthesize temp = _temp;
+@synthesize wolfController = _wolfController;
+@synthesize pigController = _pigController;
+@synthesize blockController = _blockController;
 
-//todo
-- (void)translate:(UIPanGestureRecognizer *)recognizer {
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-    }
-    
-    CGPoint translation = [recognizer translationInView:recognizer.view];
-    
-    //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
-    
-    recognizer.view.transform = CGAffineTransformTranslate(_temp, translation.x, translation.y);
-    
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view]; //reset recognizer
-    }
-}
-//todo
-- (void) rotate:(UIRotationGestureRecognizer *)recognizer {
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-    }
-    
-//    CGFloat iniRotationRads = [(GameObjectView*)recognizer.view rotationInRads];
-    CGFloat rotationRads = [recognizer rotation];
-    
-//    NSLog(@"ini rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
-//    NSLog(@"rotation detected of %lf degs",rotationRads * 180.0 /M_PI);
-    
-    //recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, iniRotationRads+rotationRads);
-    
-    //recognizer.view.transform = CGAffineTransformConcat(recognizer.view.transform, CGAffineTransformMakeRotation(iniRotationRads+rotationRads));
-    
-    recognizer.view.transform = CGAffineTransformRotate(_temp, rotationRads);
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-      //[(GameObjectView*)recognizer.view rotateAnAdditionalRads:rotationRads];
-       // NSLog(@"fin rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
-        [recognizer setRotation:0]; //reset recognizer
-    }
-}
-
-- (void) zoom:(UIPinchGestureRecognizer *)recognizer {
-    NSLog(@"zoom detected");
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
-    }
-    
-    CGFloat scalingFactor = [recognizer scale];
-    
-    recognizer.view.transform = CGAffineTransformScale(_temp, scalingFactor, scalingFactor);
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        [recognizer setScale:1.0];
-    }
-    
-//    CGFloat iniScaleFactor = [(GameObjectView*)recognizer.view scalingFactor];
+////todo
+//- (void)translate:(UIPanGestureRecognizer *)recognizer {
 //    
-//    CGFloat additionalScalingFactor = [recognizer scale];
+//    if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+//    }
 //    
-//    NSLog(@"ini scalingfactor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
-//    NSLog(@"additional scaling factor of %lf",additionalScalingFactor);
+//    CGPoint translation = [recognizer translationInView:recognizer.view];
 //    
-//    recognizer.view.transform = CGAffineTransformMakeScale(iniScaleFactor*additionalScalingFactor, iniScaleFactor*additionalScalingFactor);
+//    //recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+//    
+//    recognizer.view.transform = CGAffineTransformTranslate(_temp, translation.x, translation.y);
+//    
 //    
 //    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        [(GameObjectView*)recognizer.view scaleAnAdditional:additionalScalingFactor];
-//        NSLog(@"fin scaling Factor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
+//        [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view]; //reset recognizer
 //    }
-}
-
-- (void) destroy:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"destroy detected");
-}
+//}
+////todo
+//- (void) rotate:(UIRotationGestureRecognizer *)recognizer {
+//    
+//    if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+//    }
+//    
+////    CGFloat iniRotationRads = [(GameObjectView*)recognizer.view rotationInRads];
+//    CGFloat rotationRads = [recognizer rotation];
+//    
+////    NSLog(@"ini rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
+////    NSLog(@"rotation detected of %lf degs",rotationRads * 180.0 /M_PI);
+//    
+//    //recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, iniRotationRads+rotationRads);
+//    
+//    //recognizer.view.transform = CGAffineTransformConcat(recognizer.view.transform, CGAffineTransformMakeRotation(iniRotationRads+rotationRads));
+//    
+//    recognizer.view.transform = CGAffineTransformRotate(_temp, rotationRads);
+//    
+//    if (recognizer.state == UIGestureRecognizerStateEnded) {
+//      //[(GameObjectView*)recognizer.view rotateAnAdditionalRads:rotationRads];
+//       // NSLog(@"fin rotation in degs: %lf",[(GameObjectView*)recognizer.view rotationInRads]* 180.0 /M_PI);
+//        [recognizer setRotation:0]; //reset recognizer
+//    }
+//}
+//
+//- (void) zoom:(UIPinchGestureRecognizer *)recognizer {
+//    NSLog(@"zoom detected");
+//    
+//    if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        _temp = CGAffineTransformMake(recognizer.view.transform.a, recognizer.view.transform.b, recognizer.view.transform.c, recognizer.view.transform.d, recognizer.view.transform.tx, recognizer.view.transform.ty);
+//    }
+//    
+//    CGFloat scalingFactor = [recognizer scale];
+//    
+//    recognizer.view.transform = CGAffineTransformScale(_temp, scalingFactor, scalingFactor);
+//    
+//    if (recognizer.state == UIGestureRecognizerStateEnded) {
+//        [recognizer setScale:1.0];
+//    }
+//    
+////    CGFloat iniScaleFactor = [(GameObjectView*)recognizer.view scalingFactor];
+////    
+////    CGFloat additionalScalingFactor = [recognizer scale];
+////    
+////    NSLog(@"ini scalingfactor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
+////    NSLog(@"additional scaling factor of %lf",additionalScalingFactor);
+////    
+////    recognizer.view.transform = CGAffineTransformMakeScale(iniScaleFactor*additionalScalingFactor, iniScaleFactor*additionalScalingFactor);
+////    
+////    if (recognizer.state == UIGestureRecognizerStateEnded) {
+////        [(GameObjectView*)recognizer.view scaleAnAdditional:additionalScalingFactor];
+////        NSLog(@"fin scaling Factor: %lf",[(GameObjectView*)recognizer.view scalingFactor]);
+////    }
+//}
+//
+//- (void) destroy:(UITapGestureRecognizer *)recognizer {
+//    NSLog(@"destroy detected");
+//}
 
 - (void)viewDidLoad
 {
@@ -106,6 +133,10 @@
     //Place each UIImage object into UIImageView object
     UIImageView *background = [[UIImageView alloc] initWithImage:bgImage];
     UIImageView *ground = [[ UIImageView alloc] initWithImage:groundImage];
+    
+    //Assign ImageView tags
+    background.tag = 3;
+    ground.tag = 4;
     
     //Get the width and height of the 2 images
     CGFloat backgroundWidth = bgImage.size.width;
@@ -133,105 +164,45 @@
     [_gamearea setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
     
     
-    // *** ps03 Problem 1 ***
+    //Initialize controllers being managed.
+    _wolfController = [[GameWolf alloc] initWithPalette:_palette AndGameArea:_gamearea];
+    [_palette addSubview:_wolfController.view];
     
-    //Load image resources into UIImage objects
-    UIImage *pigImage = [UIImage imageNamed:@"pig.png"];
-    UIImage *wolfsImage = [UIImage imageNamed:@"wolfs.png"];
-    UIImage *strawImage = [UIImage imageNamed:@"straw.png"];
+    NSLog(@"##### %@",_gamearea);
+
+    _pigController = [[GamePig alloc] initWithPalette:_palette AndGameArea:_gamearea];
+    [_palette addSubview:_pigController.view];
+
+    _blockController = [[GameBlock alloc] initWithPalette:_palette AndGameArea:_gamearea];
+    [_palette addSubview:_blockController.view];
     
-    //Crop a wolf from wolfs.png
-    CGFloat wolfsHeight = wolfsImage.size.height;
-    CGFloat wolfsWidth = wolfsImage.size.width;
-    CGRect croppingRect = CGRectMake(26, 0, 173, 148);
-    CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfsImage CGImage], croppingRect);
-    UIImage *wolfNormalImage = [UIImage imageWithCGImage:wolfImageRef];
-    //CGImageRelease(wolfImageRef);
-    
-    //Place each UIImage object into UIImageView object
-    UIImageView *pig = [[UIImageView alloc]initWithImage:pigImage];
-    UIImageView *straw = [[UIImageView alloc]initWithImage:strawImage];
-    UIImageView *wolfNormal = [[UIImageView alloc]initWithImage:wolfNormalImage];
-    
-    
-    //Get width and height of pig, straw, and wolfNormal
-    CGFloat pigWidth = pigImage.size.width;
-    CGFloat pigHeight = pigImage.size.height;
-    CGFloat strawWidth = strawImage.size.width;
-    CGFloat strawHeight = strawImage.size.height;
-    CGFloat wolfNormalWidth = wolfNormalImage.size.width;
-    CGFloat wolfNormalHeight = wolfNormalImage.size.height;
-    
-    //Find scaling factor to make pig, wolfNormal, and straw images fit into the palette.
-    //Scaling factor should be derived from scaling the height of the images.
-    //
-    //
-    //            scaling_factor = final_height / original_height
-    //
-    //
-    CGFloat paletteHeight = _palette.bounds.size.height;
-    CGFloat wolfNormalScalingFactor = paletteHeight / wolfNormalHeight;
-    CGFloat pigScalingFactor = paletteHeight / pigHeight;
-    CGFloat strawScalingFactor = paletteHeight / strawHeight;
-    
-    //Compute the scaled height and width of the pig, wolfNormal, and straw
-    CGFloat pigScaledHeight = pigHeight * pigScalingFactor;
-    CGFloat pigScaledWidth = pigWidth * pigScalingFactor;
-    CGFloat strawScaledHeight = strawHeight * strawScalingFactor;
-    CGFloat strawScaledWidth = strawWidth * strawScalingFactor;
-    CGFloat wolfNormalScaledHeight = wolfNormalHeight * wolfNormalScalingFactor;
-    CGFloat wolfNormalScaledWidth = wolfNormalWidth * wolfNormalScalingFactor;
-    
-    //Compute the X positions of the pig, wolfNormal, and straw
-    //
-    // Images are positioned as such (from left to right):
-    // wolfNormal, pig, straw
-    //
-    CGFloat bufferSpaceInBetweenItems = 20;
-    CGFloat wolfNormalX = 0;
-    CGFloat pigX = wolfNormalX + wolfNormalScaledWidth + bufferSpaceInBetweenItems;
-    CGFloat strawX = pigX + pigScaledWidth + bufferSpaceInBetweenItems;
-    
-    //The Y positions of the wolfNormal, pig, and straw are the same.
-    //All objects in the palette have the same Y.
-    CGFloat objectsInPaletteY = 0;
-    
-    //Configure the UIImageView objects' frames.
-    wolfNormal.frame = CGRectMake(wolfNormalX, objectsInPaletteY, wolfNormalScaledWidth, wolfNormalScaledHeight);
-    pig.frame = CGRectMake(pigX, objectsInPaletteY, pigScaledHeight,pigScaledWidth);
-    straw.frame = CGRectMake(strawX, objectsInPaletteY, strawScaledHeight, strawScaledWidth);
-    
-    //Add these views as subviews of the palette.
-    [_palette addSubview:wolfNormal];
-    [_palette addSubview:pig];
-    [_palette addSubview:straw];
     
     
 ////~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO TESTINGS
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Peashooter Testing
    
-    GameObjectView* peashooter= [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"Peashooter.png"]  Origin:CGPointZero Width:[UIImage imageNamed:@"Peashooter.png"].size.width Height:[UIImage imageNamed:@"Peashooter.png"].size.height EnableUserInteraction:NO];
-    
-    [_gamearea addSubview:peashooter];
+//    GameObjectView* peashooter= [[GameObjectView alloc] initWithController:self UIImage:[UIImage imageNamed:@"Peashooter.png"]  Origin:CGPointZero Width:[UIImage imageNamed:@"Peashooter.png"].size.width Height:[UIImage imageNamed:@"Peashooter.png"].size.height EnableUserInteraction:NO];
+//    
+//    [_gamearea addSubview:peashooter];
     
     
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Wolf Testing
     
-    WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
-    [aWolf translateAnAdditional:CGPointMake(100, 40)];
-    
-    [_gamearea addSubview:aWolf];
-    [aWolf showActionFrame:14];
+//    WolfView* aWolf = [[WolfView alloc] initWithController:self AndActionFrame:3];
+//    [aWolf translateAnAdditional:CGPointMake(100, 40)];
+//    
+//    [_gamearea addSubview:aWolf];
+//    [aWolf showActionFrame:14];
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Block Testing
     
-    BlockView* aBlock = [[BlockView alloc] initDefaultWithController:self];
-    
-    [_gamearea addSubview:aBlock];
-    [aBlock translateAnAdditional:CGPointMake(500, 40)];
-    [aBlock showMaterial:0];
-    [aBlock rotateAnAdditionalDeg:45];
+//    BlockView* aBlock = [[BlockView alloc] initDefaultWithController:self];
+//    
+//    [_gamearea addSubview:aBlock];
+//    [aBlock translateAnAdditional:CGPointMake(500, 40)];
+//    [aBlock showMaterial:0];
+//    [aBlock rotateAnAdditionalDeg:45];
 //
 //    NSLog(@"inibounds ablock %lf %lf",[aBlock boundsWidth],[aBlock boundsHeight]);
 //    
@@ -243,22 +214,22 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODO Pig Testing
 
-    PigView* aPig = [[PigView alloc] initDefaultWithController:self];
-    [_gamearea addSubview:aPig];
-    PigView* aPig2 = [[PigView alloc] initDefaultWithController:self];
-    [_gamearea addSubview:aPig2];
-    PigView* aPig3 = [[PigView alloc] initDefaultWithController:self];
-    [_gamearea addSubview:aPig3];
-    
-    [aPig rotateAnAdditionalDeg:90+34];
-    [aPig rotateAnAdditionalDeg:0];
-    [aPig setFrameCenter:CGPointMake(500, 40)];
-    
-    [aPig2 rotateAnAdditionalDeg:0];
-    [aPig2 setFrameCenter:CGPointMake(550, 40)];
-    
-    
-    [aPig3 setFrameCenter:CGPointMake(600, 40)];
+//    PigView* aPig = [[PigView alloc] initDefaultWithController:self];
+//    [_gamearea addSubview:aPig];
+//    PigView* aPig2 = [[PigView alloc] initDefaultWithController:self];
+//    [_gamearea addSubview:aPig2];
+//    PigView* aPig3 = [[PigView alloc] initDefaultWithController:self];
+//    [_gamearea addSubview:aPig3];
+//    
+//    [aPig rotateAnAdditionalDeg:90+34];
+//    [aPig rotateAnAdditionalDeg:0];
+//    [aPig setFrameCenter:CGPointMake(500, 40)];
+//    
+//    [aPig2 rotateAnAdditionalDeg:0];
+//    [aPig2 setFrameCenter:CGPointMake(550, 40)];
+//    
+//    
+//    [aPig3 setFrameCenter:CGPointMake(600, 40)];
     
     
     
@@ -293,6 +264,21 @@
 //    [circ4 setAlpha:0.7];
     
 }
+
+
+- (IBAction)startButton:(id)sender {
+}
+
+- (IBAction)saveButton:(id)sender {
+}
+
+- (IBAction)loadButton:(id)sender {
+}
+
+- (IBAction)resetButton:(id)sender {
+    //[self reset];
+}
+
 
 
 

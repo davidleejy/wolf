@@ -10,4 +10,6 @@
 
 @interface GameWolf : GameObject
 
+-(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
+
 @end

@@ -10,17 +10,11 @@
 
 #import "AppDelegate.h"
 
-//TODO
-#import "Cat.h"
-#import "Parent.h"
 
 int main(int argc, char *argv[])
 {
-    
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
-    
-    
     
 }

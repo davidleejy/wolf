@@ -38,12 +38,8 @@
 		FBE3727E16BE578A00940FB3 /* GameWolf.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3727D16BE578A00940FB3 /* GameWolf.m */; };
 		FBE3728116BE579B00940FB3 /* GameBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3728016BE579B00940FB3 /* GameBlock.m */; };
 		FBE3728416BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE3728316BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m */; };
+		FBE38AA316BF834E008E18A0 /* UIView+ExploreViewHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE38AA216BF834C008E18A0 /* UIView+ExploreViewHierarchy.m */; };
 		FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */; };
-		FBEB2BE116BBFE7C0095B0FB /* Parent.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE016BBFE7C0095B0FB /* Parent.m */; };
-		FBEB2BE416BBFF5E0095B0FB /* Cat.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE316BBFF5E0095B0FB /* Cat.m */; };
-		FBEB2BE816BC03020095B0FB /* WolfModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BE716BC03020095B0FB /* WolfModel.m */; };
-		FBEB2BEB16BC03150095B0FB /* PigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BEA16BC03150095B0FB /* PigModel.m */; };
-		FBEB2BEE16BC03270095B0FB /* BlockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BED16BC03270095B0FB /* BlockModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,18 +90,10 @@
 		FBE3728016BE579B00940FB3 /* GameBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameBlock.m; sourceTree = "<group>"; };
 		FBE3728216BE7B0100940FB3 /* DeveloperSettingsForControllerClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperSettingsForControllerClasses.h; sourceTree = "<group>"; };
 		FBE3728316BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperSettingsForControllerClasses.m; sourceTree = "<group>"; };
+		FBE38AA116BF834C008E18A0 /* UIView+ExploreViewHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ExploreViewHierarchy.h"; sourceTree = "<group>"; };
+		FBE38AA216BF834C008E18A0 /* UIView+ExploreViewHierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ExploreViewHierarchy.m"; sourceTree = "<group>"; };
 		FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectModel.h; sourceTree = "<group>"; };
 		FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectModel.m; sourceTree = "<group>"; };
-		FBEB2BDF16BBFE7C0095B0FB /* Parent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parent.h; sourceTree = "<group>"; };
-		FBEB2BE016BBFE7C0095B0FB /* Parent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parent.m; sourceTree = "<group>"; };
-		FBEB2BE216BBFF5E0095B0FB /* Cat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cat.h; sourceTree = "<group>"; };
-		FBEB2BE316BBFF5E0095B0FB /* Cat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cat.m; sourceTree = "<group>"; };
-		FBEB2BE616BC03010095B0FB /* WolfModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WolfModel.h; sourceTree = "<group>"; };
-		FBEB2BE716BC03020095B0FB /* WolfModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WolfModel.m; sourceTree = "<group>"; };
-		FBEB2BE916BC03150095B0FB /* PigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigModel.h; sourceTree = "<group>"; };
-		FBEB2BEA16BC03150095B0FB /* PigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PigModel.m; sourceTree = "<group>"; };
-		FBEB2BEC16BC03270095B0FB /* BlockModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockModel.h; sourceTree = "<group>"; };
-		FBEB2BED16BC03270095B0FB /* BlockModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +143,8 @@
 				FBEB2BD116BBE81C0095B0FB /* res */,
 				FBEB2BD516BBE8A30095B0FB /* src */,
 				FBCF238216B6971800217BDA /* GameViewControllerExtension.h */,
+				FBE38AA116BF834C008E18A0 /* UIView+ExploreViewHierarchy.h */,
+				FBE38AA216BF834C008E18A0 /* UIView+ExploreViewHierarchy.m */,
 				FBCF235D16B64CB700217BDA /* AppDelegate.h */,
 				FBCF235E16B64CB700217BDA /* AppDelegate.m */,
 				FBCF236616B64CB700217BDA /* MainStoryboard.storyboard */,
@@ -199,12 +189,6 @@
 			children = (
 				FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */,
 				FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */,
-				FBEB2BE616BC03010095B0FB /* WolfModel.h */,
-				FBEB2BE716BC03020095B0FB /* WolfModel.m */,
-				FBEB2BE916BC03150095B0FB /* PigModel.h */,
-				FBEB2BEA16BC03150095B0FB /* PigModel.m */,
-				FBEB2BEC16BC03270095B0FB /* BlockModel.h */,
-				FBEB2BED16BC03270095B0FB /* BlockModel.m */,
 			);
 			name = Model_in_MVC;
 			sourceTree = "<group>";
@@ -215,7 +199,6 @@
 				FBEB2BDA16BBE8CC0095B0FB /* Controller_in_MVC */,
 				FBEB2BD816BBE8BE0095B0FB /* View_in_MVC */,
 				FBEB2BD416BBE8890095B0FB /* Model_in_MVC */,
-				FBEB2BE516BC014C0095B0FB /* DONOTCARE */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -254,17 +237,6 @@
 				FBE3728316BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m */,
 			);
 			name = Controller_in_MVC;
-			sourceTree = "<group>";
-		};
-		FBEB2BE516BC014C0095B0FB /* DONOTCARE */ = {
-			isa = PBXGroup;
-			children = (
-				FBEB2BE016BBFE7C0095B0FB /* Parent.m */,
-				FBEB2BE216BBFF5E0095B0FB /* Cat.h */,
-				FBEB2BE316BBFF5E0095B0FB /* Cat.m */,
-				FBEB2BDF16BBFE7C0095B0FB /* Parent.h */,
-			);
-			name = DONOTCARE;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,11 +319,6 @@
 				FBCF235F16B64CB700217BDA /* AppDelegate.m in Sources */,
 				FBCF236B16B64CB700217BDA /* ViewController.m in Sources */,
 				FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */,
-				FBEB2BE116BBFE7C0095B0FB /* Parent.m in Sources */,
-				FBEB2BE416BBFF5E0095B0FB /* Cat.m in Sources */,
-				FBEB2BE816BC03020095B0FB /* WolfModel.m in Sources */,
-				FBEB2BEB16BC03150095B0FB /* PigModel.m in Sources */,
-				FBEB2BEE16BC03270095B0FB /* BlockModel.m in Sources */,
 				FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */,
 				FBBB845A16BD62340091BB47 /* PigView.m in Sources */,
 				FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */,
@@ -362,6 +329,7 @@
 				FBE3727E16BE578A00940FB3 /* GameWolf.m in Sources */,
 				FBE3728116BE579B00940FB3 /* GameBlock.m in Sources */,
 				FBE3728416BE7B0200940FB3 /* DeveloperSettingsForControllerClasses.m in Sources */,
+				FBE38AA316BF834E008E18A0 /* UIView+ExploreViewHierarchy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,7 +413,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
 				INFOPLIST_FILE = "Game/Game-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -456,7 +426,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
 				INFOPLIST_FILE = "Game/Game-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

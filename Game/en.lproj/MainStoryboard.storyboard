@@ -24,7 +24,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="2" eventType="touchUpInside" id="Aee-5P-3bK"/>
+                                    <action selector="saveButton:" destination="2" eventType="touchUpInside" id="Vp8-wG-jch"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eOG-Sb-gnV">
@@ -39,7 +39,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="2" eventType="touchUpInside" id="soz-Jd-6cR"/>
+                                    <action selector="loadButton:" destination="2" eventType="touchUpInside" id="EQx-8n-GQb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yZz-Eb-fLH">
@@ -54,7 +54,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="2" eventType="touchUpInside" id="Q4I-n4-OVM"/>
+                                    <action selector="resetButton:" destination="2" eventType="touchUpInside" id="z9b-oE-fOb"/>
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="LlO-2K-boT">
@@ -73,7 +73,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="2" eventType="touchUpInside" id="l6Y-ZS-FrN"/>
+                                    <action selector="startButton:" destination="2" eventType="touchUpInside" id="dxJ-EH-tE7"/>
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="cna-vi-zzX">
@@ -101,6 +101,10 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="buttonPressed:"/>
+                <relationship kind="action" name="loadButton:"/>
+                <relationship kind="action" name="resetButton:"/>
+                <relationship kind="action" name="saveButton:"/>
+                <relationship kind="action" name="startButton:"/>
                 <relationship kind="outlet" name="gamearea" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="palette" candidateClass="UIScrollView"/>
             </relationships>

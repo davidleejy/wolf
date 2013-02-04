@@ -8,20 +8,22 @@
 
 #import "GamePig.h"
 
-@interface GamePig ()
 
-@end
 
 @implementation GamePig
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+-(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV {
+    if (self = [super initWith:kGameObjectPig UnderControlOf:self AndPalette:paletteSV AndGameArea:gameAreaSV]) {
+        self.origin = CGPointMake(55, 0);
+        self.paletteLocation = CGPointMake(55,0);
+        self.angle = 0;
+        self.width = 55;
+        self.height = 55;
+        return self;
     }
-    return self;
+    return nil;
 }
+
 
 - (void)viewDidLoad
 {

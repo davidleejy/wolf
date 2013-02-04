@@ -7,38 +7,50 @@
 //
 
 #import <Foundation/Foundation.h>
-
-/* *****************************************
- 
-    Data persistance with Object Archives
-        1. Adhere to NSCoding protocol
-        2. Implement encodeWithCoder & initWithCoder methods.
- 
- ******************************************** */
+@class WolfView;
+@class PigView;
+@class BlockView;
 
 
-
-@interface GameObjectModel : NSObject <NSCoding>
+@interface GameObjectModel : NSObject
 // OVERVIEW: This class implements a game object model
 //           There are subclasses under this class to represent the various game objects.
 
-@property (readwrite) NSString* name;
 
-@property (readwrite) CGPoint origin;
+@property (readwrite) UIScrollView* palette;
+@property (readwrite) UIScrollView* gamearea;
 
-@property (readwrite) CGFloat width;
-
-@property (readwrite) CGFloat height;
-
-@property (readwrite) CGFloat rotation; // Units: degrees.
+@property (readwrite) WolfView* wolfData;
+@property (readwrite) PigView* pigData;
+@property (readwrite) NSMutableArray* blocksData;
 
 
-// NSCoding methods
 
-- (void) encodeWithCoder:(NSCoder *)coder;
-// EFFECTS: Tells the archiver how to encode this object.
 
-- (id) initWithCoder:(NSCoder *)decoder;
-// EFFECTS: Tells unarchiver how to decode the object.
 
 @end
+
+
+
+// must ensure protocol: <NSCoding>
+
+//@property (readwrite) NSString* name;
+//
+//@property (readwrite) CGPoint origin;
+//
+//@property (readwrite) CGFloat width;
+//
+//@property (readwrite) CGFloat height;
+//
+//@property (readwrite) CGFloat rotation; // Units: degrees.
+//
+//
+//// NSCoding methods
+//
+//- (void) encodeWithCoder:(NSCoder *)coder;
+//// EFFECTS: Tells the archiver how to encode this object.
+//
+//- (id) initWithCoder:(NSCoder *)decoder;
+//// EFFECTS: Tells unarchiver how to decode the object.
+//
+//@end

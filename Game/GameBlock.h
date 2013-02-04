@@ -7,7 +7,23 @@
 //
 
 #import "GameObject.h"
+@class BlockView;
+
 
 @interface GameBlock : GameObject
+
+
+//Ctor
+-(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
+
+//Override Transforms
+- (void)translate:(UIPanGestureRecognizer *)panRecognizer;
+- (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer;
+
+
+- (void)changeMaterial:(UITapGestureRecognizer *)singleTapRecognizer;
+
+//override reset
+//- (void)reset;
 
 @end

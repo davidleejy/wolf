@@ -10,4 +10,6 @@
 
 @interface GamePig : GameObject
 
+-(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
+
 @end

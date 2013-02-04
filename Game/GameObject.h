@@ -4,23 +4,56 @@
 // You can add your own prototypes in this file
 //
 
+
+
+
 #import <UIKit/UIKit.h>
-#import "GameObjectView.h"
-#import "GameObjectModel.h"
+
+@class GameObjectView;
+@class PigView;
+@class WolfView;
+@class BlockView;
+@class GameObjectModel;
 
 // Constants for the three game objects to be implemented
-//typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
+typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
 
 @interface GameObject : UIViewController {
   // You might need to add state here.
+    
+//    @protected
+//    UIScrollView* _palette;
+//    UIScrollView* _gameArea;
+    
+//    @protected
+//    CGFloat _angle;
+//    CGPoint _origin;
+//    CGPoint _paletteLocation;
+//    CGFloat _width;
+//    CGFloat _height;
 
 }
 
 @property (readonly) GameObjectModel *model;
 
 
-//@property (nonatomic, readonly) GameObjectType objectType;
+@property (nonatomic, readonly) GameObjectType objectType;
+@property (readwrite) CGFloat angle;
+@property (readwrite) CGPoint origin;
+@property (readwrite) CGPoint paletteLocation;
+@property (readwrite) CGFloat width;
+@property (readwrite) CGFloat height;
 
+@property (readonly) UIScrollView *palette;
+@property (readonly) UIScrollView *gameArea;
+@property (nonatomic, readonly) BOOL isFromPaletteToGameArea;
+@property (readwrite) GameObject* childMostController;
+
+
+- (id) initWith:(GameObjectType)objType
+ UnderControlOf:(GameObject*)childMostController
+     AndPalette:(UIScrollView*)paletteSV
+    AndGameArea:(UIScrollView*)gameAreaSV;
 
 - (void)translate:(UIGestureRecognizer *)gesture;
   // MODIFIES: object model (coordinates)
@@ -40,7 +73,7 @@
 
 // You will need to define more methods to complete the specification. 
 
-
+- (void)destroy:(UITapGestureRecognizer*)doubleTapRecognizer;
 
 
 @end

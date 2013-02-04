@@ -74,6 +74,11 @@
     
     [self adjustToDefaultSize];
     
+    self.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:[self myController] action:@selector(changeMaterial:)];
+    singleTapGestureRecognizer.numberOfTapsRequired = 1;
+    [self addGestureRecognizer:singleTapGestureRecognizer];
+    
     return self;
 }
 

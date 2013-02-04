@@ -8,20 +8,21 @@
 
 #import "GameWolf.h"
 
-@interface GameWolf ()
-
-@end
 
 @implementation GameWolf
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+-(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV {
+    if (self = [super initWith:kGameObjectWolf UnderControlOf:self AndPalette:paletteSV AndGameArea:gameAreaSV]) {
+        self.origin = CGPointMake(0, 0);
+        self.paletteLocation = CGPointMake(0,0);
+        self.angle = 0;
+        self.width = 55;
+        self.height = 55;
+        return self;
     }
-    return self;
+    return nil;
 }
+
 
 - (void)viewDidLoad
 {

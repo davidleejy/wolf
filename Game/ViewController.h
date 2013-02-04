@@ -7,18 +7,42 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GameObjectView.h"
-#import "PigView.h"
-#import "WolfView.h"
-#import "BlockView.h"
-#import "math.h"
+
+// View classes
+@class GameObjectView;
+@class WolfView;
+@class PigView;
+@class BlockView;
+
+// Controller classes
+@class GameObject;
+@class GameWolf;
+@class GamePig;
+@class GameBlock;
 
 @interface ViewController : UIViewController
 
-- (IBAction)buttonPressed:(id)sender;
 
+
+// ****** Buttons being managed ******
+- (IBAction)startButton:(id)sender;
+- (IBAction)saveButton:(id)sender;
+- (IBAction)loadButton:(id)sender;
+- (IBAction)resetButton:(id)sender;
+
+
+// ****** Views being managed ******
+// These views have their initial configuration done in the storyboard
 @property (weak, nonatomic) IBOutlet UIScrollView *gamearea;
 @property (weak, nonatomic) IBOutlet UIScrollView *palette;
+
+
+// ****** Controllers being managed ******
+@property (nonatomic,readonly) GameWolf* wolfController;
+@property (nonatomic,readonly) GamePig* pigController;
+@property (nonatomic,readonly) GameBlock* blockController;
+
+// Don't Care
 @property (readwrite) CGAffineTransform temp;
 
 @end
