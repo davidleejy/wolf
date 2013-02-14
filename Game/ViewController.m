@@ -80,7 +80,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     //Load image resources into UIImage objects
-    UIImage *bgImage = [UIImage imageNamed:@"background.png"];
+    UIImage *bgImage = [UIImage imageNamed:@"MScave.jpg"];
     UIImage *groundImage = [UIImage imageNamed:@"ground.png"];
     
     //Place each UIImage object into UIImageView object
@@ -301,6 +301,11 @@
     [_pigController loadFrom:_database];
     [_blockController loadFrom:_database];
     
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
 }
 
 - (void)reset {

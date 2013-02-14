@@ -11,6 +11,9 @@
 
 @interface GameWolf : GameObject
 
+
+
+
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV;
 
 //Override transforms. Wolf different from other game objects

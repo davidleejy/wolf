@@ -211,7 +211,9 @@
     
     if ([rotationRecognizer.view isDescendantOfView:_gameArea]) {
         CGFloat angle = rotationRecognizer.rotation;
+        //NSLog(@"Before rotate %@",rotationRecognizer.view);
         rotationRecognizer.view.transform = CGAffineTransformRotate(rotationRecognizer.view.transform, angle);
+        //NSLog(@"After rotation: %@",rotationRecognizer.view);
         _angle += angle;
         
         rotationRecognizer.rotation = 0.0;

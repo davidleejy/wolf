@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB47A0AD16C53E5D00E47674 /* MSxmas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */; };
+		FB47A0B016C5402E00E47674 /* MScave.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB47A0AF16C5402E00E47674 /* MScave.jpg */; };
 		FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845516BD35B80091BB47 /* GameObjectView.m */; };
 		FBBB845A16BD62340091BB47 /* PigView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845916BD62340091BB47 /* PigView.m */; };
 		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
@@ -43,6 +45,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MSxmas.jpg; sourceTree = "<group>"; };
+		FB47A0AF16C5402E00E47674 /* MScave.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MScave.jpg; sourceTree = "<group>"; };
 		FBBB845416BD35B80091BB47 /* GameObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectView.h; sourceTree = "<group>"; };
 		FBBB845516BD35B80091BB47 /* GameObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectView.m; sourceTree = "<group>"; };
 		FBBB845816BD62340091BB47 /* PigView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigView.h; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FB47A0AF16C5402E00E47674 /* MScave.jpg */,
+				FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */,
 				FBE3727416BE281600940FB3 /* circle.jpg */,
 				FBBB846916BD710F0091BB47 /* peashooter.png */,
 				FBCF237716B66DFC00217BDA /* stone.png */,
@@ -303,6 +309,8 @@
 				FBCF238016B66DFC00217BDA /* wood.png in Resources */,
 				FBBB846A16BD710F0091BB47 /* peashooter.png in Resources */,
 				FBE3727516BE281600940FB3 /* circle.jpg in Resources */,
+				FB47A0AD16C53E5D00E47674 /* MSxmas.jpg in Resources */,
+				FB47A0B016C5402E00E47674 /* MScave.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +419,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
 				INFOPLIST_FILE = "Game/Game-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
@@ -424,7 +432,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
 				INFOPLIST_FILE = "Game/Game-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
