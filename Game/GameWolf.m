@@ -69,6 +69,7 @@
                                                   panRecognizer.view.frame.origin.y,
                                                   225,150);
         }
+        
     }
     
 }

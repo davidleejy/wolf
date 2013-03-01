@@ -130,22 +130,16 @@
     }
     
     
-    CGPoint translation = [panRecognizer translationInView:panRecognizer.view];
+    CGPoint translation = [panRecognizer translationInView:panRecognizer.view.superview];
 
     panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x + translation.x, panRecognizer.view.center.y + translation.y);
 
-    [panRecognizer setTranslation:CGPointZero inView:self.view];
+    [panRecognizer setTranslation:CGPointZero inView:self.view.superview];
     
     if ([panRecognizer.view isDescendantOfView:_palette] &&
         panRecognizer.view.center.y > _palette.frame.size.height) {
         [_gameArea addSubview:panRecognizer.view];
         panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x, 0);
-    }
-    
-    if ([panRecognizer.view isDescendantOfView:_gameArea] &&
-        panRecognizer.view.center.y < 0) {
-        [_palette addSubview:panRecognizer.view];
-        panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x, _palette.frame.size.height);
     }
 
     

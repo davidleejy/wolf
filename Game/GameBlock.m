@@ -73,7 +73,7 @@
             [self createBlockIconInPalette];
         }
         else if (!_thisBlockBeganInPalette) {
-            // nothing to do.
+            ;// nothing to do.
         }
     }
     
@@ -141,7 +141,7 @@
     database.blocksVArray = [[NSMutableArray alloc] initWithArray:_gameAreaContainment];
 //    BlockView* debugblock = [_gameAreaContainment objectAtIndex:0];
 //    NSLog(@"debugblock has mat %d", debugblock.currentMaterial);
-    NSLog(@"%d", ((BlockView*)[database.blocksVArray objectAtIndex:0]).currentMaterial);
+//    NSLog(@"%d", ((BlockView*)[database.blocksVArray objectAtIndex:0]).currentMaterial);
     
 }
 
@@ -162,8 +162,8 @@
         newView.frame = savedView.frame;
         newView.bounds = savedView.bounds;
         [newView showMaterial:savedView.currentMaterial];
-        NSLog(@"saved material%d", savedView.currentMaterial);
-        NSLog(@"newView material%d", savedView.currentMaterial);
+//        NSLog(@"saved material%d", savedView.currentMaterial);
+//        NSLog(@"newView material%d", savedView.currentMaterial);
         
         // add to game area
         [self.gameArea addSubview:newView];
