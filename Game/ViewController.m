@@ -80,7 +80,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     //Load image resources into UIImage objects
-    UIImage *bgImage = [UIImage imageNamed:@"MScave.jpg"];
+    UIImage *bgImage = [UIImage imageNamed:@"background.png"];
     UIImage *groundImage = [UIImage imageNamed:@"ground.png"];
     
     //Place each UIImage object into UIImageView object
