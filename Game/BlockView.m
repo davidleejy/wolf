@@ -119,11 +119,29 @@
 
     _currentMaterial = (_currentMaterial + 1) % (_materialsArray.count);
     [self showMaterial:_currentMaterial];
+}   
+
+
+
+//***** NSKeyedArchiving *****
+// Disclaimer: In proper MVC, views are not saved, and therefore, this won't be here.
+
+- (void) encodeWithCoder:(NSCoder *)coder {
+    
+    [super encodeWithCoder:coder];
+    
+    [coder encodeObject:[NSNumber numberWithUnsignedInt:_currentMaterial] forKey:@"material"];
 }
 
-
-
-
+- (id) initWithCoder:(NSCoder *)coder {
+    
+    self = [super initWithCoder:coder];
+    
+    if(!self) return nil; //error handling
+    
+    _currentMaterial = [[coder decodeObjectForKey:@"material"] intValue];
+    return self;
+}
 
 
 

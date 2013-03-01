@@ -59,6 +59,8 @@
     
     NSArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:blockObjectData];
     
+    NSLog(@"oldSavedArray[0] has mat %d",((BlockView*)[oldSavedArray objectAtIndex:0]).currentMaterial);
+    
     if (oldSavedArray != nil)
         _blocksVArray = [[NSMutableArray alloc] initWithArray:oldSavedArray];
     else

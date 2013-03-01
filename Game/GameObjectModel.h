@@ -24,6 +24,7 @@ typedef enum {inPalette, inGameArea, unknown} Location;
 @property (readwrite) PigView* pigV;
 @property (readwrite) Location pigLocation;
 @property (readwrite) NSMutableArray* blocksVArray;
+//@property (atomic) id<ModelDelegate> delegate;
 
 
 - (id) init;

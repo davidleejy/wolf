@@ -43,4 +43,10 @@
 // EFFECTS: changes the material of this object to the next material in materialsArray.
 //          WHen the end of materialsArray is reached, wrap around and pick the 1st material.
 
+
+//***** NSKeyedArchiving *****
+// Disclaimer: In proper MVC, views are not saved, and therefore, this won't be here.
+- (void) encodeWithCoder:(NSCoder *)coder;
+- (id) initWithCoder:(NSCoder *)code;
+
 @end

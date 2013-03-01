@@ -125,17 +125,29 @@
     
     if (panRecognizer.state == UIGestureRecognizerStateBegan) {
         _initialCoords = panRecognizer.view.center;
+        
+        _gameArea.scrollEnabled = NO; //Disable scrolling
     }
     
-    CGPoint translation = [panRecognizer translationInView:panRecognizer.view.superview];
     
+    CGPoint translation = [panRecognizer translationInView:panRecognizer.view];
+
     panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x + translation.x, panRecognizer.view.center.y + translation.y);
+
+    [panRecognizer setTranslation:CGPointZero inView:self.view];
     
-    //Disable scrolling
-    _gameArea.scrollEnabled = NO;
+    if ([panRecognizer.view isDescendantOfView:_palette] &&
+        panRecognizer.view.center.y > _palette.frame.size.height) {
+        [_gameArea addSubview:panRecognizer.view];
+        panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x, 0);
+    }
     
-    [panRecognizer setTranslation:CGPointZero inView:self.view.superview];
-    
+    if ([panRecognizer.view isDescendantOfView:_gameArea] &&
+        panRecognizer.view.center.y < 0) {
+        [_palette addSubview:panRecognizer.view];
+        panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x, _palette.frame.size.height);
+    }
+
     
     //Where the view object _ends_ up depends on whether it belonged to the palette or game area.
 	if(panRecognizer.state == UIGestureRecognizerStateEnded) {
@@ -146,14 +158,14 @@
                 // Put view back into palette
                 panRecognizer.view.center = CGPointMake(self.paletteLocation.x + panRecognizer.view.frame.size.width/2,self.paletteLocation.y + panRecognizer.view.frame.size.height/2);
             }
+        if (panRecognizer.view.center.y - panRecognizer.view.frame.size.height/2 >= _palette.frame.size.height)
+        {
+            CGFloat offX = _gameArea.contentOffset.x + panRecognizer.view.center.x;
+            panRecognizer.view.center = CGPointMake(offX,panRecognizer.view.center.y - _palette.frame.size.height);
+            [_gameArea addSubview:panRecognizer.view];
             
-            if (panRecognizer.view.center.y - panRecognizer.view.frame.size.height/2 >= _palette.frame.size.height)
-            {
-                CGFloat offX = _gameArea.contentOffset.x + panRecognizer.view.center.x;
-                panRecognizer.view.center = CGPointMake(offX,panRecognizer.view.center.y - _palette.frame.size.height);
-                [_gameArea addSubview:panRecognizer.view];
-                
-            }
+        }
+            
             
         }
         else if ([panRecognizer.view isDescendantOfView: _gameArea]){
