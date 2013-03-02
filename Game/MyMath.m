@@ -8,6 +8,8 @@
 
 #import "MyMath.h"
 
+#define FLOATING_POINT_PRECISION 0.000001
+
 @implementation MyMath
 
 
@@ -25,6 +27,14 @@
 
 + (double) vertScaleFactorOf:(CGAffineTransform) x {
     return sqrt(x.b*x.b + x.d*x.d);
+}
+
++ (BOOL) doubleApproxEq:(double)a :(double)b {
+    return fabs(a-b) < FLOATING_POINT_PRECISION;
+}
+
++ (BOOL) CGFloatApproxEq:(CGFloat)a :(CGFloat)b {
+    return fabs(a-b) < FLOATING_POINT_PRECISION;
 }
 
 @end

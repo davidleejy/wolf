@@ -49,6 +49,13 @@
 		FBE6A2BE16E2093900FEF566 /* MyMath.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2BD16E2093800FEF566 /* MyMath.m */; };
 		FBE6A2C116E22DB200FEF566 /* WolfPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2C016E22DB200FEF566 /* WolfPlayController.m */; };
 		FBE6A2C416E2347000FEF566 /* BlockPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2C316E2346F00FEF566 /* BlockPlayController.m */; };
+		FBE6A2C616E250D200FEF566 /* windblow.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2C516E250D200FEF566 /* windblow.png */; };
+		FBE6A2C916E252E300FEF566 /* BreathPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2C816E252E200FEF566 /* BreathPlayController.m */; };
+		FBE6A2CC16E27AA700FEF566 /* BarController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2CB16E27AA600FEF566 /* BarController.m */; };
+		FBE6A2D016E29A0F00FEF566 /* direction-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2CD16E29A0D00FEF566 /* direction-arrow-selected.png */; };
+		FBE6A2D116E29A0F00FEF566 /* direction-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2CE16E29A0E00FEF566 /* direction-arrow.png */; };
+		FBE6A2D216E29A0F00FEF566 /* direction-degree.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2CF16E29A0E00FEF566 /* direction-degree.png */; };
+		FBE6A2D516E2AE8F00FEF566 /* AngleDialController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2D416E2AE8D00FEF566 /* AngleDialController.m */; };
 		FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +162,16 @@
 		FBE6A2C016E22DB200FEF566 /* WolfPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WolfPlayController.m; sourceTree = "<group>"; };
 		FBE6A2C216E2346F00FEF566 /* BlockPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockPlayController.h; sourceTree = "<group>"; };
 		FBE6A2C316E2346F00FEF566 /* BlockPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockPlayController.m; sourceTree = "<group>"; };
+		FBE6A2C516E250D200FEF566 /* windblow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windblow.png; sourceTree = "<group>"; };
+		FBE6A2C716E252E100FEF566 /* BreathPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreathPlayController.h; sourceTree = "<group>"; };
+		FBE6A2C816E252E200FEF566 /* BreathPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreathPlayController.m; sourceTree = "<group>"; };
+		FBE6A2CA16E27AA500FEF566 /* BarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarController.h; sourceTree = "<group>"; };
+		FBE6A2CB16E27AA600FEF566 /* BarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarController.m; sourceTree = "<group>"; };
+		FBE6A2CD16E29A0D00FEF566 /* direction-arrow-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direction-arrow-selected.png"; sourceTree = "<group>"; };
+		FBE6A2CE16E29A0E00FEF566 /* direction-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direction-arrow.png"; sourceTree = "<group>"; };
+		FBE6A2CF16E29A0E00FEF566 /* direction-degree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "direction-degree.png"; sourceTree = "<group>"; };
+		FBE6A2D316E2AE8C00FEF566 /* AngleDialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleDialController.h; sourceTree = "<group>"; };
+		FBE6A2D416E2AE8D00FEF566 /* AngleDialController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleDialController.m; sourceTree = "<group>"; };
 		FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectModel.h; sourceTree = "<group>"; };
 		FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -305,6 +322,10 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBE6A2CD16E29A0D00FEF566 /* direction-arrow-selected.png */,
+				FBE6A2CE16E29A0E00FEF566 /* direction-arrow.png */,
+				FBE6A2CF16E29A0E00FEF566 /* direction-degree.png */,
+				FBE6A2C516E250D200FEF566 /* windblow.png */,
 				FB47A0AF16C5402E00E47674 /* MScave.jpg */,
 				FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */,
 				FBE3727416BE281600940FB3 /* circle.jpg */,
@@ -378,6 +399,12 @@
 				FBE6A2C016E22DB200FEF566 /* WolfPlayController.m */,
 				FBE6A2C216E2346F00FEF566 /* BlockPlayController.h */,
 				FBE6A2C316E2346F00FEF566 /* BlockPlayController.m */,
+				FBE6A2C716E252E100FEF566 /* BreathPlayController.h */,
+				FBE6A2C816E252E200FEF566 /* BreathPlayController.m */,
+				FBE6A2CA16E27AA500FEF566 /* BarController.h */,
+				FBE6A2CB16E27AA600FEF566 /* BarController.m */,
+				FBE6A2D316E2AE8C00FEF566 /* AngleDialController.h */,
+				FBE6A2D416E2AE8D00FEF566 /* AngleDialController.m */,
 			);
 			name = Controllers_in_MVC;
 			sourceTree = "<group>";
@@ -450,6 +477,10 @@
 				FBE3727516BE281600940FB3 /* circle.jpg in Resources */,
 				FB47A0AD16C53E5D00E47674 /* MSxmas.jpg in Resources */,
 				FB47A0B016C5402E00E47674 /* MScave.jpg in Resources */,
+				FBE6A2C616E250D200FEF566 /* windblow.png in Resources */,
+				FBE6A2D016E29A0F00FEF566 /* direction-arrow-selected.png in Resources */,
+				FBE6A2D116E29A0F00FEF566 /* direction-arrow.png in Resources */,
+				FBE6A2D216E29A0F00FEF566 /* direction-degree.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +511,9 @@
 				FBE6A2BE16E2093900FEF566 /* MyMath.m in Sources */,
 				FBE6A2C116E22DB200FEF566 /* WolfPlayController.m in Sources */,
 				FBE6A2C416E2347000FEF566 /* BlockPlayController.m in Sources */,
+				FBE6A2C916E252E300FEF566 /* BreathPlayController.m in Sources */,
+				FBE6A2CC16E27AA700FEF566 /* BarController.m in Sources */,
+				FBE6A2D516E2AE8F00FEF566 /* AngleDialController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

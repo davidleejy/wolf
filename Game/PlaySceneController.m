@@ -21,6 +21,8 @@
 #import "PigPlayController.h"
 #import "WolfPlayController.h"
 #import "BlockPlayController.h"
+#import "BreathPlayController.h"
+#import "BarController.h"
 
 // Model classes
 #import "GameObjectModel.h"
@@ -31,6 +33,8 @@
 // Class objects and strings are easy and convenient to use as collision types.
 static NSString *borderType = @"borderType";
 
+//Math
+#import "MyMath.h"
 
 @implementation PlaySceneController
 
@@ -42,6 +46,10 @@ static NSString *borderType = @"borderType";
 @synthesize pigPlayController = _pigPlayController;
 @synthesize wolfPlayController = _wolfPlayController;
 @synthesize blockPlayControllerArray = _blockPlayControllerArray;
+@synthesize breathPlayController = _breathPlayController;
+@synthesize breathBar = _breathBar;
+@synthesize breathPowerBarController = _breathPowerBarController;
+@synthesize animateBreathPowerBarTimer = _animateBreathPowerBarTimer;
 
 - (void)viewDidLoad
 {
@@ -82,6 +90,11 @@ static NSString *borderType = @"borderType";
     CGFloat gameareaHeight = backgroundHeight + groundHeight;
     CGFloat gameareaWidth = backgroundWidth;
     [_battleField setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
+    
+    
+    //Init breath power bar
+    _breathPowerBarController = [[BarController alloc]initForPlayScene];
+    [self.view addSubview:_breathPowerBarController.bar];
 
     
     // Create and initialize the Chipmunk space.
@@ -114,6 +127,8 @@ static NSString *borderType = @"borderType";
 //    NSLog(@"sent over bounds = %@\n", NSStringFromCGRect(_dataFromLevelDesigner.pigV.bounds));
 
     
+    // ******* Initialise play controllers *******
+    
     _pigPlayController = [[PigPlayController alloc]initWithTransform:_dataFromLevelDesigner.pigV.transform
                                                               Bounds:_dataFromLevelDesigner.pigV.bounds
                                                                Frame:_dataFromLevelDesigner.pigV.frame
@@ -122,37 +137,41 @@ static NSString *borderType = @"borderType";
     _wolfPlayController = [[WolfPlayController alloc]initWithTransform:_dataFromLevelDesigner.wolfV.transform Bounds:_dataFromLevelDesigner.wolfV.bounds Center:_dataFromLevelDesigner.wolfV.center];
     
     // Initialising block controllers and
-    // adding block controllers into an array.
+    // add block controllers into an array.
     _blockPlayControllerArray = [[NSMutableArray alloc]init]; // IMPORTANT!
 
-        for (int i = 0; i<_dataFromLevelDesigner.blocksVArray.count; i++) {
-
-            BlockView* aSavedView = [_dataFromLevelDesigner.blocksVArray objectAtIndex:i];
-            
-            NSString *pathName;
-            
-            switch (aSavedView.currentMaterial) {
-                case 0:
-                    pathName = BLOCK_STRAW_IMAGE_PATH;
-                    break;
-                case 1:
-                    pathName = BLOCK_WOOD_IMAGE_PATH;
-                    break;
-                case 2:
-                    pathName = BLOCK_IRON_IMAGE_PATH;
-                    break;
-                case 3:
-                    pathName = BLOCK_STONE_IMAGE_PATH;
-                    break;
-                default:
-                    [NSException raise:@"Unrecognized Material!" format:@"material num: %d",aSavedView.currentMaterial];
-                    break;
-            }
-            
-            BlockPlayController* tempBPC = [[BlockPlayController alloc]initWithTransform:aSavedView.transform Bounds:aSavedView.bounds Center:aSavedView.center ImagePath:pathName];
-            
-            [_blockPlayControllerArray addObject:tempBPC];
+    for (int i = 0; i<_dataFromLevelDesigner.blocksVArray.count; i++) {
+        
+        BlockView* aSavedView = [_dataFromLevelDesigner.blocksVArray objectAtIndex:i];
+        
+        NSString *pathName;
+        
+        switch (aSavedView.currentMaterial) {
+            case 0:
+                pathName = BLOCK_STRAW_IMAGE_PATH;
+                break;
+            case 1:
+                pathName = BLOCK_WOOD_IMAGE_PATH;
+                break;
+            case 2:
+                pathName = BLOCK_IRON_IMAGE_PATH;
+                break;
+            case 3:
+                pathName = BLOCK_STONE_IMAGE_PATH;
+                break;
+            default:
+                [NSException raise:@"Unrecognized Material!" format:@"material num: %d",aSavedView.currentMaterial];
+                break;
         }
+        
+        BlockPlayController* tempBPC = [[BlockPlayController alloc]initWithTransform:aSavedView.transform Bounds:aSavedView.bounds Center:aSavedView.center ImagePath:pathName];
+        
+        [_blockPlayControllerArray addObject:tempBPC];
+    }
+    
+    _breathPlayController = [[BreathPlayController alloc]initWithTransform:CGAffineTransformIdentity
+                                                                    Bounds:CGRectMake(0, 0, 100, 100)
+                                                                    Center:CGPointMake(200, 200)];
 
     
     
@@ -168,6 +187,8 @@ static NSString *borderType = @"borderType";
         [_battleField addSubview:tempBPC.button];
     }
     
+    [_battleField addSubview:_breathPlayController.button];
+    
 	
 	// Adding physics objects
     
@@ -179,9 +200,89 @@ static NSString *borderType = @"borderType";
         [space add:[_blockPlayControllerArray objectAtIndex:i]];
     }
     
+    [space add:_breathPlayController];
+    
+    
+    // **** Making connections ****
+    
+    // When wolf is held down by finger, breath power bar's progress oscillates.
+    // I also call the oscillation "bubbling".
+    [_wolfPlayController.button addTarget:self action:@selector(startAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchDown];
+    [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpInside];
+    [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpOutside];
+    
+    
+    // TESTING TODO A3
+//    UIImage * b1i = [_breathPlayController windBlowInFrame:4 Of:WINDBLOW_SPRITESCREEN_PATH];
+//    UIImageView *b1iv = [[UIImageView alloc]initWithImage:b1i];
+//    [_battleField addSubview:b1iv];
+    // TESTING TODO A3
+    
+    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+     UIImageView *mark2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+    
+    UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_ARROW_DESELECTED_PATH]];
+    
+//    UIView* arrowHolder = [[UIView alloc]initWithFrame:CGRectMake(0, 0,
+//                                                                 arrow.frame.size.width,
+//                                                                 arrow.frame.size.height*2.0)];
+    
+//    UIImageView *arrowHolder = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
+//                                                                     arrow.frame.size.width,
+//                                                                     arrow.frame.size.height*2.0)];
+//    [arrowHolder addSubview:arrow];
+    [arrow addSubview:mark];
+    mark.frame = CGRectMake(arrow.center.x, arrow.center.y, 5, 5);
+    
+    
+    mark2.frame = CGRectMake(0, 0, 5, 5);
+    
+//    arrow.frame = CGRectMake(0,
+//                             0,
+//                             arrow.frame.size.width,
+//                             arrow.frame.size.height);
+    
+    UIImageView *dialMarkings = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_PATH]];
+    
+    
+    UIImageView *dial = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
+                                                                     dialMarkings.frame.size.width+40
+                                                                     ,
+                                                                     dialMarkings.frame.size.height)];
+    
+    
+    dialMarkings.frame = CGRectMake(dial.frame.size.width-dialMarkings.frame.size.width,
+                                    0,
+                                    dialMarkings.frame.size.width,
+                                    dialMarkings.frame.size.height);
+    [dial addSubview:dialMarkings];
+    
+    [dial addSubview:mark2];//todo delete
+    
+    [dial addSubview:arrow];
+    
+//    arrow.transform = CGAffineTransformTranslate(arrow.transform, 0, 0);
+//    arrow.frame = CGRectMake(0,
+//                             0,
+//                             arrow.frame.size.width,
+//                             arrow.frame.size.height);
+    arrow.transform = CGAffineTransformScale(arrow.transform, 0.6, 0.6);
+    arrow.center = CGPointMake(50, dial.frame.size.height/2.0+30);
+    arrow.transform = CGAffineTransformRotate(arrow.transform, M_PI/2.8);
+    
+//    arrowHolder.center = CGPointMake(dial.frame.size.width-dialMarkings.frame.size.width,
+//                                     dial.frame.size.height/2.0);
+    
+    [_battleField addSubview:dial];
+//    [_battleField addSubview:arrowHolder];
+    //[_battleField addSubview:arrow];
+    
     
     NSLog(@"j begins with%d",j); //TODO delete
 }
+
+
+
 
 - (bool)beginCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
 	// This macro gets the colliding shapes from the arbiter and defines variables for them.
@@ -269,6 +370,9 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     for (int i = 0; i<_blockPlayControllerArray.count; i++) {
         [[_blockPlayControllerArray objectAtIndex:i] updatePosition];
     }
+    [_breathPlayController updatePosition];
+    
+    
 }
 
 // The view disappeared. Stop the animation timers.
@@ -293,7 +397,26 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     j = 1337;
     NSLog(@"j is now %d",j);
     [_wolfPlayController animateBlowWithDeltaTime:0.5 RepeatCount:5];
+    [_breathPlayController animateWithDeltaTime:0.6 RepeatCount:5];
 }
+
+
+// ======= Breath Bar Functions =========
+
+- (void)bubbleTheBreathePowerBar {
+    [_breathPowerBarController bubbleTheBar:0.005];
+}
+
+- (void)startAnimatingBreathPowerBar {
+    _animateBreathPowerBarTimer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(bubbleTheBreathePowerBar) userInfo:nil repeats:YES];
+}
+
+- (void)stopAnimatingBreathPowerBar {
+    [_animateBreathPowerBarTimer invalidate];
+    _animateBreathPowerBarTimer = nil;
+}
+
+
 
 - (void) populateBattleFieldWithDataFromLevelDesigner {
     

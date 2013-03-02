@@ -24,6 +24,8 @@
 @class PigPlayController;
 @class WolfPlayController;
 @class BlockPlayController;
+@class BreathPlayController;
+@class BarController;
 
 // Model classes
 @class GameObjectModel;
@@ -41,15 +43,17 @@
 // ****** Views being managed ******
 @property (readwrite, weak, nonatomic) IBOutlet UIScrollView *battleField;
 @property (readwrite) PigView *pigView; //TODO delete these views
-@property (readwrite) WolfView *wolfView;
-@property (readwrite) NSMutableArray *blockViewArray;
-
+@property (readwrite) WolfView *wolfView;//TODO delete these views
+@property (readwrite) NSMutableArray *blockViewArray;//TODO delete these views
+@property (readwrite) UIProgressView *breathBar;//TODO delete these views
 
 // ***** Controllers being managed ******
 @property (readwrite) PigPlayController *pigPlayController;
 @property (readwrite) WolfPlayController *wolfPlayController;
 @property (readwrite) NSMutableArray *blockPlayControllerArray;
-
+@property (readwrite) BreathPlayController *breathPlayController;
+@property (readwrite) BarController *breathPowerBarController;
+@property (readwrite) NSTimer* animateBreathPowerBarTimer; //To link wolf with breath power bar
 
 - (IBAction)abort:(id)sender;
 - (IBAction)makej1337:(id)sender; //TODO delete

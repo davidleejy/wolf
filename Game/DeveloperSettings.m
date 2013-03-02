@@ -43,6 +43,25 @@ CGFloat BLOCK_DEFAULT_WIDTH = 30;
 CGFloat BLOCK_DEFAULT_HEIGHT = 130;
 
 
+// WindBlow
+NSString *WINDBLOW_SPRITESCREEN_PATH = @"windblow.png";
+NSUInteger WINDBLOW_SPRITESCREEN_SPRITE_COUNT = 4;
+CGFloat WINDBLOW_BREATH_RADIUS = 40;
 
+
+// Angle dial
+NSString *ANGLE_DIAL_ARROW_DESELECTED_PATH = @"direction-arrow.png";
+NSString *ANGLE_DIAL_ARROW_SELECTED_PATH = @"direction-arrow-selected.png";
+NSString *ANGLE_DIAL_PATH = @"direction-degree.png";
+
+
+// Colors
+
++ (UIColor *)DARK_PURPLE_COLOR{
+    return [UIColor colorWithRed:143/255.0 green:30/255.0 blue:136/255.0 alpha:1.0];
+}
++ (UIColor *)DARK_ORANGE_COLOR{
+    return [UIColor colorWithRed:244.0/255.0 green:103/255.0 blue:140/255.0 alpha:1.0];
+}
 
 @end

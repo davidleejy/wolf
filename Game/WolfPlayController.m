@@ -80,7 +80,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		_button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_button setTitle:@"Wolf!" forState:UIControlStateNormal];
 		[_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-		[_button setImage:resultingImage forState:UIControlStateNormal]; //TODO ALERT
+		[_button setImage:resultingImage forState:UIControlStateNormal];
         _button.bounds = CGRectMake(0, 0, widthActual, heightActual);
         
         
@@ -141,6 +141,14 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 }
 
 
+- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt {
+    _button.imageView.animationImages = _wolfBlowingImagesSequence;
+    _button.imageView.animationDuration = dt;
+    _button.imageView.animationRepeatCount = cnt;
+    [_button.imageView startAnimating];
+}
+
+
 
 // **** HELPER FUNCTIONS ****
 
@@ -180,12 +188,6 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     return result;
 }
 
-- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt {
-    NSLog(@"entered");
-    _button.imageView.animationImages = _wolfBlowingImagesSequence;
-    _button.imageView.animationDuration = dt;
-    _button.imageView.animationRepeatCount = cnt;
-    [_button.imageView startAnimating];
-}
+
 
 @end

@@ -25,4 +25,7 @@
 // EFFECTS: returns horizontal scaling factor.
 //          Can be multiplied by width to get actual width of a scaled (enlarged/shrunken) view.
 
++ (BOOL) doubleApproxEq:(double)a :(double)b;
++ (BOOL) CGFloatApproxEq:(CGFloat)a :(CGFloat)b;
+
 @end
