@@ -1,0 +1,339 @@
+//
+//  PlaySceneController.m
+//  Game
+//
+//  Created by Lee Jian Yi David on 3/1/13.
+//  Copyright (c) 2013 nus.cs3217. All rights reserved.
+//
+
+// View classes
+#import "GameObjectView.h"
+#import "PigView.h"
+#import "WolfView.h"
+#import "BlockView.h"
+
+// Controller classes
+#import "GameObject.h"
+#import "GameWolf.h"
+#import "GamePig.h"
+#import "GameBlock.h"
+#import "PlaySceneController.h"
+#import "PigPlayController.h"
+#import "WolfPlayController.h"
+#import "BlockPlayController.h"
+
+// Model classes
+#import "GameObjectModel.h"
+
+// Physics Engine
+#import "ObjectiveChipmunk.h"
+// An object to use as a collision type for the screen border.
+// Class objects and strings are easy and convenient to use as collision types.
+static NSString *borderType = @"borderType";
+
+
+@implementation PlaySceneController
+
+@synthesize battleField = _battleField;
+@synthesize dataFromLevelDesigner = _dataFromLevelDesigner;
+@synthesize pigView = _pigView;
+@synthesize wolfView = _wolfView;
+@synthesize blockViewArray = _blockViewArray;
+@synthesize pigPlayController = _pigPlayController;
+@synthesize wolfPlayController = _wolfPlayController;
+@synthesize blockPlayControllerArray = _blockPlayControllerArray;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //battleField's properties can be overwritten by source VC.
+    // *** Create Battle Field ***
+    
+    //Load image resources into UIImage objects
+    UIImage *bgImage = [UIImage imageNamed:@"background.png"];
+    UIImage *groundImage = [UIImage imageNamed:@"ground.png"];
+    
+    //Place each UIImage object into UIImageView object
+    UIImageView *background = [[UIImageView alloc] initWithImage:bgImage];
+    UIImageView *ground = [[ UIImageView alloc] initWithImage:groundImage];
+    
+    //Get the width and height of the 2 images
+    CGFloat backgroundWidth = bgImage.size.width;
+    CGFloat backgroundHeight = bgImage.size.height;
+    CGFloat groundWidth = groundImage.size.width;
+    CGFloat groundHeight = groundImage.size.height;
+    
+    //Compute the y position for the two UIImageView
+    CGFloat groundY = _battleField.frame.size.height - groundHeight;
+    CGFloat backgroundY = groundY - backgroundHeight;
+    
+    //The frame property holds the position and size of the views.
+    //The CGRectMake methods arguments are: x position, y position, width, height.
+    background.frame = CGRectMake(0, backgroundY, backgroundWidth, backgroundHeight);
+    ground.frame = CGRectMake(0, groundY, groundWidth, groundHeight);
+    
+    //Add these views as subviews of the gamearea.
+    [_battleField addSubview:background];
+    [_battleField addSubview:ground];
+    
+    //Set the content size so that the gamearea is scrollable.
+    //Otherwise it defaults to the current window size.
+    CGFloat gameareaHeight = backgroundHeight + groundHeight;
+    CGFloat gameareaWidth = backgroundWidth;
+    [_battleField setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
+
+    
+    // Create and initialize the Chipmunk space.
+	// Chipmunk spaces are containers for simulating physics.
+	space = [[ChipmunkSpace alloc] init];
+    space.gravity = cpv(0.0, 1000.0);
+	
+	// This method adds four static line segment shapes to the space.
+	// Most 2D physics games end up putting all the gameplay in a box.
+	// We'll tag these segment shapes with the borderType object. You'll see what this is for next.
+	[space addBounds:background.bounds thickness:10.0f elasticity:1.0f friction:1.0f layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:borderType];
+	
+	// This adds a callback that happens whenever a shape tagged with the
+	// [FallingButton class] object and borderType objects collide.
+	// You can use any object you want as a collision type identifier.
+	// I often find it convenient to use class objects to define collision types.
+	// There are 4 different collision events that you can catch: begin, pre-solve, post-solve and separate.
+	// See the documentation for a description of what they are all for.
+	[space addCollisionHandler:self
+                         typeA:[PigPlayController class] typeB:borderType
+                         begin:@selector(beginCollision:space:)
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollision:space:)
+                      separate:@selector(separateCollision:space:)
+     ];
+
+	
+
+//    NSLog(@"sent over frame = %@\n", NSStringFromCGRect(_dataFromLevelDesigner.pigV.frame));
+//    NSLog(@"sent over bounds = %@\n", NSStringFromCGRect(_dataFromLevelDesigner.pigV.bounds));
+
+    
+    _pigPlayController = [[PigPlayController alloc]initWithTransform:_dataFromLevelDesigner.pigV.transform
+                                                              Bounds:_dataFromLevelDesigner.pigV.bounds
+                                                               Frame:_dataFromLevelDesigner.pigV.frame
+                                                              Center:_dataFromLevelDesigner.pigV.center];
+    
+    _wolfPlayController = [[WolfPlayController alloc]initWithTransform:_dataFromLevelDesigner.wolfV.transform Bounds:_dataFromLevelDesigner.wolfV.bounds Center:_dataFromLevelDesigner.wolfV.center];
+    
+    // Initialising block controllers and
+    // adding block controllers into an array.
+    _blockPlayControllerArray = [[NSMutableArray alloc]init]; // IMPORTANT!
+
+        for (int i = 0; i<_dataFromLevelDesigner.blocksVArray.count; i++) {
+
+            BlockView* aSavedView = [_dataFromLevelDesigner.blocksVArray objectAtIndex:i];
+            
+            NSString *pathName;
+            
+            switch (aSavedView.currentMaterial) {
+                case 0:
+                    pathName = BLOCK_STRAW_IMAGE_PATH;
+                    break;
+                case 1:
+                    pathName = BLOCK_WOOD_IMAGE_PATH;
+                    break;
+                case 2:
+                    pathName = BLOCK_IRON_IMAGE_PATH;
+                    break;
+                case 3:
+                    pathName = BLOCK_STONE_IMAGE_PATH;
+                    break;
+                default:
+                    [NSException raise:@"Unrecognized Material!" format:@"material num: %d",aSavedView.currentMaterial];
+                    break;
+            }
+            
+            BlockPlayController* tempBPC = [[BlockPlayController alloc]initWithTransform:aSavedView.transform Bounds:aSavedView.bounds Center:aSavedView.center ImagePath:pathName];
+            
+            [_blockPlayControllerArray addObject:tempBPC];
+        }
+
+    
+    
+	// Add the buttons in controllers to the view hierarchy.
+    
+	[_battleField addSubview:_pigPlayController.button];
+    
+    [_battleField addSubview:_wolfPlayController.button];
+    
+    for (int i = 0; i<_blockPlayControllerArray.count; i++) {
+        
+        BlockPlayController* tempBPC = [_blockPlayControllerArray objectAtIndex:i];
+        [_battleField addSubview:tempBPC.button];
+    }
+    
+	
+	// Adding physics objects
+    
+	[space add:_pigPlayController];
+    
+    [space add:_wolfPlayController];
+    
+    for (int i = 0; i<_blockPlayControllerArray.count; i++) {
+        [space add:[_blockPlayControllerArray objectAtIndex:i]];
+    }
+    
+    
+    NSLog(@"j begins with%d",j); //TODO delete
+}
+
+- (bool)beginCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
+	// This macro gets the colliding shapes from the arbiter and defines variables for them.
+	CHIPMUNK_ARBITER_GET_SHAPES(arbiter, buttonShape, border);
+	
+	// It expands to look something like this:
+	// ChipmunkShape *buttonShape = GetShapeWithFirstCollisionType();
+	// ChipmunkShape *border = GetShapeWithSecondCollisionType();
+	
+	// Lets log the data pointers just to make sure we are getting what we think we are.
+	NSLog(@"First object in the collision is %@ second object is %@.", buttonShape.data, border.data);
+    NSLog(@"First object agle rot %.9f.", buttonShape.body.angle);
+	
+	// When we created the collision shape for the FallingButton,
+	// we set the data pointer to point at the FallingButton it was associated with.
+	PigPlayController *fb = buttonShape.data;
+	
+	// Increment the touchedShapes counter on the FallingButton object.
+	// We'll decrement this in the separate callback.
+	// If the counter is 0, then you know you aren't touching anything.
+	// You can use this technique in platformer games to track if the player is in the air on not.
+	fb.touchedShapes++;
+	
+	// Change the background color to gray so we know when the button is touching something.
+	self.view.backgroundColor = [UIColor grayColor];
+	
+	// begin and pre-solve callbacks MUST return a boolean.
+	// Returning false from a begin callback ignores a collision permanently.
+	// Returning false from a pre-solve callback ignores the collision for just one frame.
+	// See the documentation on collision handlers for more information.
+	return TRUE; // We return true, so the collision is handled normally.
+}
+
+// The post-solve collision callback is called right after Chipmunk has finished calculating all of the
+// collision responses. You can use it to find out how hard objects hit each other.
+// There is also a pre-solve callback that allows you to reject collisions conditionally.
+- (void)postSolveCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
+	// We only care about the first frame of the collision.
+	// If the shapes have been colliding for more than one frame, return early.
+	if(!cpArbiterIsFirstContact(arbiter)) return;
+	
+	// This method gets the impulse that was applied between the two objects to resolve
+	// the collision. We'll use the length of the impulse vector to approximate the sound
+	// volume to play for the collision.
+	cpFloat impulse = cpvlength(cpArbiterTotalImpulse(arbiter));
+	
+}
+
+static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
+
+// The separate callback is called whenever shapes stop touching.
+- (void)separateCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
+	CHIPMUNK_ARBITER_GET_SHAPES(arbiter, buttonShape, border);
+	
+	// Decrement the counter on the FallingButton.
+	PigPlayController *fb = buttonShape.data;
+	fb.touchedShapes--;
+	
+	// If touchedShapes is 0, then we know the falling button isn't touching anything anymore.
+	if(fb.touchedShapes == 0){
+		// Let's set the background color to a random color so you can see each time the shape touches something new.
+		self.view.backgroundColor = [UIColor colorWithRed:frand() green:frand() blue:frand() alpha:1.0f];
+	}
+}
+
+// When the view appears on the screen, start the animation timer.
+- (void)viewDidAppear:(BOOL)animated {
+	// Set up the display link to control the timing of the animation.
+	displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update)];
+	displayLink.frameInterval = 1;
+	[displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+	
+}
+
+// This method is called each frame to update the scene.
+// It is called from the display link every time the screen wants to redraw itself.
+- (void)update {
+	// Step (simulate) the space based on the time since the last update.
+	cpFloat dt = displayLink.duration*displayLink.frameInterval;
+	[space step:dt];
+	
+	// This sets the position and rotation of the button to match the rigid body.
+	[_pigPlayController updatePosition];
+    [_wolfPlayController updatePosition];
+    for (int i = 0; i<_blockPlayControllerArray.count; i++) {
+        [[_blockPlayControllerArray objectAtIndex:i] updatePosition];
+    }
+}
+
+// The view disappeared. Stop the animation timers.
+- (void)viewDidDisappear:(BOOL)animated {
+	// Remove the timer.
+	[displayLink invalidate];
+	displayLink = nil;
+	
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
+
+- (IBAction)abort:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)makej1337:(id)sender {
+    j = 1337;
+    NSLog(@"j is now %d",j);
+    [_wolfPlayController animateBlowWithDeltaTime:0.5 RepeatCount:5];
+}
+
+- (void) populateBattleFieldWithDataFromLevelDesigner {
+    
+//    //Load _pigView with _dataFromLevelDesigner
+//    _pigView = [[PigView alloc]initDefaultWithController:self];
+//    _pigView.transform = _dataFromLevelDesigner.pigV.transform;
+//    _pigView.frame = _dataFromLevelDesigner.pigV.frame;
+//    _pigView.bounds = _dataFromLevelDesigner.pigV.bounds;
+//    [_battleField addSubview:_pigView];
+//    
+//    //Load _wolfView with _dataFromLevelDesigner
+//    _wolfView = [[WolfView alloc]initDefaultWithController:self];
+//    _wolfView.transform = _dataFromLevelDesigner.wolfV.transform;
+//    _wolfView.frame = _dataFromLevelDesigner.wolfV.frame;
+//    _wolfView.bounds = _dataFromLevelDesigner.wolfV.bounds;
+//    [_battleField addSubview:_wolfView];
+//    
+//    //Load _blockViewArray with _dataFromLevelDesigner
+//    _blockViewArray = [[NSMutableArray alloc]init];
+//    
+//    for (int i = 0; i < _dataFromLevelDesigner.blocksVArray.count; i++) {
+//        
+//        BlockView* savedView = [_dataFromLevelDesigner.blocksVArray objectAtIndex:i];
+//        BlockView* newView = [[BlockView alloc] initDefaultWithController:self];
+//        
+//        // configure the newView to have the same settings like savedView
+//        newView.transform = savedView.transform;
+//        newView.frame = savedView.frame;
+//        newView.bounds = savedView.bounds;
+//        [newView showMaterial:savedView.currentMaterial];
+//        
+//        // add to game area
+//        [_battleField addSubview:newView];
+//        
+//        // add to game area containment array
+//        [_blockViewArray addObject:newView];
+//    }
+    
+    
+    
+}
+
+@end

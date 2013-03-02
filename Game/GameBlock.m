@@ -26,7 +26,7 @@
 //Ctor
 -(id)initWithPalette:(UIScrollView*)paletteSV AndGameArea:(UIScrollView*)gameAreaSV {
     if (self = [super initWith:kGameObjectBlock UnderControlOf:self AndPalette:paletteSV AndGameArea:gameAreaSV]) {
-        self.paletteLocation = CGPointMake(110,0);
+        self.paletteLocation = CGPointMake(130,0);
         self.angle = 0;
         
         [self createBlockIconInPalette];
@@ -118,7 +118,7 @@
 
 - (void)createBlockIconInPalette {
     _blockViewInPalette = [[BlockView alloc] initDefaultWithController:self];
-    _blockViewInPalette.frame = CGRectMake(110, 0, 55, 55);
+    _blockViewInPalette.frame = CGRectMake(self.paletteLocation.x, self.paletteLocation.y, 55, 55);
     [self.palette addSubview:_blockViewInPalette];
 }
 

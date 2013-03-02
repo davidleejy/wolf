@@ -20,6 +20,7 @@
 #import "GameWolf.h"
 #import "GamePig.h"
 #import "GameBlock.h"
+#import "PlaySceneController.h"
 
 // Model classes
 #import "GameObjectModel.h"
@@ -227,7 +228,30 @@
 
 
 - (IBAction)startButton:(id)sender {
+    
+    //check whether got 1 wolf and 1 pig in play. //TODO reinstate condition
+//    if (!
+//        ([_wolfController.view isDescendantOfView:_gamearea] && [_pigController.view isDescendantOfView:_gamearea])) {
+//        return;
+//    }
+    
+    PlaySceneController *playSceneContoller = [self.storyboard instantiateViewControllerWithIdentifier:@"psc"];
+    
+    GameObjectModel *objectsInGameArea = [[GameObjectModel alloc]init];
+    [_pigController saveTo:objectsInGameArea];
+    [_wolfController saveTo:objectsInGameArea];
+    [_blockController saveTo:objectsInGameArea];
+    
+    playSceneContoller.dataFromLevelDesigner = objectsInGameArea;
+    
+    // *** Transit to play scene ***
+    
+    [self presentViewController:playSceneContoller animated:YES completion:nil];
+    
+    
+    NSLog(@"start button is pressed.");
 }
+
 
 - (IBAction)saveButton:(id)sender {
     [self save];
@@ -273,7 +297,7 @@
     if (success)
         NSLog(@"Saving is successful.");
     else
-        NSLog(@"Saving is FAILED.");
+        NSLog(@"Saving FAILED.");
 
 }
 

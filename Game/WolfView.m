@@ -7,6 +7,7 @@
 //
 
 #import "WolfView.h"
+#import "DeveloperSettings.h"
 
 
 @interface WolfView ()
@@ -109,9 +110,6 @@
     
     [self setImage:desiredWolfImage]; //Note that _image is a property of the UIImageView class (parent class).
 }
-
-
-
 
 
 

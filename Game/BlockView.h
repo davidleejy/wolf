@@ -7,7 +7,7 @@
 //
 
 #import "GameObjectView.h"
-#import "DeveloperSettingsForViewClasses.h"
+#import "DeveloperSettings.h"
 
 @interface BlockView : GameObjectView
 
