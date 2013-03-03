@@ -13,7 +13,7 @@ typedef enum {kStraw, kWood, kIron, kStone} Material;
 
 @interface BlockPlayController : NSObject <ChipmunkObject>
 
-@property (readwrite) UIButton *button; // TODO refactor name.  This is the view.
+@property (readwrite) UIButton *button;
 @property (readwrite) ChipmunkBody *body;
 @property (readwrite) NSArray *chipmunkObjects;
 @property (readwrite) int touchedShapes;

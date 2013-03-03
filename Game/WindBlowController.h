@@ -33,6 +33,7 @@ collision velocity should be.
 
 //***** Unique to breath ******
 @property (readonly) NSMutableArray* windBlowSequence;
+@property (readonly) NSMutableArray* windDisperseSequence;
 
 - (void)updatePosition;
 
@@ -43,23 +44,12 @@ collision velocity should be.
 // REQUIRES: Non-skewed transform
 // EFFECTS: ctor
 
-- (id) init; //TODO delete
-
 - (void)animateWithDeltaTime:(double)dt RepeatCount:(uint)cnt;
 // EFFECTS: Animates the breath
 
-- (void) dropAlpha;
-//MODIFIES: dialView
-//EFFECTS: sets alpha of dialView to 0.2.
-
-- (void) resetAlphaToOne;
-//MODIFIES: dialView
-//EFFECTS: sets alpha of dialView to 1.0.
+- (void)animateDispersionWithDurationSecs:(double)t;
+// EFFECTS: Animates the breath to disperse
 
 
-// *** HELPER FUNCTIONS ***
-// Useful for debugging.
-
-- (UIImage*) windBlowInFrame:(NSUInteger)desiredFrame Of:(NSString*)spriteScreenPath;
 
 @end

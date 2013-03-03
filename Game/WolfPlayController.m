@@ -38,10 +38,6 @@
 @synthesize wolfBlowingSpriteSequence = _wolfBlowingImagesSequence;
 @synthesize windSuckSpriteSequence = _windSuckSpriteSequence;
 
-static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
-
-
-
 - (void)updatePosition {
 	_button.transform = _body.affineTransform;
 }
@@ -89,8 +85,6 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         
 		// Set up the pig picture
 		_button = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_button setTitle:@"Wolf!" forState:UIControlStateNormal];
-		[_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
 		[_button setImage:resultingImage forState:UIControlStateNormal];
         _button.bounds = CGRectMake(0, 0, widthActual, heightActual);
         
@@ -105,17 +99,10 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		cpFloat moment = cpMomentForBox(mass, widthActual, heightActual);
         
 		
-		// A rigid body is the basic skeleton you attach joints and collision shapes too.
-		// Rigid bodies hold the physical properties of an object such as the postion, rotation, and mass of an object.
-		// You attach collision shapes to rigid bodies to define their shape and allow them to collide with other objects,
-		// and you can attach joints between rigid bodies to connect them together.
 		_body = [[ChipmunkBody alloc] initWithMass:mass andMoment:moment];
         _body.angle = [MyMath rotationOfNonSkewedAffineTransform:myTransform];
         _body.pos = cpv(myCenter.x, myCenter.y);
 		
-		// Chipmunk supports a number of collision shape types. See the documentation for more information.
-		// Because we are storing this into a local variable instead of an instance variable, we can use the autorelease constructor.
-		// We'll let the chipmunkObjects NSSet hold onto the reference for us.
 		ChipmunkShape *shape = [ChipmunkPolyShape boxWithBody:_body width:widthActual height:heightActual];
 		
 		// The elasticity of a shape controls how bouncy it is.
@@ -130,20 +117,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		// Set data to point back to this object.
 		// That way you can get a reference to this object from the shape when you are in a callback.
 		shape.data = self;
-		
-		// Keep in mind that you can attach multiple collision shapes to each rigid body, and that each shape can have
-		// unique properties. You can make the player's head have a different collision type for instance. This is useful
-        // for brain damage.
-		
-		// Now we just need to initialize the instance variable for the chipmunkObjects property.
-		// ChipmunkObjectFlatten() is an easy way to build this set. You can pass any object to it that
-		// implements the ChipmunkObject protocol and not just primitive types like bodies and shapes.
-		
-		// Notice that we didn't even have to keep a reference to 'shape'. It was created using the autorelease convenience function.
-		// This means that the chipmunkObjects NSSet will manage the memory for us. No need to worry about forgetting to call
-		// release later when you're using Objective-Chipmunk!
-		
-		// Note the nil terminator at the end! (this is how it knows you are done listing objects)
+        
 		_chipmunkObjects = [[NSArray alloc] initWithObjects:_body, shape, nil];
 	}
 	
@@ -196,14 +170,6 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     return CGPointMake(_button.imageView.frame.size.width,
                        _button.frame.size.height/4.63);
 }
-
-//- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt PerformAtEnd:(SEL)selector1 {
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:1.0]; //the animation will last for 1.0s
-//    [self animateBlowWithDeltaTime:dt RepeatCount:cnt]; //some animation code here
-//    [UIView commitAnimations];
-//    [self performSelector:@selector(selector1) withObject:nil afterDelay:1.0];
-//}
 
 
 // **** HELPER FUNCTIONS ****

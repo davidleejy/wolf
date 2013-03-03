@@ -47,10 +47,11 @@ static NSString *borderType = @"borderType";
 @synthesize wolfPlayController = _wolfPlayController;
 @synthesize blockPlayControllerArray = _blockPlayControllerArray;
 @synthesize windBlowControllerArray = _windBlowControllerArray;
-@synthesize breathBar = _breathBar;
 @synthesize breathPowerBarController = _breathPowerBarController;
 @synthesize animateBreathPowerBarTimer = _animateBreathPowerBarTimer;
 @synthesize angleDialController = _angleDialController;
+@synthesize score = _score;
+@synthesize scoreDisplay = _scoreDisplay;
 
 - (void)viewDidLoad
 {
@@ -104,26 +105,14 @@ static NSString *borderType = @"borderType";
     [self.view addSubview:_angleDialController.dialView];
 
     
-    // Create and initialize the Chipmunk space.
-	// Chipmunk spaces are containers for simulating physics.
+    // Create and initialize the space that physics objects can exist in
 	space = [[ChipmunkSpace alloc] init];
     space.gravity = cpv(0.0, 1000.0);
 	
-	// This method adds four static line segment shapes to the space.
-	// Most 2D physics games end up putting all the gameplay in a box.
-	// We'll tag these segment shapes with the borderType object. You'll see what this is for next.
-	[space addBounds:background.bounds thickness:10.0f elasticity:0.1f friction:0.9f layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:borderType];
+	[space addBounds:background.bounds thickness:1000.0f elasticity:0.3f friction:0.75f layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:borderType];
 	
-	// This adds a callback that happens whenever a shape tagged with the
-	// [FallingButton class] object and borderType objects collide.
-	// You can use any object you want as a collision type identifier.
-	// I often find it convenient to use class objects to define collision types.
-	// There are 4 different collision events that you can catch: begin, pre-solve, post-solve and separate.
-	// See the documentation for a description of what they are all for.
-    
-    
     // ****** Collision Handlers *******
-    // Here we dictate what happens between objects when they collide.
+    // Here we dictate the "special" effects of certain objects colliding.
     
     // W1. Wind blows disintegrates when it touches ground.
     // W2. Wind blows disintegrates when it touches non-straw blocks.
@@ -133,7 +122,9 @@ static NSString *borderType = @"borderType";
     // W6. Wind blows (fire) pass through blocks and decreases block's mass.
     // W7. Wind blows (ice) pass through blocks and decreases block's friction.
     // W8. Wind blows (grass) disintegrates when hit blocks and pulls blocks towards itself.
-    
+    // W9. Wind blows whack pig.
+    // P1. Pig gets whacked by block.
+    // P2. Pig gets whacked by border.
     
     // W1.
     [space addCollisionHandler:self
@@ -172,12 +163,32 @@ static NSString *borderType = @"borderType";
      ];
     
     
+    // W9.
+    [space addCollisionHandler:self
+                         typeA:[WindBlowController class] typeB:[PigPlayController class]
+                         begin:@selector(beginCollisionBetWeenWindBLowAndPig:space:)
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollisionBetWeenWindBLowAndPig:space:)
+                      separate:@selector(separateCollisionBetWeenWindBLowAndPig:space:)
+     ];
+    
+    
+    // P1.
+    [space addCollisionHandler:self
+                         typeA:[PigPlayController class] typeB:[BlockPlayController class]
+                         begin:nil
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollisionBetWeenPigAndBlock:space:)
+                      separate:nil
+     ];
+    
+    // P2.
 	[space addCollisionHandler:self
                          typeA:[PigPlayController class] typeB:borderType
-                         begin:@selector(beginCollision:space:)
+                         begin:nil
                       preSolve:nil
-                     postSolve:@selector(postSolveCollision:space:)
-                      separate:@selector(separateCollision:space:)
+                     postSolve:@selector(postSolveCollisionBetweenPigAndBorder:space:)
+                      separate:nil
      ];
     
     
@@ -256,77 +267,30 @@ static NSString *borderType = @"borderType";
     }
     
     
-    
     // **** Making connections ****
     
     // Connect wolf with breath power bar...
     // When wolf is held down by finger, breath power bar's progress oscillates.
     // I also call the oscillation "bubbling".
-    [_wolfPlayController.button addTarget:self action:@selector(startAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchDown];
-    [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpInside];
-    [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpOutside];
+    [_wolfPlayController.button addTarget:self action:@selector(touchDownWolf) forControlEvents:UIControlEventTouchDown];
+    [_wolfPlayController.button addTarget:self action:@selector(touchUpWolf) forControlEvents:UIControlEventTouchUpInside];
+    [_wolfPlayController.button addTarget:self action:@selector(touchUpWolf) forControlEvents:UIControlEventTouchUpOutside];
     
     
     // **** Setting Starting Game State ****
     _wolfBreathType = kNorm;
-    _currBreathTypeDisplay.text = @"No orb equipped.";
-    
-    
-    //TODO TESTING A3
-//    UIImage * b1i = [_breathPlayController windBlowInFrame:4 Of:WINDBLOW_SPRITESCREEN_PATH];
-//    UIImageView *b1iv = [[UIImageView alloc]initWithImage:b1i];
-//    [_battleField addSubview:b1iv];
-    // TESTING TODO A3
-    
-    
-    //TODO TESTING DIAL
-//    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
-//     UIImageView *mark2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
-//    
-//    UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_ARROW_DESELECTED_PATH]];
-//    
-//    [arrow addSubview:mark];
-//    mark.frame = CGRectMake(arrow.center.x, arrow.center.y, 5, 5);
-//    
-//    
-//    mark2.frame = CGRectMake(0, 0, 5, 5);
-//
-//    
-//    UIImageView *dialMarkings = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_PATH]];
-//    
-//    
-//    UIImageView *dial = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
-//                                                                     dialMarkings.frame.size.width+40
-//                                                                     ,
-//                                                                     dialMarkings.frame.size.height)];
-//    
-//    
-//    dialMarkings.frame = CGRectMake(dial.frame.size.width-dialMarkings.frame.size.width,
-//                                    0,
-//                                    dialMarkings.frame.size.width,
-//                                    dialMarkings.frame.size.height);
-//    [dial addSubview:dialMarkings];
-//    
-//    [dial addSubview:mark2];//todo delete
-//    
-//    [dial addSubview:arrow];
-//    
-//
-//    arrow.transform = CGAffineTransformScale(arrow.transform, 0.6, 0.6);
-//    arrow.center = CGPointMake(50, dial.frame.size.height/2.0+20);
-//    arrow.transform = CGAffineTransformRotate(arrow.transform, M_PI/2.0);
-//
-//    
-//    [_battleField addSubview:dial];
-    
-    
-    NSLog(@"j begins with%d",j); //TODO delete
+    _currBreathTypeDisplay.text = @"No orb equipped. Your breath is merely fresh and minty.";
+    _score = 0;
+    [_scoreDisplay setTextColor:[UIColor redColor]];
+    [_scoreDisplay setBackgroundColor:[UIColor clearColor]];
+    [_scoreDisplay setText:[[NSString alloc]initWithFormat:@"%d",_score]];
+
 }
 
 
 -(void)windBlowDisintegrate:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
     CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, dontCareShape);
-    [self simpleDisappearWindBlow:windBlowShape];
+    [self realisticDisappearWindBlow:windBlowShape Duration:1];
 }
 
 
@@ -339,7 +303,6 @@ static NSString *borderType = @"borderType";
 -(bool)beginCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
     CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
     WindBlowController *wPC = windBlowShape.data;
-    BlockPlayController *bPC = blockShape.data;
     
     // Record pre collision velocity from first frame of the collision.
 	if(cpArbiterIsFirstContact(arbiter)){
@@ -353,6 +316,8 @@ static NSString *borderType = @"borderType";
     else if (wPC.breathType == kFire || wPC.breathType == kIce ) {
         return FALSE; // Effects of fire and ice are resolved in separation collision handler
     }
+    else
+        return FALSE;
 }
 
 -(void)postSolveCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
@@ -368,15 +333,15 @@ static NSString *borderType = @"borderType";
     switch (wPC.breathType) {
         case kNorm: // ~~~~~~ Basic Breath ~~~~~~~
             if (bPC.material == kStraw) {
-                [self simpleDisappearBlock:blockShape];
+                [self realisticDisappearWindBlow:windBlowShape Duration:1];
                 wPC.body.vel = cpvmult(wPC.preCollisionVelocity, 0.5f);
             }
             else {
-                [self simpleDisappearWindBlow:windBlowShape];
+                [self realisticDisappearWindBlow:windBlowShape Duration:1];
             }
             break;
-        case kPlasma: // ~~~~~~ Grass Breath ~~~~~~~
-            [self simpleDisappearWindBlow:windBlowShape];
+        case kPlasma: // ~~~~~~ Plasma Breath ~~~~~~~
+            [self realisticDisappearWindBlow:windBlowShape Duration:1];
             bPC.body.vel = cpvmult(bPC.body.vel, -1.5f);
             [ViewHelper embedText:@"Bzzzt!"
                         WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y, 150, 25)
@@ -408,8 +373,34 @@ static NSString *borderType = @"borderType";
                         TextColor:[UIColor redColor]
                      DurationSecs:0.5 + (rand()%8)/10.0
                                In:_battleField];
-//            NSLog(@"mass is now %.9f",bPC.body.mass);
+            NSLog(@"mass is now %.9f",bPC.body.mass);
             wPC.body.vel = cpvmult(wPC.body.vel, 0.7f);
+            
+            _score += 1;
+            [ViewHelper embedText:@"1 Pt"
+                        WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor yellowColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            
+            //Give chance for blocks to be burnt away.
+            int diceRoll = rand()%100;
+            if (diceRoll < 5 && bPC.body.mass < 50.0f) {
+                [self simpleDisappearBlock:blockShape];
+                [ViewHelper embedText:@"BURNT TO ASHES!"
+                            WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y-bPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                            TextColor:[UIColor redColor]
+                         DurationSecs:1.2 + (rand()%8)/10.0
+                                   In:_battleField];
+                
+                _score += 100;
+                [ViewHelper embedText:@"100 Pts"
+                            WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                            TextColor:[UIColor yellowColor]
+                         DurationSecs:0.5 + (rand()%8)/10.0
+                                   In:_battleField];
+            }
+            
             break;
         }
         case kIce: // ~~~~~~ Ice Breath ~~~~~~~
@@ -422,8 +413,33 @@ static NSString *borderType = @"borderType";
                         TextColor:[UIColor blueColor]
                      DurationSecs:0.5 + (rand()%8)/10.0
                                In:_battleField];
-//            NSLog(@"friction is now %.9f",blockShape.friction);
+            NSLog(@"friction is now %.9f",blockShape.friction);
             wPC.body.vel = cpvmult(wPC.body.vel, 0.7f);
+            
+            _score += 1;
+            [ViewHelper embedText:@"1 Pt"
+                        WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor yellowColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            
+            //Give chance for block to be "iced to death".
+            int diceRoll = rand()%100;
+            if (diceRoll < 5 && blockShape.friction < 0.20) {
+                [self simpleDisappearBlock:blockShape];
+                [ViewHelper embedText:@"FROZEN SOLID!"
+                            WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y-bPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                            TextColor:[UIColor blueColor]
+                         DurationSecs:1.2 + (rand()%8)/10.0
+                                   In:_battleField];
+                
+                _score += 100;
+                [ViewHelper embedText:@"100 Pts"
+                            WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                            TextColor:[UIColor yellowColor]
+                         DurationSecs:0.5 + (rand()%8)/10.0
+                                   In:_battleField];
+            }
             break;
         }
         default:
@@ -433,79 +449,235 @@ static NSString *borderType = @"borderType";
 }
 
 
-- (bool)beginCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
-	// This macro gets the colliding shapes from the arbiter and defines variables for them.
-	CHIPMUNK_ARBITER_GET_SHAPES(arbiter, buttonShape, border);
-	
-	// It expands to look something like this:
-	// ChipmunkShape *buttonShape = GetShapeWithFirstCollisionType();
-	// ChipmunkShape *border = GetShapeWithSecondCollisionType();
-	
-	// Lets log the data pointers just to make sure we are getting what we think we are.
-	NSLog(@"First object in the collision is %@ second object is %@.", buttonShape.data, border.data);
-    NSLog(@"First object agle rot %.9f.", buttonShape.body.angle);
-	
-	// When we created the collision shape for the FallingButton,
-	// we set the data pointer to point at the FallingButton it was associated with.
-	PigPlayController *fb = buttonShape.data;
-	
-	// Increment the touchedShapes counter on the FallingButton object.
-	// We'll decrement this in the separate callback.
-	// If the counter is 0, then you know you aren't touching anything.
-	// You can use this technique in platformer games to track if the player is in the air on not.
-	fb.touchedShapes++;
-	
-	// Change the background color to gray so we know when the button is touching something.
-	self.view.backgroundColor = [UIColor grayColor];
+// ====== Collision Handlers for when these collide: Wind Blows, Pig =======
+
+-(bool)beginCollisionBetWeenWindBLowAndPig:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, pigShape);
+    WindBlowController *wPC = windBlowShape.data;
     
-	// begin and pre-solve callbacks MUST return a boolean.
-	// Returning false from a begin callback ignores a collision permanently.
-	// Returning false from a pre-solve callback ignores the collision for just one frame.
-	// See the documentation on collision handlers for more information.
-	return TRUE; // We return true, so the collision is handled normally.
+    // Record pre collision velocity from first frame of the collision.
+	if(cpArbiterIsFirstContact(arbiter)){
+        wPC.preCollisionVelocity = wPC.body.vel;
+        //        NSLog(@"pre collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
+    }
+    
+    if ( wPC.breathType == kNorm || wPC.breathType == kPlasma ) {
+        return TRUE;
+    }
+    else if (wPC.breathType == kFire || wPC.breathType == kIce ) {
+        return FALSE;
+    }
+    else
+        return FALSE;
+}
+
+
+-(void)postSolveCollisionBetWeenWindBLowAndPig:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+
+    // We only care about the first frame of the collision.
+	if(!cpArbiterIsFirstContact(arbiter)) return;
+    
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, pigShape);
+    
+    WindBlowController *wPC = windBlowShape.data;
+    PigPlayController *pPC = pigShape.data;
+    
+    cpFloat impulse = cpvlength(cpArbiterTotalImpulse(arbiter));
+    
+    switch (wPC.breathType) {
+        case kNorm: // ~~~~~~ Basic Breath ~~~~~~~
+        {
+            [self realisticDisappearWindBlow:windBlowShape Duration:1];
+            [ViewHelper embedText:@"GO AWAY!"
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor whiteColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            int pts = (int)(impulse/300.0);
+            _score += pts;
+            NSString* ptsEarned = [[NSString alloc]initWithFormat:@"%d Pts",pts];
+            
+            [ViewHelper embedText:ptsEarned
+                        WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor yellowColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            break;
+        }
+        case kPlasma: // ~~~~~~ Plasma Breath ~~~~~~~
+        {
+            [self realisticDisappearWindBlow:windBlowShape Duration:1];
+            pPC.body.vel = cpvmult(pPC.body.vel, -1.6f);
+            [ViewHelper embedText:@"Stop messing around!"
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor whiteColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            int pts = (int)(impulse/1000.0);
+            _score += pts;
+            
+            NSString* ptsEarned = [[NSString alloc]initWithFormat:@"%d Pts",pts];
+
+            [ViewHelper embedText:ptsEarned
+                        WithFrame:CGRectMake(wPC.body.pos.x-150/2.0, wPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor yellowColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            break;
+        }
+        default:
+            break;
+    }
+    
     
 }
 
-// The post-solve collision callback is called right after Chipmunk has finished calculating all of the
-// collision responses. You can use it to find out how hard objects hit each other.
-// There is also a pre-solve callback that allows you to reject collisions conditionally.
-- (void)postSolveCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+
+-(void)separateCollisionBetWeenWindBLowAndPig:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, pigShape);
+    WindBlowController *wPC = windBlowShape.data;
+    PigPlayController *pPC = pigShape.data;
+    
+    switch (wPC.breathType) {
+        case kFire: // ~~~~~~ Fire Breath ~~~~~~~
+        {
+            double scaleFactor = 0.95 + (rand()%6)/100.0;
+            pPC.body.mass *= scaleFactor;
+            NSString* msg = [[NSString alloc]initWithFormat:@"+%d%% ROASTED",(int)((1.0-scaleFactor)*100.0)];
+            [ViewHelper embedText:msg
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor redColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            
+            wPC.body.vel = cpvmult(wPC.body.vel, 0.4f);
+            
+            [ViewHelper embedText:@"Hot!! Hot!! Hot!!"
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor whiteColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            
+            [self realisticDisappearWindBlow:windBlowShape Duration:1];
+            
+            break;
+        }
+        case kIce: // ~~~~~~ Ice Breath ~~~~~~~
+        {
+            double scaleFactor = 0.95 + (rand()%6)/100.0;
+            pigShape.friction *= scaleFactor;
+            NSString* msg = [[NSString alloc]initWithFormat:@"+%d%% FROZEN",(int)((1.0-scaleFactor)*100.0)];
+            [ViewHelper embedText:msg
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor blueColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            [ViewHelper embedText:@"Co..co..coldd!"
+                        WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor whiteColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            wPC.body.vel = cpvmult(wPC.body.vel, 0.4f);
+            
+            [self realisticDisappearWindBlow:windBlowShape Duration:1];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+
+
+
+// ====== Collision Handlers for when these collide: Pig, Block =======
+
+- (void)postSolveCollisionBetWeenPigAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
     
 	// We only care about the first frame of the collision.
-	// If the shapes have been colliding for more than one frame, return early.
 	if(!cpArbiterIsFirstContact(arbiter)) return;
 	
-	// This method gets the impulse that was applied between the two objects to resolve
-	// the collision. We'll use the length of the impulse vector to approximate the sound
-	// volume to play for the collision.
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, pigShape, blockShape);
+    PigPlayController *pPC = pigShape.data;
+    
+   
+    
 	cpFloat impulse = cpvlength(cpArbiterTotalImpulse(arbiter));
     
+    int pts = (int)(impulse/400.0);
+    _score += pts;
+    NSString* ptsEarned = [[NSString alloc]initWithFormat:@"%d Pts",pts];
+    [ViewHelper embedText:ptsEarned
+                WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                TextColor:[UIColor yellowColor]
+             DurationSecs:0.5 + (rand()%8)/10.0
+                       In:_battleField];
+    if (pts < 50) {
+        [ViewHelper embedText:@"zz..ZZZ...."
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts < 100) {
+        [ViewHelper embedText:@"Snort~"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts < 200) {
+        [ViewHelper embedText:@"Yikes!"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts < 300) {
+        [ViewHelper embedText:@"Ow!"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts < 400) {
+        [ViewHelper embedText:@"STOP IT!"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts < 500) {
+        [ViewHelper embedText:@"ARRR!"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
+    else if (pts >= 600) {
+        [ViewHelper embedText:@"Ow! Arrrr! Ow!!!"
+                    WithFrame:CGRectMake(pPC.body.pos.x-150/2.0, pPC.body.pos.y-pPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                    TextColor:[UIColor whiteColor]
+                 DurationSecs:0.5 + (rand()%8)/10.0
+                           In:_battleField];
+    }
     
-	
 }
+
+
+// ====== Collision Handlers for when these collide: Pig, Border =======
+
+- (void)postSolveCollisionBetweenPigAndBorder:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    
+	// We only care about the first frame of the collision.
+	if(!cpArbiterIsFirstContact(arbiter)) return;
+}
+
+
+
 
 static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 
-// The separate callback is called whenever shapes stop touching.
-- (void)separateCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
-	CHIPMUNK_ARBITER_GET_SHAPES(arbiter, buttonShape, border);
-	
-	// Decrement the counter on the FallingButton.
-	PigPlayController *fb = buttonShape.data;
-	fb.touchedShapes--;
-	
-	// If touchedShapes is 0, then we know the falling button isn't touching anything anymore.
-	if(fb.touchedShapes == 0){
-		// Let's set the background color to a random color so you can see each time the shape touches something new.
-		self.view.backgroundColor = [UIColor colorWithRed:frand() green:frand() blue:frand() alpha:1.0f];
-	}
-    
-    
-    //TODO removal cpo
-//    [space1 addPostStepRemoval:buttonShape];
-//    [_pigPlayController.button removeFromSuperview];
-//    _pigPlayController = nil;
-}
 
 // When the view appears on the screen, start the animation timer.
 - (void)viewDidAppear:(BOOL)animated {
@@ -532,6 +704,7 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     for (int i = 0; i<_windBlowControllerArray.count; i++) {
         [[_windBlowControllerArray objectAtIndex:i] updatePosition];
     }
+    [self updateScoreDisplay];
     
 }
 
@@ -547,21 +720,6 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
-}
-
-
-
-- (IBAction)makej1337:(id)sender {
-    j = 1337;
-    NSLog(@"j is now %d",j);
-    [_wolfPlayController animateBlowWithDeltaTime:0.3 RepeatCount:1];
-    
-    
-    [self wolfBlowsWind];
-    
-    
-    NSLog(@"num of blocks left %d",_blockPlayControllerArray.count);
-    NSLog(@"num of breaths left %d",_windBlowControllerArray.count);
 }
 
 
@@ -585,13 +743,13 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 /* space here refer to battlefield */
 
 
-- (void) wolfBlowsWind{
+- (void) wolfBlowsWind:(NSNumber*)strengthFactor{
     [_wolfPlayController animateOneBlowThatCompletesInSecs:0.7]; // wolf huffs and puffs
-    [self performSelector:@selector(generateWind) withObject:nil afterDelay:0.5]; // wind is generated when he puffs
+    [self performSelector:@selector(generateWindWithFactor:) withObject:strengthFactor afterDelay:0.5]; // wind is generated when he puffs
 }
 
 
-- (void) generateWind{
+- (void) generateWindWithFactor:(NSNumber*)f{
     double windBlowCenterX = _wolfPlayController.body.pos.x + _wolfPlayController.button.imageView.frame.size.width/2.0 + 20;
     double windBlowCenterY = _wolfPlayController.body.pos.y - _wolfPlayController.button.frame.size.height/3.5;
     
@@ -602,8 +760,10 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     
     [_windBlowControllerArray addObject:wBPC];
     
+    double fd = [f doubleValue];
+    
     cpVect unitDirV = cpvforangle(-[_angleDialController angleShown]);
-    cpVect v = cpvmult(unitDirV, _breathPowerBarController.bar.progress*2000);
+    cpVect v = cpvmult(unitDirV, fd*2000);
 	wBPC.body.vel = v;
     
     [wBPC animateWithDeltaTime:0.1 RepeatCount:0];//repeat forever
@@ -623,22 +783,51 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 }
 
 
-// ======= Functions to make chipmunk physics objects disappear =========
+// ======= Functions to make objects disappear =========
 /* space here refer to battlefield */
 
-- (void) simpleDisappearWindBlow:(ChipmunkShape*) windBlowShape {
+- (void)simpleDisappearWindBlow:(ChipmunkShape*) windBlowShape {
     WindBlowController *wPC = windBlowShape.data;
     [wPC.button removeFromSuperview];
     [_windBlowControllerArray removeObjectIdenticalTo:wPC];
     [space addPostStepRemoval:windBlowShape];
 }
 
-- (void) simpleDisappearBlock:(ChipmunkShape*) blockShape {
+- (void)simpleDisappearBlock:(ChipmunkShape*) blockShape {
     BlockPlayController *bPC = blockShape.data;
     [bPC.button removeFromSuperview];
     [_blockPlayControllerArray removeObjectIdenticalTo:bPC];
     [space addPostStepRemoval:blockShape];
 }
+
+-(void)realisticDisappearWindBlow:(ChipmunkShape*)windBlowShape Duration:(double)secs{
+    WindBlowController *wPC = windBlowShape.data;
+    [_windBlowControllerArray removeObjectIdenticalTo:wPC]; //critical in making the updating of the wind blow view stop where it is on the screen.
+    [wPC animateDispersionWithDurationSecs:secs];
+    [wPC.button performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:secs];
+    [space addPostStepRemoval:windBlowShape]; //critical
+}
+
+
+// ====== Pressing the wolf during the game ======
+
+-(void)touchDownWolf {
+    [self startAnimatingBreathPowerBar];
+}
+
+-(void)touchUpWolf {
+    [self stopAnimatingBreathPowerBar];
+    [self performSelector:@selector(wolfBlowsWind:) withObject:[NSNumber numberWithDouble:_breathPowerBarController.bar.progress] afterDelay:0.4];
+    [_breathPowerBarController performSelector:@selector(resetZero) withObject:nil afterDelay:0.4];
+}
+
+
+// ====== Score functions ======
+
+- (void)updateScoreDisplay {
+    [_scoreDisplay setText:[[NSString alloc]initWithFormat:@"%d",_score]];
+}
+
 
 
 // ======= Buttons ========
@@ -649,33 +838,28 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 
 - (IBAction)setWolfBreathTypeToNorm:(id)sender {
     _wolfBreathType = kNorm;
-    _currBreathTypeDisplay.text = @"No orb equipped. Not such a big bad wolf are you?";
+    _currBreathTypeDisplay.text = @"No orb equipped. Fresh and minty breath.";
 }
 
 - (IBAction)setWolfBreathTypeFire:(id)sender {
     _wolfBreathType = kFire;
-    _currBreathTypeDisplay.text = @"Orb of embers equipped. A breath imbued with fire eats away at the insides of whatever it touches.";
+    _currBreathTypeDisplay.text = @"Orb of Embers equipped. A breath imbued with fire eats away at the insides of whatever it touches.";
 }
 
 - (IBAction)setWolfBreathTypeIce:(id)sender {
     _wolfBreathType = kIce;
-    _currBreathTypeDisplay.text = @"Orb of frost equipped. A frosty breath coats whatever it touches with a thin layer of ice.";
+    _currBreathTypeDisplay.text = @"Orb of Frost equipped. A frosty breath coats whatever it touches with a thin layer of ice.";
 }
 
 - (IBAction)setWolfBreathTypeGrass:(id)sender {
     _wolfBreathType = kPlasma;
-    _currBreathTypeDisplay.text = @"Orb of plasma equipped. Electrically charged breaths can pull objects. But not pigs.";
+    _currBreathTypeDisplay.text = @"Orb of Plasma equipped. An electrically charged breath pulls objects.";
 }
 
 
 
-//- (void)viewDidUnload {
-//    [self setCurrBreathTypeDisplay:nil];
-//    [self setAb:nil];
-//    [super viewDidUnload];
-//}
-//- (void)viewDidUnload {
-//    [self setCurrBreathTypeDisplay:nil];
-//    [super viewDidUnload];
-//}
+- (void)viewDidUnload {
+    [self setScoreDisplay:nil];
+    [super viewDidUnload];
+}
 @end

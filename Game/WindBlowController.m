@@ -15,6 +15,7 @@
 @interface WindBlowController ()
 @property (readwrite) NSMutableArray* windBlowSequence;
 @property (readwrite) BreathType breathType;
+@property (readwrite) NSMutableArray* windDisperseSequence;
 @end
 
 @implementation WindBlowController
@@ -25,45 +26,14 @@
 @synthesize chipmunkObjects = _chipmunkObjects;
 @synthesize windBlowSequence = _windBlowSequence;
 @synthesize breathType = _breathType;
+@synthesize windDisperseSequence = _windDisperseSequence;
 
-static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
 
-- (void)buttonClicked {
-	// Apply a random velcity change to the body when the button is clicked.
-	cpVect v = cpvmult(cpv(frand_unit(), frand_unit()), 300.0f);
-	_body.vel = cpvadd(_body.vel, v);
-	
-	_body.angVel += 5.0f*frand_unit();
-}
 
 - (void)updatePosition {
 	_button.transform = _body.affineTransform;
 }
 
-- (id) init { //TODO delete
-    
-    self = [super init];
-    if (!self) return nil;
-    
-    //Cut up sprites from sprite screen and populate _windblowsequence
-    _windBlowSequence = [[NSMutableArray alloc]init];
-    for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
-        [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW_SPRITESCREEN_PATH]];
-    }
-    
-    
-    //put into button
-    _button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_button setTitle:@"breath" forState:UIControlStateNormal];
-    [_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [_button setImage:[_windBlowSequence objectAtIndex:0] forState:UIControlStateNormal];
-    _button.bounds = CGRectMake(0, 0,((UIImage*)[_windBlowSequence objectAtIndex:0]).size.width, ((UIImage*)[_windBlowSequence objectAtIndex:0]).size.height);
-    _button.frame = CGRectMake(600, 200,
-                               ((UIImage*)[_windBlowSequence objectAtIndex:0]).size.width,
-                               ((UIImage*)[_windBlowSequence objectAtIndex:0]).size.height);
-    
-    return self;
-}
 
 - (id)initWithTransform:(CGAffineTransform)myTransform
                  Bounds:(CGRect)myBounds
@@ -77,30 +47,72 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         
 		cpFloat mass;
         _windBlowSequence = [[NSMutableArray alloc]init]; //IMPT!
+        _windDisperseSequence = [[NSMutableArray alloc]init]; // IMPT!
         
         //Set breathe type
         if (type == kNorm) {
-            mass = 50.0f;
+            mass = 100.0f;
             _breathType = kNorm;
             // Cut up sprites from wind blow sprite screen and populate _windblowsequence
             for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
                 [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW_SPRITESCREEN_PATH]];
             }
+            
+            //Fill up windDisperseSequence
+            UIImage *windDisperseSpriteScreen = [UIImage imageNamed:WINDDISPERSE_SPRITESCREEN_PATH];
+            for (int i = 0; i < WINDDISPERSE_SPRITESCREEN_SPRITE_COUNT; i++) {
+                CGRect croppingRect = [SpriteHelper getCroppingRect:windDisperseSpriteScreen
+                                                      RowsOfSprites:2
+                                                      ColsOfSprites:5
+                                                        SpriteCount:WINDDISPERSE_SPRITESCREEN_SPRITE_COUNT
+                                                 DesiredSpriteIndex:i];
+                
+                CGImageRef refToDesiredSprite = CGImageCreateWithImageInRect([windDisperseSpriteScreen CGImage], croppingRect);
+                [_windDisperseSequence addObject:[UIImage imageWithCGImage:refToDesiredSprite]];
+            }
+            
         }
         else if (type == kFire) {
-            mass = 70.0f;
+            mass = 65.0f;
             _breathType = kFire;
             // Cut up sprites from wind blow1 sprite screen and populate _windblowsequence
             for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
                 [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW1_SPRITESCREEN_PATH]];
             }
+            
+            //Fill up windDisperseSequence
+            UIImage *windDisperseSpriteScreen = [UIImage imageNamed:WINDDISPERSE1_SPRITESCREEN_PATH];
+            for (int i = 0; i < WINDDISPERSE1_SPRITESCREEN_SPRITE_COUNT; i++) {
+                CGRect croppingRect = [SpriteHelper getCroppingRect:windDisperseSpriteScreen
+                                                      RowsOfSprites:2
+                                                      ColsOfSprites:4
+                                                        SpriteCount:WINDDISPERSE1_SPRITESCREEN_SPRITE_COUNT
+                                                 DesiredSpriteIndex:i];
+                
+                CGImageRef refToDesiredSprite = CGImageCreateWithImageInRect([windDisperseSpriteScreen CGImage], croppingRect);
+                [_windDisperseSequence addObject:[UIImage imageWithCGImage:refToDesiredSprite]];
+            }
+            
         }
         else if (type == kIce) {
-            mass = 70.0f;
+            mass = 65.0f;
             _breathType = kIce;
             // Cut up sprites from wind blow2 sprite screen and populate _windblowsequence
             for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
                 [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW2_SPRITESCREEN_PATH]];
+            }
+            
+            //Fill up windDisperseSequence
+            UIImage *windDisperseSpriteScreen = [UIImage imageNamed:WINDDISPERSE2_SPRITESCREEN_PATH];
+            for (int i = 0; i < WINDDISPERSE2_SPRITESCREEN_SPRITE_COUNT; i++) {
+                CGRect croppingRect = [SpriteHelper getCroppingRect:windDisperseSpriteScreen
+                                                      RowsOfSprites:3
+                                                      ColsOfSprites:3
+                                                        SpriteCount:WINDDISPERSE2_SPRITESCREEN_SPRITE_COUNT
+                                                 DesiredSpriteIndex:i];
+                
+                CGImageRef refToDesiredSprite = CGImageCreateWithImageInRect([windDisperseSpriteScreen CGImage], croppingRect);
+                [_windDisperseSequence addObject:[UIImage imageWithCGImage:refToDesiredSprite]];
             }
         }
         else if (type == kPlasma) {
@@ -110,13 +122,22 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
             for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
                 [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW3_SPRITESCREEN_PATH]];
             }
+            
+            //Fill up windDisperseSequence
+            UIImage *windDisperseSpriteScreen = [UIImage imageNamed:WINDDISPERSE3_SPRITESCREEN_PATH];
+            for (int i = 0; i < WINDDISPERSE3_SPRITESCREEN_SPRITE_COUNT; i++) {
+                CGRect croppingRect = [SpriteHelper getCroppingRect:windDisperseSpriteScreen
+                                                      RowsOfSprites:2
+                                                      ColsOfSprites:4
+                                                        SpriteCount:WINDDISPERSE3_SPRITESCREEN_SPRITE_COUNT
+                                                 DesiredSpriteIndex:i];
+                
+                CGImageRef refToDesiredSprite = CGImageCreateWithImageInRect([windDisperseSpriteScreen CGImage], croppingRect);
+                [_windDisperseSequence addObject:[UIImage imageWithCGImage:refToDesiredSprite]];
+            }
         }
         else
             [NSException raise:@"init WindBlowController" format:@"Invalid breath type: %d",type];
-        
-        
-        
-        
         
         
         
@@ -132,24 +153,14 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         
 		// Set up the breath picture
 		_button = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_button setTitle:@"Breath" forState:UIControlStateNormal];
-		[_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
 		[_button setImage:resultingImage forState:UIControlStateNormal];
+        [_button setUserInteractionEnabled:NO];
         _button.bounds = CGRectMake(0, 0, widthActual, heightActual);
         
-        
-		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
-		
-		// The moment of inertia is like the rotational mass of an object.
-		// Chipmunk provides a number of helper functions to help you estimate the moment of inertia.
 		cpFloat moment = cpMomentForBox(mass, widthActual, heightActual);
         
-		
-		// A rigid body is the basic skeleton you attach joints and collision shapes too.
-		// Rigid bodies hold the physical properties of an object such as the postion, rotation, and mass of an object.
-		// You attach collision shapes to rigid bodies to define their shape and allow them to collide with other objects,
-		// and you can attach joints between rigid bodies to connect them together.
+    
 		_body = [[ChipmunkBody alloc] initWithMass:mass andMoment:moment];
         _body.angle = [MyMath rotationOfNonSkewedAffineTransform:myTransform];
         _body.pos = cpv(myCenter.x, myCenter.y);
@@ -158,7 +169,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		
 		shape.elasticity = 0.3f;
 		
-		shape.friction = 0.3f;
+		shape.friction = 0.4f;
 		
 		shape.collisionType = [WindBlowController class];
 		
@@ -179,17 +190,17 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     [_button.imageView startAnimating];
 }
 
-- (void) dropAlpha {
-    _button.imageView.alpha = 0.2;
+
+- (void)animateDispersionWithDurationSecs:(double)t {
+    _button.imageView.animationImages = _windDisperseSequence;
+    _button.imageView.animationDuration = t;
+    _button.imageView.animationRepeatCount = 1;
+    [_button.imageView startAnimating];
 }
 
-- (void) resetAlphaToOne {
-    _button.imageView.alpha = 1;
-}
 
 
-
-// HELPER FUNCTIONS
+// ============== OLD FUNCTIONS TO BE REFACTORED OUT ================
 
 - (CGRect) getCroppingRectForFrame:(NSUInteger)desiredFrame Of:(NSString*)spriteScreenPath  {
     // EFFECTS: Returns a CGRect the size of one breath

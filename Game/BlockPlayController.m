@@ -27,15 +27,6 @@
 @synthesize chipmunkObjects = _chipmunkObjects;
 @synthesize material = _material;
 
-static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
-
-- (void)buttonClicked {
-	// Apply a random velcity change to the body when the button is clicked.
-	cpVect v = cpvmult(cpv(frand_unit(), frand_unit()), 300.0f);
-	_body.vel = cpvadd(_body.vel, v);
-	
-	_body.angVel += 5.0f*frand_unit();
-}
 
 - (void)updatePosition {
 	_button.transform = _body.affineTransform;
@@ -89,13 +80,10 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         
 		// Set up the pig picture
 		_button = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_button setTitle:@"B" forState:UIControlStateNormal];
-		[_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
 		[_button setImage:resultingImage forState:UIControlStateNormal];
+        [_button setUserInteractionEnabled:NO];
         _button.bounds = CGRectMake(0, 0, widthActual, heightActual);
         
-        
-		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
 		// Set up Chipmunk objects.
 		
@@ -131,19 +119,6 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		// That way you can get a reference to this object from the shape when you are in a callback.
 		shape.data = self;
 		
-		// Keep in mind that you can attach multiple collision shapes to each rigid body, and that each shape can have
-		// unique properties. You can make the player's head have a different collision type for instance. This is useful
-        // for brain damage.
-		
-		// Now we just need to initialize the instance variable for the chipmunkObjects property.
-		// ChipmunkObjectFlatten() is an easy way to build this set. You can pass any object to it that
-		// implements the ChipmunkObject protocol and not just primitive types like bodies and shapes.
-		
-		// Notice that we didn't even have to keep a reference to 'shape'. It was created using the autorelease convenience function.
-		// This means that the chipmunkObjects NSSet will manage the memory for us. No need to worry about forgetting to call
-		// release later when you're using Objective-Chipmunk!
-		
-		// Note the nil terminator at the end! (this is how it knows you are done listing objects)
 		_chipmunkObjects = [[NSArray alloc] initWithObjects:_body, shape, nil];
 	}
 	

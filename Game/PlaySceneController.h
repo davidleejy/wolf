@@ -24,7 +24,7 @@
 @class PigPlayController;
 @class WolfPlayController;
 @class BlockPlayController;
-#import "WindBlowController.h";
+#import "WindBlowController.h"
 @class BarController;
 @class AngleDialController;
 
@@ -32,18 +32,14 @@
 @class GameObjectModel;
 
 @interface PlaySceneController : UIViewController {
-    int j; //TODO delete
-    
     CADisplayLink *displayLink;
 	ChipmunkSpace *space;
-    
 }
 
 @property (readwrite) GameObjectModel* dataFromLevelDesigner;
 
 // ****** Views being managed ******
 @property (readwrite, weak, nonatomic) IBOutlet UIScrollView *battleField;
-@property (readwrite) UIProgressView *breathBar;//TODO delete these views
 
 // ***** Controllers being managed ******
 @property (readwrite) PigPlayController *pigPlayController;
@@ -57,16 +53,17 @@
 
 // ***** Game States ******
 @property (readwrite) BreathType wolfBreathType;
+@property (readwrite) int score;
 
 // ***** Game Settings *****
 //@property (readwrite) windBlowVelocity
 
 // ***** Outlets *****
 @property (weak, nonatomic) IBOutlet UITextView *currBreathTypeDisplay;
+@property (weak, nonatomic) IBOutlet UILabel *scoreDisplay;
 
 // ***** Buttons *****
 - (IBAction)abort:(id)sender;
-- (IBAction)makej1337:(id)sender; //TODO delete
 - (IBAction)setWolfBreathTypeToNorm:(id)sender;
 - (IBAction)setWolfBreathTypeFire:(id)sender;
 - (IBAction)setWolfBreathTypeIce:(id)sender;

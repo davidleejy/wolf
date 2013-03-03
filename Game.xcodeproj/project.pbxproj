@@ -15,6 +15,7 @@
 		FBB2045616E38D06004141C1 /* OrbOfPerseverance.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045116E38D06004141C1 /* OrbOfPerseverance.JPG */; };
 		FBB2045716E38D06004141C1 /* OrbOfPoison.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045216E38D06004141C1 /* OrbOfPoison.JPG */; };
 		FBB2045A16E3AC83004141C1 /* ViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FBB2045916E3AC82004141C1 /* ViewHelper.m */; };
+		FBB2045E16E40ADB004141C1 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045D16E40ADB004141C1 /* title.png */; };
 		FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845516BD35B80091BB47 /* GameObjectView.m */; };
 		FBBB845A16BD62340091BB47 /* PigView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845916BD62340091BB47 /* PigView.m */; };
 		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
@@ -93,6 +94,7 @@
 		FBB2045216E38D06004141C1 /* OrbOfPoison.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OrbOfPoison.JPG; sourceTree = "<group>"; };
 		FBB2045816E3AC82004141C1 /* ViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewHelper.h; sourceTree = "<group>"; };
 		FBB2045916E3AC82004141C1 /* ViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewHelper.m; sourceTree = "<group>"; };
+		FBB2045D16E40ADB004141C1 /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
 		FBBB845416BD35B80091BB47 /* GameObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectView.h; sourceTree = "<group>"; };
 		FBBB845516BD35B80091BB47 /* GameObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectView.m; sourceTree = "<group>"; };
 		FBBB845816BD62340091BB47 /* PigView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigView.h; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBB2045D16E40ADB004141C1 /* title.png */,
 				FBB2044E16E38D05004141C1 /* BasicWind.JPG */,
 				FBB2044F16E38D05004141C1 /* OrbOfFrost.JPG */,
 				FBB2045016E38D06004141C1 /* OrbOfNewBeginnings.JPG */,
@@ -579,6 +582,7 @@
 				FBB2045516E38D06004141C1 /* OrbOfNewBeginnings.JPG in Resources */,
 				FBB2045616E38D06004141C1 /* OrbOfPerseverance.JPG in Resources */,
 				FBB2045716E38D06004141C1 /* OrbOfPoison.JPG in Resources */,
+				FBB2045E16E40ADB004141C1 /* title.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

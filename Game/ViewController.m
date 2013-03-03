@@ -229,11 +229,14 @@
 
 - (IBAction)startButton:(id)sender {
     
-    //check whether got 1 wolf and 1 pig in play. //TODO reinstate condition
-//    if (!
-//        ([_wolfController.view isDescendantOfView:_gamearea] && [_pigController.view isDescendantOfView:_gamearea])) {
-//        return;
-//    }
+    //check whether got 1 wolf and 1 pig in play.
+    if (!
+        ([_wolfController.view isDescendantOfView:_gamearea] && [_pigController.view isDescendantOfView:_gamearea])) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Cannot Start Game" message:@"The pig and wolf are not in the game area yet." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+        return;
+    }
     
     PlaySceneController *playSceneContoller = [self.storyboard instantiateViewControllerWithIdentifier:@"psc"];
     

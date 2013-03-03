@@ -39,8 +39,4 @@
 //      wind should be blown out /sucked in from.
 
 
-//TODO
-//- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt PerformAtEnd:(SEL)selector1;
-//// EFFECTS: Animates the wolf with wind blowing action and selector is called at end.
-
 @end

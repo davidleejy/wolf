@@ -18,7 +18,6 @@
 
 - (void)updatePosition;
 
-- (id)init;
 
 - (id)initWithTransform:(CGAffineTransform)myTransform Bounds:(CGRect)myBounds Frame:(CGRect)myFrame Center:(CGPoint)myCenter;
 // REQUIRES: Non-skewed transform
