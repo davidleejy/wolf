@@ -37,13 +37,7 @@
 
 static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
 
-- (void)buttonClicked {
-	// Apply a random velcity change to the body when the button is clicked.
-	cpVect v = cpvmult(cpv(frand_unit(), frand_unit()), 300.0f);
-	_body.vel = cpvadd(_body.vel, v);
-	
-	_body.angVel += 5.0f*frand_unit();
-}
+
 
 - (void)updatePosition {
 	_button.transform = _body.affineTransform;
@@ -84,7 +78,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         _button.bounds = CGRectMake(0, 0, widthActual, heightActual);
         
         
-		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
+//		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
 		// Set up Chipmunk objects.
 		cpFloat mass = 1.0f;
@@ -188,6 +182,12 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     return result;
 }
 
-
+//- (void)buttonClicked {
+//	// Apply a random velcity change to the body when the button is clicked.
+//	cpVect v = cpvmult(cpv(frand_unit(), frand_unit()), 300.0f);
+//	_body.vel = cpvadd(_body.vel, v);
+//
+//	_body.angVel += 5.0f*frand_unit();
+//}
 
 @end

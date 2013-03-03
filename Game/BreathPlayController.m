@@ -136,6 +136,15 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     [_button.imageView startAnimating];
 }
 
+- (void) dropAlpha {
+    _button.imageView.alpha = 0.2;
+}
+
+- (void) resetAlphaToOne {
+    _button.imageView.alpha = 1;
+}
+
+
 
 // HELPER FUNCTIONS
 

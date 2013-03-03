@@ -23,6 +23,7 @@
 #import "BlockPlayController.h"
 #import "BreathPlayController.h"
 #import "BarController.h"
+#import "AngleDialController.h"
 
 // Model classes
 #import "GameObjectModel.h"
@@ -36,6 +37,7 @@ static NSString *borderType = @"borderType";
 //Math
 #import "MyMath.h"
 
+
 @implementation PlaySceneController
 
 @synthesize battleField = _battleField;
@@ -46,10 +48,11 @@ static NSString *borderType = @"borderType";
 @synthesize pigPlayController = _pigPlayController;
 @synthesize wolfPlayController = _wolfPlayController;
 @synthesize blockPlayControllerArray = _blockPlayControllerArray;
-@synthesize breathPlayController = _breathPlayController;
+@synthesize windBlowControllerArray = _windBlowControllerArray;
 @synthesize breathBar = _breathBar;
 @synthesize breathPowerBarController = _breathPowerBarController;
 @synthesize animateBreathPowerBarTimer = _animateBreathPowerBarTimer;
+@synthesize angleDialController = _angleDialController;
 
 - (void)viewDidLoad
 {
@@ -95,6 +98,10 @@ static NSString *borderType = @"borderType";
     //Init breath power bar
     _breathPowerBarController = [[BarController alloc]initForPlayScene];
     [self.view addSubview:_breathPowerBarController.bar];
+    
+    //Init angle dial
+    _angleDialController = [[AngleDialController alloc]initForPlayScene];
+    [self.view addSubview:_angleDialController.dialView];
 
     
     // Create and initialize the Chipmunk space.
@@ -113,6 +120,54 @@ static NSString *borderType = @"borderType";
 	// I often find it convenient to use class objects to define collision types.
 	// There are 4 different collision events that you can catch: begin, pre-solve, post-solve and separate.
 	// See the documentation for a description of what they are all for.
+    
+    
+    // ****** Collision Handlers *******
+    // Here we dictate what happens between objects when they collide.
+    
+    // W1. Wind blows disintegrates when it touches ground.
+    // W2. Wind blows disintegrates when it touches non-straw blocks.
+    // W3. Wind blows lose half power when it touches straw.
+    // W4. Wind blows pass through other wind blows.
+    // W5. Wind blows pass through wolf.
+    
+    // W1.
+    [space addCollisionHandler:self
+                         typeA:[BreathPlayController class] typeB:borderType
+                         begin:nil
+                      preSolve:nil
+                     postSolve:nil
+                      separate:@selector(windBlowDisintegrate:space:)
+     ];
+    
+    // W2. & W3.
+    [space addCollisionHandler:self
+                         typeA:[BreathPlayController class] typeB:[BlockPlayController class]
+                         begin:@selector(beginCollisionBetweenWindBlowAndBlock:space:)
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollisionBetweenWindBlowAndBlock:space:)
+                      separate:nil
+     ];
+    
+    // W4.
+    [space addCollisionHandler:self
+                         typeA:[BreathPlayController class] typeB:[BreathPlayController class]
+                         begin:@selector(noCollision:space:)
+                      preSolve:nil
+                     postSolve:nil
+                      separate:nil
+     ];
+    
+    // W5.
+    [space addCollisionHandler:self
+                         typeA:[BreathPlayController class] typeB:[WolfPlayController class]
+                         begin:@selector(noCollision:space:)
+                      preSolve:nil
+                     postSolve:nil
+                      separate:nil
+     ];
+    
+    
 	[space addCollisionHandler:self
                          typeA:[PigPlayController class] typeB:borderType
                          begin:@selector(beginCollision:space:)
@@ -120,11 +175,8 @@ static NSString *borderType = @"borderType";
                      postSolve:@selector(postSolveCollision:space:)
                       separate:@selector(separateCollision:space:)
      ];
-
-	
-
-//    NSLog(@"sent over frame = %@\n", NSStringFromCGRect(_dataFromLevelDesigner.pigV.frame));
-//    NSLog(@"sent over bounds = %@\n", NSStringFromCGRect(_dataFromLevelDesigner.pigV.bounds));
+    
+    
 
     
     // ******* Initialise play controllers *******
@@ -169,9 +221,8 @@ static NSString *borderType = @"borderType";
         [_blockPlayControllerArray addObject:tempBPC];
     }
     
-    _breathPlayController = [[BreathPlayController alloc]initWithTransform:CGAffineTransformIdentity
-                                                                    Bounds:CGRectMake(0, 0, 100, 100)
-                                                                    Center:CGPointMake(200, 200)];
+    
+    _windBlowControllerArray = [[NSMutableArray alloc]init]; // VERY IMPORTANT TO INIT!! OTHERWISE LATER CAN'T USE THIS ARRAY.  ALSO COMPILER WON'T GIVE ANY RUNTIME OR COMPILETIME ERRORS!!
 
     
     
@@ -187,7 +238,7 @@ static NSString *borderType = @"borderType";
         [_battleField addSubview:tempBPC.button];
     }
     
-    [_battleField addSubview:_breathPlayController.button];
+    
     
 	
 	// Adding physics objects
@@ -200,11 +251,11 @@ static NSString *borderType = @"borderType";
         [space add:[_blockPlayControllerArray objectAtIndex:i]];
     }
     
-    [space add:_breathPlayController];
     
     
     // **** Making connections ****
     
+    // Connect wolf with breath power bar...
     // When wolf is held down by finger, breath power bar's progress oscillates.
     // I also call the oscillation "bubbling".
     [_wolfPlayController.button addTarget:self action:@selector(startAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchDown];
@@ -212,76 +263,116 @@ static NSString *borderType = @"borderType";
     [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpOutside];
     
     
-    // TESTING TODO A3
+
+    
+    
+    //TODO TESTING A3
 //    UIImage * b1i = [_breathPlayController windBlowInFrame:4 Of:WINDBLOW_SPRITESCREEN_PATH];
 //    UIImageView *b1iv = [[UIImageView alloc]initWithImage:b1i];
 //    [_battleField addSubview:b1iv];
     // TESTING TODO A3
     
-    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
-     UIImageView *mark2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
     
-    UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_ARROW_DESELECTED_PATH]];
-    
-//    UIView* arrowHolder = [[UIView alloc]initWithFrame:CGRectMake(0, 0,
-//                                                                 arrow.frame.size.width,
-//                                                                 arrow.frame.size.height*2.0)];
-    
-//    UIImageView *arrowHolder = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
-//                                                                     arrow.frame.size.width,
-//                                                                     arrow.frame.size.height*2.0)];
-//    [arrowHolder addSubview:arrow];
-    [arrow addSubview:mark];
-    mark.frame = CGRectMake(arrow.center.x, arrow.center.y, 5, 5);
-    
-    
-    mark2.frame = CGRectMake(0, 0, 5, 5);
-    
-//    arrow.frame = CGRectMake(0,
-//                             0,
-//                             arrow.frame.size.width,
-//                             arrow.frame.size.height);
-    
-    UIImageView *dialMarkings = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_PATH]];
-    
-    
-    UIImageView *dial = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
-                                                                     dialMarkings.frame.size.width+40
-                                                                     ,
-                                                                     dialMarkings.frame.size.height)];
-    
-    
-    dialMarkings.frame = CGRectMake(dial.frame.size.width-dialMarkings.frame.size.width,
-                                    0,
-                                    dialMarkings.frame.size.width,
-                                    dialMarkings.frame.size.height);
-    [dial addSubview:dialMarkings];
-    
-    [dial addSubview:mark2];//todo delete
-    
-    [dial addSubview:arrow];
-    
-//    arrow.transform = CGAffineTransformTranslate(arrow.transform, 0, 0);
-//    arrow.frame = CGRectMake(0,
-//                             0,
-//                             arrow.frame.size.width,
-//                             arrow.frame.size.height);
-    arrow.transform = CGAffineTransformScale(arrow.transform, 0.6, 0.6);
-    arrow.center = CGPointMake(50, dial.frame.size.height/2.0+30);
-    arrow.transform = CGAffineTransformRotate(arrow.transform, M_PI/2.8);
-    
-//    arrowHolder.center = CGPointMake(dial.frame.size.width-dialMarkings.frame.size.width,
-//                                     dial.frame.size.height/2.0);
-    
-    [_battleField addSubview:dial];
-//    [_battleField addSubview:arrowHolder];
-    //[_battleField addSubview:arrow];
+    //TODO TESTING DIAL
+//    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+//     UIImageView *mark2 = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+//    
+//    UIImageView *arrow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_ARROW_DESELECTED_PATH]];
+//    
+//    [arrow addSubview:mark];
+//    mark.frame = CGRectMake(arrow.center.x, arrow.center.y, 5, 5);
+//    
+//    
+//    mark2.frame = CGRectMake(0, 0, 5, 5);
+//
+//    
+//    UIImageView *dialMarkings = [[UIImageView alloc]initWithImage:[UIImage imageNamed:ANGLE_DIAL_PATH]];
+//    
+//    
+//    UIImageView *dial = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,
+//                                                                     dialMarkings.frame.size.width+40
+//                                                                     ,
+//                                                                     dialMarkings.frame.size.height)];
+//    
+//    
+//    dialMarkings.frame = CGRectMake(dial.frame.size.width-dialMarkings.frame.size.width,
+//                                    0,
+//                                    dialMarkings.frame.size.width,
+//                                    dialMarkings.frame.size.height);
+//    [dial addSubview:dialMarkings];
+//    
+//    [dial addSubview:mark2];//todo delete
+//    
+//    [dial addSubview:arrow];
+//    
+//
+//    arrow.transform = CGAffineTransformScale(arrow.transform, 0.6, 0.6);
+//    arrow.center = CGPointMake(50, dial.frame.size.height/2.0+20);
+//    arrow.transform = CGAffineTransformRotate(arrow.transform, M_PI/2.0);
+//
+//    
+//    [_battleField addSubview:dial];
     
     
     NSLog(@"j begins with%d",j); //TODO delete
 }
 
 
+-(void)windBlowDisintegrate:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, dontCareShape);
+    BreathPlayController *x = windBlowShape.data;
+    [x.button removeFromSuperview];
+    [_windBlowControllerArray removeObjectIdenticalTo:x];
+    [space1 addPostStepRemoval:windBlowShape];
+}
+
+
+-(bool)noCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    return FALSE;
+}
+
+
+-(bool)beginCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    // Record pre collision velocity from first frame of the collision.
+	if(cpArbiterIsFirstContact(arbiter)){
+        CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
+        BreathPlayController *wPC = windBlowShape.data;
+        wPC.preCollisionVelocity = wPC.body.vel;
+//        NSLog(@"pre collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
+    }
+    
+    return TRUE;
+}
+
+-(void)postSolveCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    
+    // We only care about the first frame of the collision.
+	// If the shapes have been colliding for more than one frame, return early.
+	//if(!cpArbiterIsFirstContact(arbiter)) return;
+    
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
+    
+    BreathPlayController *wPC = windBlowShape.data;
+    BlockPlayController *bPC = blockShape.data;
+    
+    switch (bPC.material) {
+        case kStraw:
+            [bPC.button removeFromSuperview];
+            [_blockPlayControllerArray removeObjectIdenticalTo:bPC];
+            [space1 addPostStepRemoval:blockShape];
+            wPC.body.vel = cpvmult(wPC.preCollisionVelocity, 0.5f);
+            break;
+            
+        default:
+            [wPC.button removeFromSuperview];
+            [_windBlowControllerArray removeObjectIdenticalTo:wPC];
+            [space1 addPostStepRemoval:windBlowShape];
+            break;
+    }
+    
+//    NSLog(@"post solve collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
+    
+}
 
 
 - (bool)beginCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
@@ -308,18 +399,20 @@ static NSString *borderType = @"borderType";
 	
 	// Change the background color to gray so we know when the button is touching something.
 	self.view.backgroundColor = [UIColor grayColor];
-	
+    
 	// begin and pre-solve callbacks MUST return a boolean.
 	// Returning false from a begin callback ignores a collision permanently.
 	// Returning false from a pre-solve callback ignores the collision for just one frame.
 	// See the documentation on collision handlers for more information.
 	return TRUE; // We return true, so the collision is handled normally.
+    
 }
 
 // The post-solve collision callback is called right after Chipmunk has finished calculating all of the
 // collision responses. You can use it to find out how hard objects hit each other.
 // There is also a pre-solve callback that allows you to reject collisions conditionally.
-- (void)postSolveCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
+- (void)postSolveCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    
 	// We only care about the first frame of the collision.
 	// If the shapes have been colliding for more than one frame, return early.
 	if(!cpArbiterIsFirstContact(arbiter)) return;
@@ -328,13 +421,15 @@ static NSString *borderType = @"borderType";
 	// the collision. We'll use the length of the impulse vector to approximate the sound
 	// volume to play for the collision.
 	cpFloat impulse = cpvlength(cpArbiterTotalImpulse(arbiter));
+    
+    
 	
 }
 
 static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 
 // The separate callback is called whenever shapes stop touching.
-- (void)separateCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space {
+- (void)separateCollision:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
 	CHIPMUNK_ARBITER_GET_SHAPES(arbiter, buttonShape, border);
 	
 	// Decrement the counter on the FallingButton.
@@ -346,6 +441,12 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 		// Let's set the background color to a random color so you can see each time the shape touches something new.
 		self.view.backgroundColor = [UIColor colorWithRed:frand() green:frand() blue:frand() alpha:1.0f];
 	}
+    
+    
+    //TODO removal cpo
+//    [space1 addPostStepRemoval:buttonShape];
+//    [_pigPlayController.button removeFromSuperview];
+//    _pigPlayController = nil;
 }
 
 // When the view appears on the screen, start the animation timer.
@@ -370,8 +471,9 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     for (int i = 0; i<_blockPlayControllerArray.count; i++) {
         [[_blockPlayControllerArray objectAtIndex:i] updatePosition];
     }
-    [_breathPlayController updatePosition];
-    
+    for (int i = 0; i<_windBlowControllerArray.count; i++) {
+        [[_windBlowControllerArray objectAtIndex:i] updatePosition];
+    }
     
 }
 
@@ -396,8 +498,39 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 - (IBAction)makej1337:(id)sender {
     j = 1337;
     NSLog(@"j is now %d",j);
-    [_wolfPlayController animateBlowWithDeltaTime:0.5 RepeatCount:5];
-    [_breathPlayController animateWithDeltaTime:0.6 RepeatCount:5];
+    [_wolfPlayController animateBlowWithDeltaTime:0.3 RepeatCount:1];
+    
+    
+    //TODO testing breath generation.
+    double windBlowCenterX = _wolfPlayController.body.pos.x +
+    _wolfPlayController.button.imageView.frame.size.width/2.0;
+    double windBlowCenterY = _wolfPlayController.body.pos.y - _wolfPlayController.button.frame.size.height/3.0;
+    
+    BreathPlayController* wBPC = [[BreathPlayController alloc]initWithTransform:CGAffineTransformIdentity
+                                                                         Bounds:CGRectMake(0, 0, 80, 80)
+                                                                         Center:CGPointMake(windBlowCenterX, windBlowCenterY)];
+    
+    [_windBlowControllerArray addObject:wBPC];
+    
+    [wBPC animateWithDeltaTime:0.1 RepeatCount:0];//repeat forever
+    
+    [_battleField addSubview:wBPC.button];
+    [space add:wBPC];
+    
+    //markers
+    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+    [_battleField addSubview:mark];
+    mark.frame = CGRectMake(windBlowCenterX, windBlowCenterY, 5, 5);
+	
+    
+    NSLog(@"angle shown %.9f",[_angleDialController angleShown]);
+    
+    cpVect unitDirV = cpvforangle(-[_angleDialController angleShown]);
+    cpVect v = cpvmult(unitDirV, _breathPowerBarController.bar.progress*2000);
+	wBPC.body.vel = v;
+    
+    NSLog(@"num of blocks left %d",_blockPlayControllerArray.count);
+    NSLog(@"num of breaths left %d",_windBlowControllerArray.count);
 }
 
 
@@ -415,6 +548,12 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     [_animateBreathPowerBarTimer invalidate];
     _animateBreathPowerBarTimer = nil;
 }
+
+
+// ======= Wolf Attack Functions ========= 
+
+
+// ======= Functions to make chipmunk physics objects disappear =========
 
 
 

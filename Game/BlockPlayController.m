@@ -11,12 +11,21 @@
 #import "MyMath.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface BlockPlayController ()
+
+@property (readwrite) Material material;
+
+@end
+
+
+
 @implementation BlockPlayController
 
 @synthesize button = _button;
 @synthesize touchedShapes = _touchedShapes;
 @synthesize body = _body;
 @synthesize chipmunkObjects = _chipmunkObjects;
+@synthesize material = _material;
 
 static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
 
@@ -35,6 +44,22 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 - (id)initWithTransform:(CGAffineTransform)myTransform Bounds:(CGRect)myBounds Center:(CGPoint)myCenter ImagePath:(NSString*)materialImagePath{
     
     if(self = [super init]){
+        
+        //Set material property
+        if ([materialImagePath isEqualToString:BLOCK_STRAW_IMAGE_PATH]) {
+            _material = kStraw;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_WOOD_IMAGE_PATH]) {
+            _material = kWood;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_IRON_IMAGE_PATH]) {
+            _material = kIron;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_STONE_IMAGE_PATH]) {
+            _material = kStone;
+        }
+        else
+            [NSException raise:@"init BlockPlayController" format:@"Invalid material image path: %@",materialImagePath];
         
         //Find actual size:
         double widthActual = [MyMath horizScaleFactorOf:myTransform]*myBounds.size.width;

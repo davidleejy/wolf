@@ -26,6 +26,7 @@
 @class BlockPlayController;
 @class BreathPlayController;
 @class BarController;
+@class AngleDialController;
 
 // Model classes
 @class GameObjectModel;
@@ -51,9 +52,14 @@
 @property (readwrite) PigPlayController *pigPlayController;
 @property (readwrite) WolfPlayController *wolfPlayController;
 @property (readwrite) NSMutableArray *blockPlayControllerArray;
-@property (readwrite) BreathPlayController *breathPlayController;
+@property (readwrite) NSMutableArray *windBlowControllerArray;
 @property (readwrite) BarController *breathPowerBarController;
 @property (readwrite) NSTimer* animateBreathPowerBarTimer; //To link wolf with breath power bar
+@property (readwrite) AngleDialController *angleDialController;
+
+
+// ***** Game Settings *****
+//@property (readwrite) windBlowVelocity
 
 - (IBAction)abort:(id)sender;
 - (IBAction)makej1337:(id)sender; //TODO delete
