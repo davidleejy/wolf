@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ObjectiveChipmunk.h"
 
-@interface BreathPlayController : NSObject <ChipmunkObject>
+@interface WindBlowController : NSObject <ChipmunkObject>
 
 @property (readwrite) UIButton *button; // TODO refactor name.  This is the view.
 @property (readwrite) ChipmunkBody *body;

@@ -62,7 +62,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
 		// Set up Chipmunk objects.
-		cpFloat mass = 1.0f;
+		cpFloat mass = 0.032f*widthActual*heightActual;;
 		
 		// The moment of inertia is like the rotational mass of an object.
 		// Chipmunk provides a number of helper functions to help you estimate the moment of inertia.
@@ -83,9 +83,9 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		ChipmunkShape *shape = [ChipmunkPolyShape boxWithBody:_body width:widthActual height:heightActual];
 		
 		// The elasticity of a shape controls how bouncy it is.
-		shape.elasticity = 0.3f;
+		shape.elasticity = 0.45f;
 		// The friction propertry should be self explanatory. Friction values go from 0 and up- they can be higher than 1f.
-		shape.friction = 0.3f;
+		shape.friction = 0.77f;
 		
 		// Set the collision type to a unique value (the class object works well)
 		// This type is used as a key later when setting up callbacks.

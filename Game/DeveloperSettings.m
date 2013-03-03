@@ -11,7 +11,7 @@
 @implementation DeveloperSettings
 
 
-// WolfView class
+// Wolf
 
 NSString *WOLFS_IMAGE_PATH = @"wolfs.png";
 CGFloat WOLF_DEFAULT_WIDTH = 225;
@@ -20,8 +20,13 @@ NSUInteger WOLFS_MAX_FRAMES_TO_CHOOSE_FROM = 15; // Choose between 1 ~ 15
 NSUInteger WOLFS_ROWS_OF_FRAMES = 3;
 NSUInteger WOLFS_COLUMNS_OF_FRAMES = 5;
 
+NSString *WOLF_WINDSUCK_SPRITESCREEN_PATH = @"windsuck.png";
+NSUInteger WOLF_WINDSUCK_SPRITESCREEN_SPRITE_COUNT = 8; // Choose between 0 ~ 7
 
-// PigView class
+NSString *WOLF_DIES_SPRITESCREEN_PATH = @"wolfdie.png";
+NSUInteger WOLF_DIES_SPRITESCREEN_SPRITE_COUNT = 16; // Choose between 0 ~ 15
+
+// Pig
 
 NSString *PIG_IMAGE_PATH = @"pig.png";
 CGFloat PIG_DEFAULT_WIDTH = 88;
@@ -29,7 +34,7 @@ CGFloat PIG_DEFAULT_HEIGHT = 88;
 
 
 
-// BlockView class
+// Blocks
 
 NSString *BLOCK_WOOD_IMAGE_PATH = @"wood.png";
 NSString *BLOCK_IRON_IMAGE_PATH = @"iron.png";
@@ -45,6 +50,21 @@ CGFloat BLOCK_DEFAULT_HEIGHT = 130;
 
 // WindBlow
 NSString *WINDBLOW_SPRITESCREEN_PATH = @"windblow.png";
+NSString *WINDDISPERSE_SPRITESCREEN_PATH = @"wind-disperse.png";
+NSUInteger WINDDISPERSE_SPRITESCREEN_SPRITE_COUNT = 10; // Choose between 0 ~ 9
+
+NSString *WINDBLOW1_SPRITESCREEN_PATH = @"windblow1.png";
+NSString *WINDDISPERSE1_SPRITESCREEN_PATH = @"wind-disperse1.png";
+NSUInteger WINDDISPERSE1_SPRITESCREEN_SPRITE_COUNT = 8; // Choose between 0 ~ 7
+
+NSString *WINDBLOW2_SPRITESCREEN_PATH = @"windblow2.png";
+NSString *WINDDISPERSE2_SPRITESCREEN_PATH = @"wind-disperse2.png";
+NSUInteger WINDDISPERSE2_SPRITESCREEN_SPRITE_COUNT = 9; // Choose between 0 ~ 8
+
+NSString *WINDBLOW3_SPRITESCREEN_PATH = @"windblow3.png";
+NSString *WINDDISPERSE3_SPRITESCREEN_PATH = @"wind-disperse3.png";
+NSUInteger WINDDISPERSE3_SPRITESCREEN_SPRITE_COUNT = 8; // Choose between 0 ~ 7
+
 NSUInteger WINDBLOW_SPRITESCREEN_SPRITE_COUNT = 4;
 CGFloat WINDBLOW_BREATH_RADIUS = 40;
 

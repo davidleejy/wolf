@@ -21,7 +21,7 @@
 #import "PigPlayController.h"
 #import "WolfPlayController.h"
 #import "BlockPlayController.h"
-#import "BreathPlayController.h"
+#import "WindBlowController.h"
 #import "BarController.h"
 #import "AngleDialController.h"
 
@@ -112,7 +112,7 @@ static NSString *borderType = @"borderType";
 	// This method adds four static line segment shapes to the space.
 	// Most 2D physics games end up putting all the gameplay in a box.
 	// We'll tag these segment shapes with the borderType object. You'll see what this is for next.
-	[space addBounds:background.bounds thickness:10.0f elasticity:1.0f friction:1.0f layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:borderType];
+	[space addBounds:background.bounds thickness:10.0f elasticity:0.1f friction:0.9f layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:borderType];
 	
 	// This adds a callback that happens whenever a shape tagged with the
 	// [FallingButton class] object and borderType objects collide.
@@ -133,16 +133,16 @@ static NSString *borderType = @"borderType";
     
     // W1.
     [space addCollisionHandler:self
-                         typeA:[BreathPlayController class] typeB:borderType
+                         typeA:[WindBlowController class] typeB:borderType
                          begin:nil
                       preSolve:nil
-                     postSolve:nil
+                     postSolve:@selector(windBlowDisintegrate:space:)
                       separate:@selector(windBlowDisintegrate:space:)
      ];
     
     // W2. & W3.
     [space addCollisionHandler:self
-                         typeA:[BreathPlayController class] typeB:[BlockPlayController class]
+                         typeA:[WindBlowController class] typeB:[BlockPlayController class]
                          begin:@selector(beginCollisionBetweenWindBlowAndBlock:space:)
                       preSolve:nil
                      postSolve:@selector(postSolveCollisionBetweenWindBlowAndBlock:space:)
@@ -151,7 +151,7 @@ static NSString *borderType = @"borderType";
     
     // W4.
     [space addCollisionHandler:self
-                         typeA:[BreathPlayController class] typeB:[BreathPlayController class]
+                         typeA:[WindBlowController class] typeB:[WindBlowController class]
                          begin:@selector(noCollision:space:)
                       preSolve:nil
                      postSolve:nil
@@ -160,7 +160,7 @@ static NSString *borderType = @"borderType";
     
     // W5.
     [space addCollisionHandler:self
-                         typeA:[BreathPlayController class] typeB:[WolfPlayController class]
+                         typeA:[WindBlowController class] typeB:[WolfPlayController class]
                          begin:@selector(noCollision:space:)
                       preSolve:nil
                      postSolve:nil
@@ -320,10 +320,7 @@ static NSString *borderType = @"borderType";
 
 -(void)windBlowDisintegrate:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
     CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, dontCareShape);
-    BreathPlayController *x = windBlowShape.data;
-    [x.button removeFromSuperview];
-    [_windBlowControllerArray removeObjectIdenticalTo:x];
-    [space1 addPostStepRemoval:windBlowShape];
+    [self simpleDisappearWindBlow:windBlowShape];
 }
 
 
@@ -332,11 +329,12 @@ static NSString *borderType = @"borderType";
 }
 
 
+
 -(bool)beginCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
     // Record pre collision velocity from first frame of the collision.
 	if(cpArbiterIsFirstContact(arbiter)){
         CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
-        BreathPlayController *wPC = windBlowShape.data;
+        WindBlowController *wPC = windBlowShape.data;
         wPC.preCollisionVelocity = wPC.body.vel;
 //        NSLog(@"pre collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
     }
@@ -352,21 +350,17 @@ static NSString *borderType = @"borderType";
     
     CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
     
-    BreathPlayController *wPC = windBlowShape.data;
+    WindBlowController *wPC = windBlowShape.data;
     BlockPlayController *bPC = blockShape.data;
     
     switch (bPC.material) {
         case kStraw:
-            [bPC.button removeFromSuperview];
-            [_blockPlayControllerArray removeObjectIdenticalTo:bPC];
-            [space1 addPostStepRemoval:blockShape];
+            [self simpleDisappearBlock:blockShape];
             wPC.body.vel = cpvmult(wPC.preCollisionVelocity, 0.5f);
             break;
             
         default:
-            [wPC.button removeFromSuperview];
-            [_windBlowControllerArray removeObjectIdenticalTo:wPC];
-            [space1 addPostStepRemoval:windBlowShape];
+            [self simpleDisappearWindBlow:windBlowShape];
             break;
     }
     
@@ -465,7 +459,7 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 	cpFloat dt = displayLink.duration*displayLink.frameInterval;
 	[space step:dt];
 	
-	// This sets the position and rotation of the button to match the rigid body.
+	// Update all physics objects
 	[_pigPlayController updatePosition];
     [_wolfPlayController updatePosition];
     for (int i = 0; i<_blockPlayControllerArray.count; i++) {
@@ -501,33 +495,8 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     [_wolfPlayController animateBlowWithDeltaTime:0.3 RepeatCount:1];
     
     
-    //TODO testing breath generation.
-    double windBlowCenterX = _wolfPlayController.body.pos.x +
-    _wolfPlayController.button.imageView.frame.size.width/2.0;
-    double windBlowCenterY = _wolfPlayController.body.pos.y - _wolfPlayController.button.frame.size.height/3.0;
+    [self wolfBlowsWind];
     
-    BreathPlayController* wBPC = [[BreathPlayController alloc]initWithTransform:CGAffineTransformIdentity
-                                                                         Bounds:CGRectMake(0, 0, 80, 80)
-                                                                         Center:CGPointMake(windBlowCenterX, windBlowCenterY)];
-    
-    [_windBlowControllerArray addObject:wBPC];
-    
-    [wBPC animateWithDeltaTime:0.1 RepeatCount:0];//repeat forever
-    
-    [_battleField addSubview:wBPC.button];
-    [space add:wBPC];
-    
-    //markers
-    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
-    [_battleField addSubview:mark];
-    mark.frame = CGRectMake(windBlowCenterX, windBlowCenterY, 5, 5);
-	
-    
-    NSLog(@"angle shown %.9f",[_angleDialController angleShown]);
-    
-    cpVect unitDirV = cpvforangle(-[_angleDialController angleShown]);
-    cpVect v = cpvmult(unitDirV, _breathPowerBarController.bar.progress*2000);
-	wBPC.body.vel = v;
     
     NSLog(@"num of blocks left %d",_blockPlayControllerArray.count);
     NSLog(@"num of breaths left %d",_windBlowControllerArray.count);
@@ -551,51 +520,64 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 
 
 // ======= Wolf Attack Functions ========= 
+/* space here refer to battlefield */
+
+
+- (void) wolfBlowsWind{
+    
+    [_wolfPlayController animateBlowWithDeltaTime:1.0 RepeatCount:1]; // wolf huffs and puffs
+    [self performSelector:@selector(generateWind) withObject:nil afterDelay:0.7]; // wind is generated when he puffs
+}
+
+
+- (void) generateWind{
+    double windBlowCenterX = _wolfPlayController.body.pos.x + _wolfPlayController.button.imageView.frame.size.width/2.0 + 20;
+    double windBlowCenterY = _wolfPlayController.body.pos.y - _wolfPlayController.button.frame.size.height/3.5;
+    
+    WindBlowController* wBPC = [[WindBlowController alloc]initWithTransform:CGAffineTransformIdentity
+                                                                     Bounds:CGRectMake(0, 0, 80, 80)
+                                                                     Center:CGPointMake(windBlowCenterX, windBlowCenterY)];
+    
+    [_windBlowControllerArray addObject:wBPC];
+    
+    cpVect unitDirV = cpvforangle(-[_angleDialController angleShown]);
+    cpVect v = cpvmult(unitDirV, _breathPowerBarController.bar.progress*2000);
+	wBPC.body.vel = v;
+    
+    [wBPC animateWithDeltaTime:0.1 RepeatCount:0];//repeat forever
+    
+    
+    [space add:wBPC];
+    [_battleField addSubview:wBPC.button];
+    
+//    //wolf's mouth marker
+//    UIImageView *mark = [[UIImageView alloc]initWithImage:[UIImage imageNamed:BLOCK_WOOD_IMAGE_PATH]];
+//    [_battleField addSubview:mark];
+//    mark.frame = CGRectMake(windBlowCenterX, windBlowCenterY, 5, 5);
+	
+    
+//    NSLog(@"angle shown %.9f",[_angleDialController angleShown]);
+    
+}
 
 
 // ======= Functions to make chipmunk physics objects disappear =========
+/* space here refer to battlefield */
 
-
-
-- (void) populateBattleFieldWithDataFromLevelDesigner {
-    
-//    //Load _pigView with _dataFromLevelDesigner
-//    _pigView = [[PigView alloc]initDefaultWithController:self];
-//    _pigView.transform = _dataFromLevelDesigner.pigV.transform;
-//    _pigView.frame = _dataFromLevelDesigner.pigV.frame;
-//    _pigView.bounds = _dataFromLevelDesigner.pigV.bounds;
-//    [_battleField addSubview:_pigView];
-//    
-//    //Load _wolfView with _dataFromLevelDesigner
-//    _wolfView = [[WolfView alloc]initDefaultWithController:self];
-//    _wolfView.transform = _dataFromLevelDesigner.wolfV.transform;
-//    _wolfView.frame = _dataFromLevelDesigner.wolfV.frame;
-//    _wolfView.bounds = _dataFromLevelDesigner.wolfV.bounds;
-//    [_battleField addSubview:_wolfView];
-//    
-//    //Load _blockViewArray with _dataFromLevelDesigner
-//    _blockViewArray = [[NSMutableArray alloc]init];
-//    
-//    for (int i = 0; i < _dataFromLevelDesigner.blocksVArray.count; i++) {
-//        
-//        BlockView* savedView = [_dataFromLevelDesigner.blocksVArray objectAtIndex:i];
-//        BlockView* newView = [[BlockView alloc] initDefaultWithController:self];
-//        
-//        // configure the newView to have the same settings like savedView
-//        newView.transform = savedView.transform;
-//        newView.frame = savedView.frame;
-//        newView.bounds = savedView.bounds;
-//        [newView showMaterial:savedView.currentMaterial];
-//        
-//        // add to game area
-//        [_battleField addSubview:newView];
-//        
-//        // add to game area containment array
-//        [_blockViewArray addObject:newView];
-//    }
-    
-    
-    
+- (void) simpleDisappearWindBlow:(ChipmunkShape*) windBlowShape {
+    WindBlowController *wPC = windBlowShape.data;
+    [wPC.button removeFromSuperview];
+    [_windBlowControllerArray removeObjectIdenticalTo:wPC];
+    [space addPostStepRemoval:windBlowShape];
 }
+
+- (void) simpleDisappearBlock:(ChipmunkShape*) blockShape {
+    BlockPlayController *bPC = blockShape.data;
+    [bPC.button removeFromSuperview];
+    [_blockPlayControllerArray removeObjectIdenticalTo:bPC];
+    [space addPostStepRemoval:blockShape];
+}
+
+
 
 @end

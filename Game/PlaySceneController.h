@@ -24,7 +24,7 @@
 @class PigPlayController;
 @class WolfPlayController;
 @class BlockPlayController;
-@class BreathPlayController;
+@class WindBlowController;
 @class BarController;
 @class AngleDialController;
 
@@ -64,7 +64,6 @@
 - (IBAction)abort:(id)sender;
 - (IBAction)makej1337:(id)sender; //TODO delete
 
-- (void) populateBattleFieldWithDataFromLevelDesigner; // TODO delete
 
 
 @end

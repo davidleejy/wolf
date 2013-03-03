@@ -28,6 +28,9 @@
 // EFFECTS: ctor
 
 - (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt;
-// EFFECTS: Animates the wolf to blow attack.
+// EFFECTS: Animates the wolf with wind blowing action.
+
+//- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt PerformAtEnd:(SEL)selector1;
+//// EFFECTS: Animates the wolf with wind blowing action and selector is called at end.
 
 @end

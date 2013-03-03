@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 nus.cs3217. All rights reserved.
 //
 
-#import "BreathPlayController.h"
+#import "WindBlowController.h"
 #import "DeveloperSettings.h"
 #import "MyMath.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface BreathPlayController ()
+@interface WindBlowController ()
 @property (readwrite) NSMutableArray* windBlowSequence;
 @end
 
-@implementation BreathPlayController
+@implementation WindBlowController
 
 @synthesize button = _button;
 @synthesize touchedShapes = _touchedShapes;
@@ -96,7 +96,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
 		// Set up Chipmunk objects.
-		cpFloat mass = 1.0f;
+		cpFloat mass = 50.0f;
 		
 		// The moment of inertia is like the rotational mass of an object.
 		// Chipmunk provides a number of helper functions to help you estimate the moment of inertia.
@@ -117,7 +117,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		
 		shape.friction = 0.3f;
 		
-		shape.collisionType = [BreathPlayController class];
+		shape.collisionType = [WindBlowController class];
 		
 		shape.data = self;
 		

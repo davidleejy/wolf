@@ -45,25 +45,37 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     
     if(self = [super init]){
         
-        //Set material property
-        if ([materialImagePath isEqualToString:BLOCK_STRAW_IMAGE_PATH]) {
-            _material = kStraw;
-        }
-        else if ([materialImagePath isEqualToString:BLOCK_WOOD_IMAGE_PATH]) {
-            _material = kWood;
-        }
-        else if ([materialImagePath isEqualToString:BLOCK_IRON_IMAGE_PATH]) {
-            _material = kIron;
-        }
-        else if ([materialImagePath isEqualToString:BLOCK_STONE_IMAGE_PATH]) {
-            _material = kStone;
-        }
-        else
-            [NSException raise:@"init BlockPlayController" format:@"Invalid material image path: %@",materialImagePath];
-        
         //Find actual size:
         double widthActual = [MyMath horizScaleFactorOf:myTransform]*myBounds.size.width;
         double heightActual = [MyMath vertScaleFactorOf:myTransform]*myBounds.size.height;
+        
+        cpFloat mass;
+        cpFloat friction;
+        
+        //Set material property
+        if ([materialImagePath isEqualToString:BLOCK_STRAW_IMAGE_PATH]) {
+            _material = kStraw;
+            mass = 0.01f * widthActual * heightActual;
+            friction = 0.1f;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_WOOD_IMAGE_PATH]) {
+            _material = kWood;
+            mass = 0.05f * widthActual * heightActual;
+            friction = 0.3f;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_IRON_IMAGE_PATH]) {
+            _material = kIron;
+            mass = 0.2f * widthActual * heightActual;
+            friction = 0.3f;
+        }
+        else if ([materialImagePath isEqualToString:BLOCK_STONE_IMAGE_PATH]) {
+            _material = kStone;
+            mass = 0.1f * widthActual * heightActual;
+            friction = 0.9f;
+        }
+        else
+            [NSException raise:@"init BlockPlayController" format:@"Invalid material image path: %@",materialImagePath];
+       
         
         //Get image
         UIImageView* pic = [[UIImageView alloc]initWithImage:[UIImage imageNamed:materialImagePath]];
@@ -86,7 +98,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
 		// Set up Chipmunk objects.
-		cpFloat mass = 1.0f;
+		
 		
 		// The moment of inertia is like the rotational mass of an object.
 		// Chipmunk provides a number of helper functions to help you estimate the moment of inertia.
@@ -107,9 +119,9 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 		ChipmunkShape *shape = [ChipmunkPolyShape boxWithBody:_body width:widthActual height:heightActual];
 		
 		// The elasticity of a shape controls how bouncy it is.
-		shape.elasticity = 0.3f;
+		shape.elasticity = 0.0f;
 		// The friction propertry should be self explanatory. Friction values go from 0 and up- they can be higher than 1f.
-		shape.friction = 0.3f;
+		shape.friction = friction;
 		
 		// Set the collision type to a unique value (the class object works well)
 		// This type is used as a key later when setting up callbacks.
