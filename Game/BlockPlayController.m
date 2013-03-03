@@ -56,17 +56,17 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         if ([materialImagePath isEqualToString:BLOCK_STRAW_IMAGE_PATH]) {
             _material = kStraw;
             mass = 0.01f * widthActual * heightActual;
-            friction = 0.1f;
+            friction = 0.3f;
         }
         else if ([materialImagePath isEqualToString:BLOCK_WOOD_IMAGE_PATH]) {
             _material = kWood;
             mass = 0.05f * widthActual * heightActual;
-            friction = 0.3f;
+            friction = 0.7f;
         }
         else if ([materialImagePath isEqualToString:BLOCK_IRON_IMAGE_PATH]) {
             _material = kIron;
             mass = 0.2f * widthActual * heightActual;
-            friction = 0.3f;
+            friction = 0.5f;
         }
         else if ([materialImagePath isEqualToString:BLOCK_STONE_IMAGE_PATH]) {
             _material = kStone;

@@ -34,17 +34,15 @@
 // Class objects and strings are easy and convenient to use as collision types.
 static NSString *borderType = @"borderType";
 
-//Math
+// Helper classes
 #import "MyMath.h"
+#import "ViewHelper.h"
 
 
 @implementation PlaySceneController
 
 @synthesize battleField = _battleField;
 @synthesize dataFromLevelDesigner = _dataFromLevelDesigner;
-@synthesize pigView = _pigView;
-@synthesize wolfView = _wolfView;
-@synthesize blockViewArray = _blockViewArray;
 @synthesize pigPlayController = _pigPlayController;
 @synthesize wolfPlayController = _wolfPlayController;
 @synthesize blockPlayControllerArray = _blockPlayControllerArray;
@@ -94,6 +92,8 @@ static NSString *borderType = @"borderType";
     CGFloat gameareaWidth = backgroundWidth;
     [_battleField setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
     
+    //set color of background (area outside battlefield)
+    self.view.backgroundColor = [UIColor blackColor];
     
     //Init breath power bar
     _breathPowerBarController = [[BarController alloc]initForPlayScene];
@@ -130,6 +130,10 @@ static NSString *borderType = @"borderType";
     // W3. Wind blows lose half power when it touches straw.
     // W4. Wind blows pass through other wind blows.
     // W5. Wind blows pass through wolf.
+    // W6. Wind blows (fire) pass through blocks and decreases block's mass.
+    // W7. Wind blows (ice) pass through blocks and decreases block's friction.
+    // W8. Wind blows (grass) disintegrates when hit blocks and pulls blocks towards itself.
+    
     
     // W1.
     [space addCollisionHandler:self
@@ -140,13 +144,13 @@ static NSString *borderType = @"borderType";
                       separate:@selector(windBlowDisintegrate:space:)
      ];
     
-    // W2. & W3.
+    // W2., W3., W5., W6., W8.
     [space addCollisionHandler:self
                          typeA:[WindBlowController class] typeB:[BlockPlayController class]
                          begin:@selector(beginCollisionBetweenWindBlowAndBlock:space:)
                       preSolve:nil
                      postSolve:@selector(postSolveCollisionBetweenWindBlowAndBlock:space:)
-                      separate:nil
+                      separate:@selector(separateCollisionBetweenWindBlowAndBlock:space:)
      ];
     
     // W4.
@@ -263,7 +267,9 @@ static NSString *borderType = @"borderType";
     [_wolfPlayController.button addTarget:self action:@selector(stopAnimatingBreathPowerBar) forControlEvents:UIControlEventTouchUpOutside];
     
     
-
+    // **** Setting Starting Game State ****
+    _wolfBreathType = kNorm;
+    _currBreathTypeDisplay.text = @"No orb equipped.";
     
     
     //TODO TESTING A3
@@ -331,40 +337,98 @@ static NSString *borderType = @"borderType";
 
 
 -(bool)beginCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
+    WindBlowController *wPC = windBlowShape.data;
+    BlockPlayController *bPC = blockShape.data;
+    
     // Record pre collision velocity from first frame of the collision.
 	if(cpArbiterIsFirstContact(arbiter)){
-        CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
-        WindBlowController *wPC = windBlowShape.data;
         wPC.preCollisionVelocity = wPC.body.vel;
 //        NSLog(@"pre collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
     }
     
-    return TRUE;
+    if ( wPC.breathType == kNorm || wPC.breathType == kPlasma ) {
+        return TRUE;
+    }
+    else if (wPC.breathType == kFire || wPC.breathType == kIce ) {
+        return FALSE; // Effects of fire and ice are resolved in separation collision handler
+    }
 }
 
 -(void)postSolveCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
-    
-    // We only care about the first frame of the collision.
-	// If the shapes have been colliding for more than one frame, return early.
 	//if(!cpArbiterIsFirstContact(arbiter)) return;
+    
+    // All types of breaths will enter pre,post,sep collision handlers (if handlers exist) at the very first contact. This is so that breaths can modify the blocks even if they pass through them.
     
     CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
     
     WindBlowController *wPC = windBlowShape.data;
     BlockPlayController *bPC = blockShape.data;
     
-    switch (bPC.material) {
-        case kStraw:
-            [self simpleDisappearBlock:blockShape];
-            wPC.body.vel = cpvmult(wPC.preCollisionVelocity, 0.5f);
+    switch (wPC.breathType) {
+        case kNorm: // ~~~~~~ Basic Breath ~~~~~~~
+            if (bPC.material == kStraw) {
+                [self simpleDisappearBlock:blockShape];
+                wPC.body.vel = cpvmult(wPC.preCollisionVelocity, 0.5f);
+            }
+            else {
+                [self simpleDisappearWindBlow:windBlowShape];
+            }
             break;
-            
-        default:
+        case kPlasma: // ~~~~~~ Grass Breath ~~~~~~~
             [self simpleDisappearWindBlow:windBlowShape];
+            bPC.body.vel = cpvmult(bPC.body.vel, -1.5f);
+            [ViewHelper embedText:@"Bzzzt!"
+                        WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y, 150, 25)
+                        TextColor:[UIColor greenColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+            break;
+        default:
             break;
     }
     
 //    NSLog(@"post solve collision wind vel: %.9f %.9f",wPC.body.vel.x,wPC.body.vel.y);
+    
+}
+
+-(void)separateCollisionBetweenWindBlowAndBlock:(cpArbiter*)arbiter space:(ChipmunkSpace*)space1 {
+    CHIPMUNK_ARBITER_GET_SHAPES(arbiter, windBlowShape, blockShape);
+    WindBlowController *wPC = windBlowShape.data;
+    BlockPlayController *bPC = blockShape.data;
+    
+    switch (wPC.breathType) {
+        case kFire: // ~~~~~~ Fire Breath ~~~~~~~
+        {
+            double scaleFactor = 0.75 + (rand()%21)/100.0;
+            bPC.body.mass *= scaleFactor;
+            NSString* msg = [[NSString alloc]initWithFormat:@"-%d%% DENSITY",(int)((1.0-scaleFactor)*100.0)];
+            [ViewHelper embedText:msg
+                        WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y-bPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor redColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+//            NSLog(@"mass is now %.9f",bPC.body.mass);
+            wPC.body.vel = cpvmult(wPC.body.vel, 0.7f);
+            break;
+        }
+        case kIce: // ~~~~~~ Ice Breath ~~~~~~~
+        {
+            double scaleFactor = 0.75 + (rand()%21)/100.0;
+            blockShape.friction *= scaleFactor;
+            NSString* msg = [[NSString alloc]initWithFormat:@"-%d%% FRICTION",(int)((1.0-scaleFactor)*100.0)];
+            [ViewHelper embedText:msg
+                        WithFrame:CGRectMake(bPC.body.pos.x-150/2.0, bPC.body.pos.y-bPC.button.frame.size.height*((rand()%101)/100.0), 150, 25)
+                        TextColor:[UIColor blueColor]
+                     DurationSecs:0.5 + (rand()%8)/10.0
+                               In:_battleField];
+//            NSLog(@"friction is now %.9f",blockShape.friction);
+            wPC.body.vel = cpvmult(wPC.body.vel, 0.7f);
+            break;
+        }
+        default:
+            break;
+    }
     
 }
 
@@ -485,9 +549,7 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     return YES;
 }
 
-- (IBAction)abort:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+
 
 - (IBAction)makej1337:(id)sender {
     j = 1337;
@@ -524,9 +586,8 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 
 
 - (void) wolfBlowsWind{
-    
-    [_wolfPlayController animateBlowWithDeltaTime:1.0 RepeatCount:1]; // wolf huffs and puffs
-    [self performSelector:@selector(generateWind) withObject:nil afterDelay:0.7]; // wind is generated when he puffs
+    [_wolfPlayController animateOneBlowThatCompletesInSecs:0.7]; // wolf huffs and puffs
+    [self performSelector:@selector(generateWind) withObject:nil afterDelay:0.5]; // wind is generated when he puffs
 }
 
 
@@ -536,7 +597,8 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
     
     WindBlowController* wBPC = [[WindBlowController alloc]initWithTransform:CGAffineTransformIdentity
                                                                      Bounds:CGRectMake(0, 0, 80, 80)
-                                                                     Center:CGPointMake(windBlowCenterX, windBlowCenterY)];
+                                                                     Center:CGPointMake(windBlowCenterX, windBlowCenterY)
+                                                                 BreathType:_wolfBreathType];
     
     [_windBlowControllerArray addObject:wBPC];
     
@@ -579,5 +641,41 @@ static CGFloat frand(){return (CGFloat)rand()/(CGFloat)RAND_MAX;}
 }
 
 
+// ======= Buttons ========
 
+- (IBAction)abort:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)setWolfBreathTypeToNorm:(id)sender {
+    _wolfBreathType = kNorm;
+    _currBreathTypeDisplay.text = @"No orb equipped. Not such a big bad wolf are you?";
+}
+
+- (IBAction)setWolfBreathTypeFire:(id)sender {
+    _wolfBreathType = kFire;
+    _currBreathTypeDisplay.text = @"Orb of embers equipped. A breath imbued with fire eats away at the insides of whatever it touches.";
+}
+
+- (IBAction)setWolfBreathTypeIce:(id)sender {
+    _wolfBreathType = kIce;
+    _currBreathTypeDisplay.text = @"Orb of frost equipped. A frosty breath coats whatever it touches with a thin layer of ice.";
+}
+
+- (IBAction)setWolfBreathTypeGrass:(id)sender {
+    _wolfBreathType = kPlasma;
+    _currBreathTypeDisplay.text = @"Orb of plasma equipped. Electrically charged breaths can pull objects. But not pigs.";
+}
+
+
+
+//- (void)viewDidUnload {
+//    [self setCurrBreathTypeDisplay:nil];
+//    [self setAb:nil];
+//    [super viewDidUnload];
+//}
+//- (void)viewDidUnload {
+//    [self setCurrBreathTypeDisplay:nil];
+//    [super viewDidUnload];
+//}
 @end

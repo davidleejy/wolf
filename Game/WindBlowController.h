@@ -9,13 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "ObjectiveChipmunk.h"
 
+typedef enum {kNorm, kFire, kIce, kPlasma} BreathType;
+
 @interface WindBlowController : NSObject <ChipmunkObject>
 
 @property (readwrite) UIButton *button; // TODO refactor name.  This is the view.
 @property (readwrite) ChipmunkBody *body;
 @property (readwrite) NSArray *chipmunkObjects;
 @property (readwrite) int touchedShapes;
-
+@property (readonly) BreathType breathType;
 
 //Used in collision handlers as a temp variable.
 @property (readwrite) cpVect preCollisionVelocity;
@@ -34,7 +36,10 @@ collision velocity should be.
 
 - (void)updatePosition;
 
-- (id)initWithTransform:(CGAffineTransform)myTransform Bounds:(CGRect)myBounds Center:(CGPoint)myCenter;
+- (id)initWithTransform:(CGAffineTransform)myTransform
+                 Bounds:(CGRect)myBounds
+                 Center:(CGPoint)myCenter
+             BreathType:(BreathType)type;
 // REQUIRES: Non-skewed transform
 // EFFECTS: ctor
 

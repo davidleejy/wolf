@@ -139,7 +139,7 @@
     if ([panRecognizer.view isDescendantOfView:_palette] &&
         panRecognizer.view.center.y > _palette.frame.size.height) {
         [_gameArea addSubview:panRecognizer.view];
-        panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x, 0);
+        panRecognizer.view.center = CGPointMake(panRecognizer.view.center.x+ _gameArea.contentOffset.x, 0);
     }
 
     

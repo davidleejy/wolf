@@ -9,6 +9,7 @@
 #import "WolfPlayController.h"
 #import "DeveloperSettings.h"
 #import "MyMath.h"
+#import "SpriteHelper.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -21,7 +22,8 @@
 
 //***** Unique to wolf ******
 @property (readwrite) UIImage* wolfsImage; // Many wolfs in this image
-@property (readwrite) NSMutableArray* wolfBlowingImagesSequence;
+@property (readwrite) NSMutableArray* wolfBlowingSpriteSequence;
+@property (readwrite) NSMutableArray* windSuckSpriteSequence;
 
 @end
 
@@ -33,7 +35,8 @@
 @synthesize body = _body;
 @synthesize chipmunkObjects = _chipmunkObjects;
 @synthesize wolfsImage = _wolfsImage;
-@synthesize wolfBlowingImagesSequence = _wolfBlowingImagesSequence;
+@synthesize wolfBlowingSpriteSequence = _wolfBlowingImagesSequence;
+@synthesize windSuckSpriteSequence = _windSuckSpriteSequence;
 
 static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
 
@@ -46,7 +49,21 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 - (id)initWithTransform:(CGAffineTransform)myTransform Bounds:(CGRect)myBounds Center:(CGPoint)myCenter {
     if(self = [super init]){
         
-        //Fill up wolf images
+        //Fill up wind suck sprite sequence
+        UIImage *windSuckSpriteScreen = [UIImage imageNamed:WOLF_WINDSUCK_SPRITESCREEN_PATH];
+        _windSuckSpriteSequence = [[NSMutableArray alloc]init];
+        for (int i = 0; i < WOLF_WINDSUCK_SPRITESCREEN_SPRITE_COUNT; i++) {
+            CGRect croppingRect = [SpriteHelper getCroppingRect:windSuckSpriteScreen
+                                                  RowsOfSprites:WOLF_WINDSUCK_SPRITESCREEN_ROWS
+                                                  ColsOfSprites:WOLF_WINDSUCK_SPRITESCREEN_COLS
+                                                    SpriteCount:WOLF_WINDSUCK_SPRITESCREEN_SPRITE_COUNT
+                                             DesiredSpriteIndex:i];
+            
+            CGImageRef refToDesiredSprite = CGImageCreateWithImageInRect([windSuckSpriteScreen CGImage], croppingRect);
+            [_windSuckSpriteSequence addObject:[UIImage imageWithCGImage:refToDesiredSprite]];
+        }
+        
+        //Fill up wolf blowing sprite sequence
         _wolfsImage = [UIImage imageNamed:WOLFS_IMAGE_PATH];
         _wolfBlowingImagesSequence = [[NSMutableArray alloc]init];
         for (int i = 1; i <= WOLFS_MAX_FRAMES_TO_CHOOSE_FROM; i++) {
@@ -136,10 +153,48 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 
 
 - (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt {
+    
     _button.imageView.animationImages = _wolfBlowingImagesSequence;
     _button.imageView.animationDuration = dt;
     _button.imageView.animationRepeatCount = cnt;
     [_button.imageView startAnimating];
+}
+
+- (void)animateOneBlowThatCompletesInSecs:(double)duration {
+    
+    // Get a UIImageView of wind sucking.
+    UIImage* windSuckStart  = (UIImage*)[_windSuckSpriteSequence objectAtIndex:0];
+    UIImageView* windSuck = [[UIImageView alloc]initWithImage:windSuckStart];
+    
+    // Configure the wind sucking UIImageView's frame such that it is near the mouth.
+    CGPoint mouth = [self wolfMouthCoordinates];
+    
+    // Prepare to animate wind sucking
+    windSuck.animationImages = _windSuckSpriteSequence;
+    double windSuckAnimationDuration = duration-duration/WOLFS_MAX_FRAMES_TO_CHOOSE_FROM*2.0;
+    windSuck.animationDuration = windSuckAnimationDuration;
+    windSuck.animationRepeatCount = 1;
+    
+    // Prepare to animate wolf body expanding and contracting
+    _button.imageView.animationImages = _wolfBlowingImagesSequence;
+    _button.imageView.animationDuration = duration;
+    _button.imageView.animationRepeatCount = 1;
+    
+    // Begin to animate
+    [_button.imageView startAnimating];
+    [_button addSubview:windSuck];
+    windSuck.frame = CGRectMake(mouth.x,
+                                mouth.y - windSuck.frame.size.height/2.0,
+                                windSuck.frame.size.width, windSuck.frame.size.height);
+    [windSuck startAnimating];
+    [windSuck performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:windSuckAnimationDuration];
+}
+
+
+
+- (CGPoint)wolfMouthCoordinates {
+    return CGPointMake(_button.imageView.frame.size.width,
+                       _button.frame.size.height/4.63);
 }
 
 //- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt PerformAtEnd:(SEL)selector1 {
@@ -155,24 +210,8 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
 
 - (CGRect) getCroppingRectForWolfs:(NSUInteger) desiredFrame {
     // EFFECTS: Returns a CGRect that when applied to wolfs.png, bounds the desired frame.
+    return [SpriteHelper getCroppingRect:_wolfsImage RowsOfSprites:WOLFS_ROWS_OF_FRAMES ColsOfSprites:WOLFS_COLUMNS_OF_FRAMES SpriteCount:WOLFS_MAX_FRAMES_TO_CHOOSE_FROM DesiredSpriteIndex:desiredFrame-1];
     
-    // Error handling
-    if (desiredFrame < 1 || desiredFrame > WOLFS_MAX_FRAMES_TO_CHOOSE_FROM) {
-        [NSException raise:@"WolfView class" format:@"%d is an invalid frame! Choose from frames 1 ~ %d. Error is handled by setting desiredFrame to 1.", desiredFrame, WOLFS_MAX_FRAMES_TO_CHOOSE_FROM];
-        desiredFrame = 1;
-    }
-    
-    
-    CGFloat allFramesHeight = _wolfsImage.size.height;
-    CGFloat allFramesWidth = _wolfsImage.size.width;
-    CGFloat singleFrameHeight = allFramesHeight / WOLFS_ROWS_OF_FRAMES;
-    CGFloat singleFrameWidth = allFramesWidth / WOLFS_COLUMNS_OF_FRAMES;
-    CGFloat frameX = ((desiredFrame -1) % WOLFS_COLUMNS_OF_FRAMES) * singleFrameWidth;
-    CGFloat frameY = ((int)((desiredFrame - 1) / WOLFS_COLUMNS_OF_FRAMES)) * singleFrameHeight;
-    
-    CGRect croppingRect = CGRectMake(frameX, frameY, singleFrameWidth, singleFrameHeight);
-    
-    return croppingRect;
 }
 
 
@@ -188,6 +227,7 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     
     return result;
 }
+
 
 //- (void)buttonClicked {
 //	// Apply a random velcity change to the body when the button is clicked.

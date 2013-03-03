@@ -19,7 +19,8 @@
 
 //***** Unique to wolf ******
 @property (readonly) UIImage* wolfsImage; // Many wolfs in this image
-@property (readonly) NSMutableArray* wolfBlowingImagesSequence;
+@property (readonly) NSMutableArray* wolfBlowingSpriteSequence;
+@property (readonly) NSMutableArray* windSuckSpriteSequence;
 
 - (void)updatePosition;
 
@@ -28,8 +29,17 @@
 // EFFECTS: ctor
 
 - (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt;
-// EFFECTS: Animates the wolf with wind blowing action.
+// EFFECTS: Animates the wolf with blowing action. Only body is animated.
 
+- (void)animateOneBlowThatCompletesInSecs:(double)duration;
+// EFFECTS: Animates the wolf ONCE with blowing action complete with sucking and blowing out.
+
+- (CGPoint)wolfMouthCoordinates;
+// EFFECTS: returns the coordinates of where the wolf's mouth is. This is where
+//      wind should be blown out /sucked in from.
+
+
+//TODO
 //- (void)animateBlowWithDeltaTime:(double)dt RepeatCount:(uint)cnt PerformAtEnd:(SEL)selector1;
 //// EFFECTS: Animates the wolf with wind blowing action and selector is called at end.
 

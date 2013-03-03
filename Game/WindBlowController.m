@@ -9,10 +9,12 @@
 #import "WindBlowController.h"
 #import "DeveloperSettings.h"
 #import "MyMath.h"
+#import "SpriteHelper.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface WindBlowController ()
 @property (readwrite) NSMutableArray* windBlowSequence;
+@property (readwrite) BreathType breathType;
 @end
 
 @implementation WindBlowController
@@ -22,6 +24,7 @@
 @synthesize body = _body;
 @synthesize chipmunkObjects = _chipmunkObjects;
 @synthesize windBlowSequence = _windBlowSequence;
+@synthesize breathType = _breathType;
 
 static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.0f;}
 
@@ -62,20 +65,62 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
     return self;
 }
 
-- (id)initWithTransform:(CGAffineTransform)myTransform Bounds:(CGRect)myBounds Center:(CGPoint)myCenter {
+- (id)initWithTransform:(CGAffineTransform)myTransform
+                 Bounds:(CGRect)myBounds
+                 Center:(CGPoint)myCenter
+             BreathType:(BreathType)type{
     if(self = [super init]){
-        
-        //Cut up sprites from sprite screen and populate _windblowsequence
-        _windBlowSequence = [[NSMutableArray alloc]init];
-        for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
-            [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW_SPRITESCREEN_PATH]];
-        }
         
         //Find actual size:
         double widthActual = [MyMath horizScaleFactorOf:myTransform]*myBounds.size.width;
         double heightActual = [MyMath vertScaleFactorOf:myTransform]*myBounds.size.height;
         
-        //Get image
+		cpFloat mass;
+        _windBlowSequence = [[NSMutableArray alloc]init]; //IMPT!
+        
+        //Set breathe type
+        if (type == kNorm) {
+            mass = 50.0f;
+            _breathType = kNorm;
+            // Cut up sprites from wind blow sprite screen and populate _windblowsequence
+            for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
+                [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW_SPRITESCREEN_PATH]];
+            }
+        }
+        else if (type == kFire) {
+            mass = 70.0f;
+            _breathType = kFire;
+            // Cut up sprites from wind blow1 sprite screen and populate _windblowsequence
+            for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
+                [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW1_SPRITESCREEN_PATH]];
+            }
+        }
+        else if (type == kIce) {
+            mass = 70.0f;
+            _breathType = kIce;
+            // Cut up sprites from wind blow2 sprite screen and populate _windblowsequence
+            for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
+                [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW2_SPRITESCREEN_PATH]];
+            }
+        }
+        else if (type == kPlasma) {
+            mass = 50.0f;
+            _breathType = kPlasma;
+            // Cut up sprites from wind blow3 sprite screen and populate _windblowsequence
+            for (int i = 1; i <= WINDBLOW_SPRITESCREEN_SPRITE_COUNT; i++) {
+                [_windBlowSequence addObject:[self windBlowInFrame:i Of:WINDBLOW3_SPRITESCREEN_PATH]];
+            }
+        }
+        else
+            [NSException raise:@"init WindBlowController" format:@"Invalid breath type: %d",type];
+        
+        
+        
+        
+        
+        
+        
+        //Get image from index 0 of windBlowSequence.
         UIImageView* pic = [[UIImageView alloc]initWithImage:[_windBlowSequence objectAtIndex:0]];
         pic.bounds = CGRectMake(0, 0, widthActual, heightActual);
         // Using QuartzCore to grab a UIImage object that is the same size as its UIImageView
@@ -95,8 +140,6 @@ static cpFloat frand_unit(){return 2.0f*((cpFloat)rand()/(cpFloat)RAND_MAX) - 1.
         
 		[_button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchDown];
 		
-		// Set up Chipmunk objects.
-		cpFloat mass = 50.0f;
 		
 		// The moment of inertia is like the rotational mass of an object.
 		// Chipmunk provides a number of helper functions to help you estimate the moment of inertia.

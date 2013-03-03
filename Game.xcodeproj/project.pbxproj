@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		FB47A0AD16C53E5D00E47674 /* MSxmas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */; };
 		FB47A0B016C5402E00E47674 /* MScave.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB47A0AF16C5402E00E47674 /* MScave.jpg */; };
+		FBB2045316E38D06004141C1 /* BasicWind.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2044E16E38D05004141C1 /* BasicWind.JPG */; };
+		FBB2045416E38D06004141C1 /* OrbOfFrost.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2044F16E38D05004141C1 /* OrbOfFrost.JPG */; };
+		FBB2045516E38D06004141C1 /* OrbOfNewBeginnings.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045016E38D06004141C1 /* OrbOfNewBeginnings.JPG */; };
+		FBB2045616E38D06004141C1 /* OrbOfPerseverance.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045116E38D06004141C1 /* OrbOfPerseverance.JPG */; };
+		FBB2045716E38D06004141C1 /* OrbOfPoison.JPG in Resources */ = {isa = PBXBuildFile; fileRef = FBB2045216E38D06004141C1 /* OrbOfPoison.JPG */; };
+		FBB2045A16E3AC83004141C1 /* ViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FBB2045916E3AC82004141C1 /* ViewHelper.m */; };
 		FBBB845616BD35B90091BB47 /* GameObjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845516BD35B80091BB47 /* GameObjectView.m */; };
 		FBBB845A16BD62340091BB47 /* PigView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845916BD62340091BB47 /* PigView.m */; };
 		FBBB845D16BD62C90091BB47 /* WolfView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBB845C16BD62C90091BB47 /* WolfView.m */; };
@@ -73,12 +79,20 @@
 		FBE6A2F516E34FA100FEF566 /* heart.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2EE16E34FA000FEF566 /* heart.png */; };
 		FBE6A2F616E34FA100FEF566 /* pig-die-smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2EF16E34FA000FEF566 /* pig-die-smoke.png */; };
 		FBE6A2F716E34FA100FEF566 /* pig2.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE6A2F016E34FA000FEF566 /* pig2.png */; };
+		FBE6A2FA16E35CAD00FEF566 /* SpriteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE6A2F916E35CAA00FEF566 /* SpriteHelper.m */; };
 		FBEB2BDE16BBF8CA0095B0FB /* GameObjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MSxmas.jpg; sourceTree = "<group>"; };
 		FB47A0AF16C5402E00E47674 /* MScave.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MScave.jpg; sourceTree = "<group>"; };
+		FBB2044E16E38D05004141C1 /* BasicWind.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = BasicWind.JPG; sourceTree = "<group>"; };
+		FBB2044F16E38D05004141C1 /* OrbOfFrost.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OrbOfFrost.JPG; sourceTree = "<group>"; };
+		FBB2045016E38D06004141C1 /* OrbOfNewBeginnings.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OrbOfNewBeginnings.JPG; sourceTree = "<group>"; };
+		FBB2045116E38D06004141C1 /* OrbOfPerseverance.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OrbOfPerseverance.JPG; sourceTree = "<group>"; };
+		FBB2045216E38D06004141C1 /* OrbOfPoison.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = OrbOfPoison.JPG; sourceTree = "<group>"; };
+		FBB2045816E3AC82004141C1 /* ViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewHelper.h; sourceTree = "<group>"; };
+		FBB2045916E3AC82004141C1 /* ViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewHelper.m; sourceTree = "<group>"; };
 		FBBB845416BD35B80091BB47 /* GameObjectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectView.h; sourceTree = "<group>"; };
 		FBBB845516BD35B80091BB47 /* GameObjectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectView.m; sourceTree = "<group>"; };
 		FBBB845816BD62340091BB47 /* PigView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PigView.h; sourceTree = "<group>"; };
@@ -206,6 +220,8 @@
 		FBE6A2EE16E34FA000FEF566 /* heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart.png; sourceTree = "<group>"; };
 		FBE6A2EF16E34FA000FEF566 /* pig-die-smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pig-die-smoke.png"; sourceTree = "<group>"; };
 		FBE6A2F016E34FA000FEF566 /* pig2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pig2.png; sourceTree = "<group>"; };
+		FBE6A2F816E35CA800FEF566 /* SpriteHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteHelper.h; sourceTree = "<group>"; };
+		FBE6A2F916E35CAA00FEF566 /* SpriteHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpriteHelper.m; sourceTree = "<group>"; };
 		FBEB2BDC16BBF8CA0095B0FB /* GameObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectModel.h; sourceTree = "<group>"; };
 		FBEB2BDD16BBF8CA0095B0FB /* GameObjectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -264,6 +280,10 @@
 				FBEB2BD516BBE8A30095B0FB /* src */,
 				FBE6A2BC16E2093700FEF566 /* MyMath.h */,
 				FBE6A2BD16E2093800FEF566 /* MyMath.m */,
+				FBB2045816E3AC82004141C1 /* ViewHelper.h */,
+				FBB2045916E3AC82004141C1 /* ViewHelper.m */,
+				FBE6A2F816E35CA800FEF566 /* SpriteHelper.h */,
+				FBE6A2F916E35CAA00FEF566 /* SpriteHelper.m */,
 				FBE38AA116BF834C008E18A0 /* UIView+ExploreViewHierarchy.h */,
 				FBE38AA216BF834C008E18A0 /* UIView+ExploreViewHierarchy.m */,
 				FBCF235D16B64CB700217BDA /* AppDelegate.h */,
@@ -356,6 +376,11 @@
 		FBEB2BD116BBE81C0095B0FB /* res */ = {
 			isa = PBXGroup;
 			children = (
+				FBB2044E16E38D05004141C1 /* BasicWind.JPG */,
+				FBB2044F16E38D05004141C1 /* OrbOfFrost.JPG */,
+				FBB2045016E38D06004141C1 /* OrbOfNewBeginnings.JPG */,
+				FBB2045116E38D06004141C1 /* OrbOfPerseverance.JPG */,
+				FBB2045216E38D06004141C1 /* OrbOfPoison.JPG */,
 				FBE6A2EA16E34F9E00FEF566 /* cloud1.png */,
 				FBE6A2EB16E34F9E00FEF566 /* cloud2.png */,
 				FBE6A2EC16E34F9E00FEF566 /* cloud3.png */,
@@ -368,6 +393,7 @@
 				FBE6A2DC16E34F8B00FEF566 /* wind-disperse1.png */,
 				FBE6A2DD16E34F8C00FEF566 /* wind-disperse2.png */,
 				FBE6A2DE16E34F8D00FEF566 /* wind-disperse3.png */,
+				FBE6A2C516E250D200FEF566 /* windblow.png */,
 				FBE6A2DF16E34F8E00FEF566 /* windblow1.png */,
 				FBE6A2E016E34F8E00FEF566 /* windblow2.png */,
 				FBE6A2E116E34F8F00FEF566 /* windblow3.png */,
@@ -376,7 +402,6 @@
 				FBE6A2CD16E29A0D00FEF566 /* direction-arrow-selected.png */,
 				FBE6A2CE16E29A0E00FEF566 /* direction-arrow.png */,
 				FBE6A2CF16E29A0E00FEF566 /* direction-degree.png */,
-				FBE6A2C516E250D200FEF566 /* windblow.png */,
 				FB47A0AF16C5402E00E47674 /* MScave.jpg */,
 				FB47A0AC16C53E5D00E47674 /* MSxmas.jpg */,
 				FBE3727416BE281600940FB3 /* circle.jpg */,
@@ -408,6 +433,8 @@
 				FBEB2BDA16BBE8CC0095B0FB /* Controllers_in_MVC */,
 				FBEB2BD816BBE8BE0095B0FB /* Views_in_MVC */,
 				FBEB2BD416BBE8890095B0FB /* Models_in_MVC */,
+				FBBB846B16BD7EF90091BB47 /* DeveloperSettings.h */,
+				FBBB846C16BD7EFA0091BB47 /* DeveloperSettings.m */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -423,8 +450,6 @@
 				FBBB845C16BD62C90091BB47 /* WolfView.m */,
 				FBBB845E16BD62D40091BB47 /* BlockView.h */,
 				FBBB845F16BD62D40091BB47 /* BlockView.m */,
-				FBBB846B16BD7EF90091BB47 /* DeveloperSettings.h */,
-				FBBB846C16BD7EFA0091BB47 /* DeveloperSettings.m */,
 			);
 			name = Views_in_MVC;
 			sourceTree = "<group>";
@@ -549,6 +574,11 @@
 				FBE6A2F516E34FA100FEF566 /* heart.png in Resources */,
 				FBE6A2F616E34FA100FEF566 /* pig-die-smoke.png in Resources */,
 				FBE6A2F716E34FA100FEF566 /* pig2.png in Resources */,
+				FBB2045316E38D06004141C1 /* BasicWind.JPG in Resources */,
+				FBB2045416E38D06004141C1 /* OrbOfFrost.JPG in Resources */,
+				FBB2045516E38D06004141C1 /* OrbOfNewBeginnings.JPG in Resources */,
+				FBB2045616E38D06004141C1 /* OrbOfPerseverance.JPG in Resources */,
+				FBB2045716E38D06004141C1 /* OrbOfPoison.JPG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +612,8 @@
 				FBE6A2C916E252E300FEF566 /* WindBlowController.m in Sources */,
 				FBE6A2CC16E27AA700FEF566 /* BarController.m in Sources */,
 				FBE6A2D516E2AE8F00FEF566 /* AngleDialController.m in Sources */,
+				FBE6A2FA16E35CAD00FEF566 /* SpriteHelper.m in Sources */,
+				FBB2045A16E3AC83004141C1 /* ViewHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
