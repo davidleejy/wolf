@@ -1,0 +1,190 @@
+Name: Lee Jian Yi, David
+Matric no.: A0080708E
+
+1.
+User can set angle on his own.  User uses his finger to pan the angle dial.  The angle dial is located in the center of the screen and it is slightly faded when not touched.
+
+User sets the power bar by pressing the wolf.  When the wolf is held down (touch down), the breath power bar oscillates between empty and full.  When the wolf is released (touch up), the breath power bar stops for a moment and the wolf begins to huff and puff.  The breathe power bar is reseted each time the wolf attacks.
+
+The power of a wolf breath should be a constant that is fed to the game engine when the wolf attacks.
+So for example:
+// In the constants file …
+double NORMAL_BREATH_POWER = 50;
+double FIRE_BREATH_POWER = 40;
+double ICE_BREATH_POWER = 40;
+double PLASMA_BREATH_POWER = 30;
+
+The wolf breath is modeled by a perfect circle object in the physics engine.
+
+Keeping the powers as constants in separate file can help developers change the power just by modifying a single value in the constants file.
+
+
+2a.
+Not applicable.
+
+
+2b.
+I decided to use an open source engine because my physics engine doesn't work.  I've spent more than 20+ hours debugging it.  Using an open source engine is a wise choice in hindsight because it has been constructed and refined over many iterations to cater to most purposes.
+I used Objective-Chipmunk.
+
+-----------------------------------------------------------------------------------------------------------------------------
+Basic steps to emulating a physics environment:
+1. Create a space (the world for the objects to live in).  You can set the physics values (like gravity, friction) in this space.  This space is really an emptiness bounded by four static (unlovable) rectangular bodies orientated to form the parameters of a rectangle.
+2. Making a physics object
+2a. The class of the object must conform to Chipmunk's object protocol.
+2b. The class of the object has 2 important properties - a chipMunkbody and a view. These 2 properties work hand-in-hand to simulate the physics environment.  The view is added to the space's view while the chipMunkBody stays invisible but calculations are performed on it.  At every delta time step, the view's transform is set with the chipMunkBody's transform.
+The end result is that the user sees the view as if it is interacting with other objects in the space.
+2d. Initialising the class of the object involves setting physics values like mass, moment, friction, etc.
+2e. This class must have a method that makes the view follow in the chipMunkBody's footsteps.  This method will be called at every delta time.
+	- (void)updatePosition {
+		_button.transform = _body.affineTransform;
+	}
+
+3. When the class is set up, the controller of the space (world) can then decide how collisions are handled between the different objects.
+3a. Deciding what happens in a collision is quite convenient in Chipmunk.
+	E.g.
+	[space addCollisionHandler:self
+                         typeA:[WindBlowController class] typeB:[BlockPlayController class]
+                         begin:@selector(beginCollisionBetweenWindBlowAndBlock:space:)
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollisionBetweenWindBlowAndBlock:space:)
+                      separate:@selector(separateCollisionBetweenWindBlowAndBlock:space:)
+     ];
+
+3b. The controller of the space should have a method that updates all the physics object in the space it governs every delta time.
+	E.g.
+	- (void)update {
+	// Step (simulate) the space based on the time since the last update.
+	cpFloat dt = displayLink.duration*displayLink.frameInterval;
+	[space step:dt];
+	
+	// Update all physics objects
+	[_pigPlayController updatePosition];
+	// … 
+	}
+-----------------------------------------------------------------------------------------------------------------------------
+
+This physics engine can take in polygons and perfect circles.  PS4 physics engine cannot.
+This physics engine has very intricate collision handling system. PS4 physics engine does not.
+This physics engine runs very smoothly even with a lot of objects. PS4 physics engine begins to lag after 7 physics objects.
+
+
+
+
+3. Object-object Interactions
+Interactions between breath and block - kindly refer to breathsVSblocks.jpg.  It shows a table of how every kind of breath interacts with every kind of block.  I thought about strategy and encouraging the user to try a combination of breaths when I came up with these interactions.
+(Sorry the picture looks a bit dark on the Mac.  But it looked okay on my laptop and mobile phone.)
+There are also interactions between: 
+	pig and blocks: Pig can get damaged by blocks slamming into it. Blocks take no damage from slamming into pig. Pig is soft and has presumably a lot of bouncy fats.
+	pig and breaths: Pig can get damaged by breaths. Pig has resistance against fire and ice breath, so pig is less affected by fire and ice breath (as compared to blocks).  Fire and Ice 				breaths get dispersed after contacting a pig.  This makes the game strategic.
+
+My strategy is to use Chipmunk's standard collision handler assignment method.  For e.g.:
+	[space addCollisionHandler:self
+                         typeA:[WindBlowController class] typeB:[BlockPlayController class]
+                         begin:@selector(beginCollisionBetweenWindBlowAndBlock:space:)
+                      preSolve:nil
+                     postSolve:@selector(postSolveCollisionBetweenWindBlowAndBlock:space:)
+                      separate:@selector(separateCollisionBetweenWindBlowAndBlock:space:)
+    	 ];
+This strategy is not only convenient, but it is also safe because this method is recommended by the Chipmunk API when we want to handle collisions between objects.  Therefore, using methods recommended by the Chipmunk API is the best.
+
+I could have improved my implementation by splitting the collision handlers up into categories and refactoring them into classes.  Currently there is too much code in PlaySceneController.   It is very hard to read.
+
+
+
+4. Starting Game
+In my design, each physics object comes from a class that conforms to the ChipmunkObject protocol.  Conformance to this protocol allows simple integration with the engine.
+Without conforming to ChipMunkObject protocol, it'd be dangerous to add the physics object into the physics engine.
+
+Chipmunk runs the loop to update the physics objects in a separate thread.  It uses Apple's CADisplayLink.  CADisplayLink to receive events from the iPhone OS when the screen wants to redraw itself.  Using a CADisplayLink to update the physics object at each delta time gives smooth animation - even with 30 objects.
+
+
+
+5. MDD
+Please see MDD.jpg (Sorry the picture looks a bit dark on the Mac.  But it looked okay on my laptop and mobile phone.)
+
+
+
+
+
+#######################################
+Section 3 Testing, Refinements & Reflections
+#######################################
+
+
+Black-Box testing
+
+Test the translation, rotation and pinch with a wolf object at designer level
+Test the wolf object position by pressing the start button (start game simulation) to check if the wolf is located at the same location as that of designer level
+Test the wolf velocity to check if the wolf is moving downwards with a preset gravity
+Test the correctness between wolf and borders by observing the velocity direction after collision (wolf should bounce up after colliding with bottom border)
+Test the wolf inhale and exhale by clicking on the wolf
+Test the wolf suck wind animation
+Test the generation of breath by adding a wolf and click on it to observe if the breath is at the right positon (aroung mouth of wolf)
+Test the arrow position with different wolf location (the arrow must stay near to wolf)
+Test the arrow the trajectory of breath to observe whether it is in the same direction as arrow pointing
+Test the collision between breath and a wood block to observe whether it plays a disperse animation
+Test the collision between different blocks(wood, straw, stone, iron) to check if the different bounciness (they should have different bounciness as they are holding different physics properties)
+Test the collision between breath and pig to check if the pig is destroyed after certain times of collision (pig has a larger mass)
+Test the animation when the pig is destroyed
+Test the save and load function at designer level by adding a few blocks and drag wolf, pig from pallet to game area. Save it and load it to observe the corrent location and rotation angle
+Test the reset function by adding a few blocks and press the reset button to observe that all the items are removed from gamearea
+Test loading multi-level game by presenting three Game levels(Level 1, Level2 and Level3,Practice Game1, Practice Game2, Practice Game3)
+Test the correct display of hearts (wolf health indicator) after each generation of projectile by adding a wolf and keep pressing on it
+
+Glass-Box Testing
+These are some available methods but not implemented in my current project:
+write a unit testing project to test the correct logic of loading and saving of multiple game levels
+write a unit testing project to test the correct logic of blocks collision
+write a unit testing project to test the correct logic of Data model retrieval and update
+
+The Bells & Whistles:
+1) 4 kinds of breaths
+2) 4 kinds of breath disperse animation
+3) wolf inhale and exhale animation
+4) Improved aesthetics
+5) Gave each breath a tooltip
+6) Scoring
+7) Show reactions when collisions between certain objects occur. For example, pig speaks when hit.
+8) Added buttons to select each kind of breath
+
+I actually didn't use back the classes I used in my level designer. I recreated new classes. I haven't had the time to refactor to make a neat clean class.
+
+
+Final Reflection:
+My MVC was bad. I think it still is bad now.  I didn't design my physics engine - I used Chipmunk.
+
+Improvements:
+1) Improve the appearance of the scoring.
+2) Multiple load and save.
+3) Refactor to make fat classes like PlaySceneController thinner.
+4) Sounds during collisions.
+5) Background music.
+6) Could try using delegates to make better MVC.
+7) Implement more animations - pig dieting, pig smoke, etc.
+8) Implement life for wolf
+
+Bonus Problem:
+a.
+Section 2 - 25 hrs
+Section 3, bells and whistle - 12 hrs
+Section 3, testing - 10 hrs
+
+b.
+I could have read up CS193P in my spare time.
+
+c.
+Need some design patterns that are useful for iOS.
+
+d.
+The learning curve was too steep for me (Before I took this course, I never had an apple product except for an iPod shuffle a friend gave me).
+To be honest, I feel like I have struggling a lot and not learning much, there just isn't enough time to pick up something new (Objective-C, Mac, Xcode) and
+learn how be a good software engineer.  Problem sets should have more hand holding.  We can learn some common design patterns before doing our final
+project.
+
+
+
+// EOF
+
+
+
